@@ -1,0 +1,21 @@
+<div class="modal " style="display: block;">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Xác nhận xoá</h4>
+        <button type="button" class="close" mat-dialog-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Đồng ý xoá {{modal.title}} {{modal.item.name}}?</p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" mat-dialog-close>Huỷ</button>
+        <button type="button" class="btn btn-danger" (click)="onConfirm()">Đồng ý</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

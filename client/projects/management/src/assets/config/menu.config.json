@@ -1,0 +1,49 @@
+[
+  {
+    "title": "Hệ thống",
+    "path": "",
+    "icon": "fas fa-globe",
+    "children": [
+      {
+        "title": "Nhân viên",
+        "path": "system/user",
+        "icon": "far fa-circle"
+      },
+      {
+        "title": "Role",
+        "path": "system/role",
+        "icon": "far fa-circle"
+      },
+      {
+        "title": "Phân quyền",
+        "path": "system/permission",
+        "icon": "far fa-circle"
+      }
+    ]
+  },
+  {
+    "title": "Dự án",
+    "path": "project",
+    "icon": "fas fa-cube"
+  },
+  {
+    "title": "Đối tác",
+    "path": "partner",
+    "icon": "fas fa-users"
+  },
+  {
+    "title": "Bài viết",
+    "path": "content",
+    "icon": "fas fa-newspaper"
+  },
+  {
+    "title": "Sự kiện",
+    "path": "event",
+    "icon": "fas fa-calendar"
+  },
+  {
+    "title": "Khách hàng",
+    "path": "customer",
+    "icon": "fas fa-address-book"
+  }
+]

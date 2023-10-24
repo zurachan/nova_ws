@@ -1,0 +1,14 @@
+<ng-container *ngIf="IsAuthenticated(); else unauthenticated">
+  <div class="wrapper">
+    <app-navbar (LogoutEvent)=Logout($event)></app-navbar>
+    <app-sidenav></app-sidenav>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+  </div>
+</ng-container>
+
+<ng-template #unauthenticated>
+  <app-unauthenticated></app-unauthenticated>
+</ng-template>
+
+<notifier-container></notifier-container>

@@ -14,14 +14,13 @@ export class AppComponent {
    *
    */
   constructor(private authenticateService: AuthenticateService) {
-    // this.IsAuthenticated = authenticateService.IsAuthenticated;
   }
 
   IsAuthenticated() {
     return this.authenticateService.LoggedIn;
   }
 
-  Logout(authenticated: boolean) {
+  Logout() {
     this.authenticateService.Logout();
   }
 }

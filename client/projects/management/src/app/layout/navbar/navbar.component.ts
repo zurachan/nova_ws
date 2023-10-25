@@ -1,4 +1,3 @@
-import { AuthenticateService } from './../../shared/services/authenticate.service';
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
@@ -8,14 +7,14 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class NavbarComponent {
 
-  @Output() LogoutEvent = new EventEmitter<boolean>();
+  @Output() LogoutEvent = new EventEmitter<any>();
 
   /**
    *
    */
-  constructor(private authenticateService: AuthenticateService) { }
+  constructor() { }
 
   ClickLogOut() {
-    this.LogoutEvent.emit(false);
+    this.LogoutEvent.emit();
   }
 }

@@ -75,7 +75,7 @@ namespace API.Controllers.Management
                 }
             }
 
-            return new ResponseData { Success = true, Data = role }; ;
+            return new ResponseData { Success = true, Data = role }; 
         }
 
         // POST: api/Roles

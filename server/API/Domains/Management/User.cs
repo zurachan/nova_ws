@@ -18,9 +18,10 @@ namespace API.Domains.Management
         [Required]
         [Column("username")]
         public string Username { get; set; }
-        [Required]
+
         [Column("password")]
-        public string Password { get; set; }
+        public string Password { get; set; } = "123456";
+
         public virtual List<UserRole>? UserRoles { get; set; }
     }
 }

@@ -19,31 +19,37 @@
         "path": "system/permission",
         "icon": "far fa-circle"
       }
-    ]
+    ],
+    "permission": ["ADMIN"]
   },
   {
     "title": "Dự án",
     "path": "project",
-    "icon": "fas fa-cube"
+    "icon": "fas fa-cube",
+    "permission": ["ADMIN", "CONTENT CREATOR", "SALE"]
   },
   {
     "title": "Đối tác",
     "path": "partner",
-    "icon": "fas fa-users"
+    "icon": "fas fa-users",
+    "permission": ["ADMIN", "CONTENT CREATOR", "SALE"]
   },
   {
     "title": "Bài viết",
     "path": "content",
-    "icon": "fas fa-newspaper"
+    "icon": "fas fa-newspaper",
+    "permission": ["ADMIN", "CONTENT CREATOR"]
   },
   {
     "title": "Sự kiện",
     "path": "event",
-    "icon": "fas fa-calendar"
+    "icon": "fas fa-calendar",
+    "permission": ["ADMIN", "CONTENT CREATOR"]
   },
   {
     "title": "Khách hàng",
     "path": "customer",
-    "icon": "fas fa-address-book"
+    "icon": "fas fa-address-book",
+    "permission": ["ADMIN", "SALE"]
   }
 ]

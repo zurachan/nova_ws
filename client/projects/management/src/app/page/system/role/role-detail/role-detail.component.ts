@@ -25,7 +25,7 @@ export class RoleDetailComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.bindFormValue()
+    this.bindValueForm()
   }
 
   initForm() {
@@ -35,7 +35,7 @@ export class RoleDetailComponent implements OnInit {
     })
   }
 
-  bindFormValue() {
+  bindValueForm() {
     this.form.patchValue(this.modal.item);
   }
 

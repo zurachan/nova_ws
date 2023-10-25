@@ -1,24 +1,29 @@
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { BehaviorSubject, Observable, lastValueFrom } from 'rxjs';
 
 import { Credential } from '../../model/credential.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { HttpClient } from '@angular/common/http';
+
+const urlApi = 'https://localhost:44322/api/';
+const currentData = 'Authentication';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthenticateService {
-  constructor(private userService: UserService,
-    private router: Router) {
-    this.credentialSubject = new BehaviorSubject<Credential>(JSON.parse(localStorage.getItem('token')));
+  constructor(private http: HttpClient, private router: Router) {
+    this.credentialSubject = new BehaviorSubject<Credential>(JSON.parse(localStorage.getItem('credential')));
     this.credential = this.credentialSubject.asObservable();
   }
 
   private credentialSubject: BehaviorSubject<Credential>;
   public credential: Observable<Credential>;
+  @Output() updateCredential = new EventEmitter<any>();
+
 
   get LoggedIn(): boolean {
     return !!this.credentialSubject.value;
@@ -28,19 +33,25 @@ export class AuthenticateService {
     return this.credentialSubject.value;
   }
 
-  // get getCurrentUser() {
-  //   return this.credentialSubject.value.user;
-  // }
+  SetCredential(credential: any) {
+    let currentCredential = JSON.parse(localStorage.getItem('credential'));
+    currentCredential.user = credential;
+
+    localStorage.removeItem('credential');
+    this.credentialSubject.next(currentCredential);
+    localStorage.setItem('credential', JSON.stringify(currentCredential));
+    this.updateCredential.emit(currentCredential);
+  }
 
   Logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('credential');
     this.credentialSubject.next(null);
     this.router.navigate(['/login']);
   }
 
   async Login(model: any) {
     try {
-      let res = await lastValueFrom<any>(this.userService.Login(model));
+      let res = await lastValueFrom<any>(this.onLogin(model));
 
       if (res.success) {
         let credential = new Credential();
@@ -50,15 +61,7 @@ export class AuthenticateService {
 
         this.credentialSubject.next(credential);
 
-        localStorage.setItem('token', JSON.stringify(res.token));
-        // localStorage.setItem('role', JSON.stringify(rs.role[0].role.name));
-        // localStorage.setItem('username', JSON.stringify(rs.role[0].role.name));
-        // localStorage.setItem('role', JSON.stringify(rs.role[0].role.name));
-        // localStorage.setItem('userId', JSON.stringify(rs.user.id));
-        // localStorage.setItem('fullName', JSON.stringify(rs.user.fullName));
-        // localStorage.setItem('username', JSON.stringify(rs.user.username));
-
-        console.log(credential)
+        localStorage.setItem('credential', JSON.stringify(credential));
 
         this.router.navigate(['']);
         return {
@@ -79,6 +82,10 @@ export class AuthenticateService {
         message: 'Authentication failed',
       };
     }
+  }
+
+  onLogin(model: any) {
+    return this.http.post(`${urlApi}` + `${currentData}` + "/Login", model);
   }
 }
 

@@ -7,6 +7,7 @@ import { ProjectComponent } from './page/project/project.component';
 import { ContentComponent } from './page/content/content.component';
 import { EventComponent } from './page/event/event.component';
 import { LoginComponent } from './layout/login/login.component';
+import { ProfileComponent } from './layout/profile/profile.component';
 
 const routes: Routes = [
   { path: 'content', component: ContentComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'partner', component: PartnerComponent },
   { path: 'project', component: ProjectComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'profile', component: ProfileComponent },
   {
     path: 'system',
     loadChildren: () => import('../app/page/system/system.module').then((m) => m.SystemModule),

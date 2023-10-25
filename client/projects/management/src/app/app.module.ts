@@ -11,17 +11,16 @@ import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { UnauthenticatedComponent } from './layout/unauthenticated/unauthenticated.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
-import { PreloaderComponent } from './layout/preloader/preloader.component';
 import { LoginComponent } from './layout/login/login.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
-// import { DeleteConfirmComponent } from './shared/component/delete-confirm/delete-confirm.component';
 import { ContentComponent } from './page/content/content.component';
 import { CustomerComponent } from './page/customer/customer.component';
 import { EventComponent } from './page/event/event.component';
 import { PartnerComponent } from './page/partner/partner.component';
 import { ProjectComponent } from './page/project/project.component';
+import { ProfileComponent } from './layout/profile/profile.component';
 /**
  * Custom angular notifier options
  */
@@ -66,7 +65,6 @@ const customNotifierOptions: NotifierOptions = {
   },
 };
 
-
 @NgModule({
   exports: [
     MatDialogModule
@@ -76,15 +74,14 @@ const customNotifierOptions: NotifierOptions = {
     FooterComponent,
     NavbarComponent,
     SidenavComponent,
-    PreloaderComponent,
     UnauthenticatedComponent,
     LoginComponent,
-    // DeleteConfirmComponent,
     ContentComponent,
     CustomerComponent,
     EventComponent,
     PartnerComponent,
-    ProjectComponent
+    ProjectComponent,
+    ProfileComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -98,12 +95,12 @@ const customNotifierOptions: NotifierOptions = {
       config: {
         tokenGetter: function tokenGetter() {
           if (
-            localStorage.getItem('token') == null ||
-            localStorage.getItem('token') == undefined
+            localStorage.getItem('credential') == null ||
+            localStorage.getItem('credential') == undefined
           ) {
             return 'a';
           }
-          return JSON.parse(localStorage.getItem('token'))['token'];
+          return JSON.parse(localStorage.getItem('credential'))['token'];
         },
       },
     }),

@@ -1,78 +1,72 @@
 ﻿using API.Common;
 using API.Domains;
-using API.Domains.Management;
+using API.Domains.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
-namespace API.Controllers.Management
+namespace API.Controllers.Business
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class ProjectsController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        int UserId;
 
-        public UsersController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public ProjectsController(AppDbContext context)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
-            UserId = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue("UserId"));
         }
 
-        // GET: api/Users
+        // GET: api/Projects
         [HttpGet]
-        public async Task<ResponseData> GetUsers()
+        public async Task<ResponseData> GetProjects()
         {
-            if (_context.Users == null)
+            if (_context.Projects == null)
             {
                 return new ResponseData { Success = false, Message = "Empty" };
             }
-            return new ResponseData { Success = true, Data = await _context.Users.ToListAsync() };
+            return new ResponseData { Success = true, Data = await _context.Projects.ToListAsync() };
         }
 
-        // GET: api/Users/5
+        // GET: api/Projects/5
         [HttpGet("{id}")]
-        public async Task<ResponseData> GetUser(int id)
+        public async Task<ResponseData> GetProject(int id)
         {
-            if (_context.Users == null)
+            if (_context.Projects == null)
             {
                 return new ResponseData { Success = false, Message = "Empty" };
             }
-            var user = await _context.Users.FindAsync(id);
+            var project = await _context.Projects.FindAsync(id);
 
-            if (user == null)
+            if (project == null)
             {
                 return new ResponseData { Success = false, Message = "Not found" };
             }
 
-            return new ResponseData { Success = true, Data = user };
+            return new ResponseData { Success = true, Data = project };
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Projects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ResponseData> PutUser(int id, User user)
+        public async Task<ResponseData> PutProject(int id, Project project)
         {
-            if (id != user.Id)
+            if (id != project.Id)
+            {
                 return new ResponseData { Success = false, Message = "Bad request" };
+            }
 
-
-            var dbUser = _context.Users.Find(id);
-            if (dbUser == null)
+            var dbProject = await _context.Projects.FindAsync(id);
+            if (dbProject == null)
                 return new ResponseData { Success = false, Message = "Not found" };
 
+            dbProject.Name = project.Name;
+            dbProject.Content = project.Content;
+            dbProject.Type = project.Type;
+            dbProject.Phase = project.Phase;
+            dbProject.ManagerId = project.ManagerId;
 
-            dbUser.Address = user.Address;
-            dbUser.FullName = user.FullName;
-            dbUser.Email = user.Email;
-            dbUser.Telephone = user.Telephone;
-
-            dbUser.Address = user.Address;
-            dbUser.UpdatedDate = DateTime.Now;
-            dbUser.UpdatedById = UserId;
+            dbProject.UpdatedDate = DateTime.Now;
 
             try
             {
@@ -83,40 +77,40 @@ namespace API.Controllers.Management
                 return new ResponseData { Success = false, Message = ex.Message };
             }
 
-            return new ResponseData { Success = true, Data = dbUser };
+            return new ResponseData { Success = true, Data = dbProject };
         }
 
-        // POST: api/Users
+        // POST: api/Projects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ResponseData> PostUser(User user)
+        public async Task<ResponseData> PostProject(Project project)
         {
-            if (_context.Users == null)
+            if (_context.Projects == null)
             {
                 return new ResponseData { Success = false, Message = "Empty" };
             }
-            _context.Users.Add(user);
+            _context.Projects.Add(project);
             await _context.SaveChangesAsync();
 
-            return new ResponseData { Success = true, Data = user };
+            return new ResponseData { Success = true, Data = project };
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Projects/5
         [HttpDelete("{id}")]
-        public async Task<ResponseData> DeleteUser(int id)
+        public async Task<ResponseData> DeleteProject(int id)
         {
-            if (_context.Users == null)
+            if (_context.Projects == null)
             {
                 return new ResponseData { Success = false, Message = "Empty" };
             }
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var project = await _context.Projects.FindAsync(id);
+            if (project == null)
             {
                 return new ResponseData { Success = false, Message = "Not found" };
             }
 
-            user.IsDeleted = true;
-            user.UpdatedDate = DateTime.Now;
+            project.IsDeleted = false;
+            project.UpdatedDate = DateTime.Now;
 
             try
             {

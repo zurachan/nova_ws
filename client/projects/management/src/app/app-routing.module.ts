@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthenticateGuard } from './shared/services/authenticate.service';
 import { CustomerComponent } from './page/customer/customer.component';
 import { PartnerComponent } from './page/partner/partner.component';
 import { ProjectComponent } from './page/project/project.component';

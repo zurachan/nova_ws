@@ -21,6 +21,7 @@ import { EventComponent } from './page/event/event.component';
 import { PartnerComponent } from './page/partner/partner.component';
 import { ProjectComponent } from './page/project/project.component';
 import { ProfileComponent } from './layout/profile/profile.component';
+import { ProjectDetailComponent } from './page/project/project-detail/project-detail.component';
 /**
  * Custom angular notifier options
  */
@@ -81,6 +82,7 @@ const customNotifierOptions: NotifierOptions = {
     EventComponent,
     PartnerComponent,
     ProjectComponent,
+    ProjectDetailComponent,
     ProfileComponent
   ],
   imports: [
@@ -90,6 +92,7 @@ const customNotifierOptions: NotifierOptions = {
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
+    MatDialogModule,
     NotifierModule.withConfig(customNotifierOptions),
     JwtModule.forRoot({
       config: {

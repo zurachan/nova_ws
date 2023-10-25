@@ -48,8 +48,7 @@ namespace API.Controllers.Management
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim("Username", user.Username),
-                        new Claim("Fullname", user.FullName),
-                        new Claim("Address", user.Address),
+                        new Claim("UserId", user.Id.ToString()),
                         };
 
                         var role = _context.UserRoles.Include(x => x.Role).Include(x => x.User).Where(x => x.User.Id == user.Id).ToList();

@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-const urlApi = 'https://localhost:44322/api/Roles';
+const urlApi = 'https://localhost:44322/api/Projects';
 @Injectable({
   providedIn: 'root'
 })
-export class RoleService {
+export class ProjectService {
+
   constructor(private http: HttpClient) { }
 
   GetAll(): Observable<any[]> {

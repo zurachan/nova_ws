@@ -57,25 +57,23 @@ namespace API.Controllers.Management
                 return new ResponseData { Success = false, Message = "Bad request" };
             }
 
-            _context.Entry(role).State = EntityState.Modified;
+            var dbRole = await _context.Roles.FindAsync(id);
+            if (dbRole == null)
+                return new ResponseData { Success = false, Message = "Not found" };
+
+            dbRole.Name = role.Name;
+            dbRole.UpdatedDate = DateTime.Now;
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!RoleExists(id))
-                {
-                    return new ResponseData { Success = false, Message = "Not found" };
-                }
-                else
-                {
-                    throw;
-                }
+                return new ResponseData { Success = false, Message = ex.Message };
             }
 
-            return new ResponseData { Success = true, Data = role }; 
+            return new ResponseData { Success = true, Data = dbRole };
         }
 
         // POST: api/Roles
@@ -115,24 +113,12 @@ namespace API.Controllers.Management
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!RoleExists(id))
-                {
-                    return new ResponseData { Success = false, Message = "Not found" };
-                }
-                else
-                {
-                    throw;
-                }
+                return new ResponseData { Success = false, Message = ex.Message };
             }
 
             return new ResponseData { Success = true };
-        }
-
-        private bool RoleExists(int id)
-        {
-            return (_context.Roles?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

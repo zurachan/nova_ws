@@ -15,6 +15,9 @@ export class UserComponent implements OnInit {
 
   userData = [];
 
+  displayedColumns: string[] = ['stt', 'fullName', 'telephone', 'email', 'address'];
+
+
   ngOnInit() {
     this.getData()
   }

@@ -14,6 +14,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './layout/login/login.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContentComponent } from './page/content/content.component';
 import { CustomerComponent } from './page/customer/customer.component';
@@ -67,9 +68,6 @@ const customNotifierOptions: NotifierOptions = {
 };
 
 @NgModule({
-  exports: [
-    MatDialogModule
-  ],
   declarations: [
     AppComponent,
     FooterComponent,
@@ -93,6 +91,7 @@ const customNotifierOptions: NotifierOptions = {
     FormsModule,
     BrowserAnimationsModule,
     MatDialogModule,
+    MatTableModule,
     NotifierModule.withConfig(customNotifierOptions),
     JwtModule.forRoot({
       config: {

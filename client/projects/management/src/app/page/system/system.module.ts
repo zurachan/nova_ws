@@ -8,16 +8,19 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { RoleDetailComponent } from './role/role-detail/role-detail.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DeleteConfirmComponent } from '../../shared/component/delete-confirm/delete-confirm.component';
+import { UserDetailComponent } from './user/user-detail/user-detail.component';
+import { MatTableModule } from '@angular/material/table';
 @NgModule({
   declarations: [
     RoleComponent,
     RoleDetailComponent,
     UserComponent,
+    UserDetailComponent,
     PermissionComponent,
     DeleteConfirmComponent
   ],
   imports: [
-    CommonModule, SystemRoutingModule, MatDialogModule, ReactiveFormsModule
+    CommonModule, SystemRoutingModule, MatDialogModule, ReactiveFormsModule, MatTableModule
   ],
 })
 export class SystemModule { }

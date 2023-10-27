@@ -32,7 +32,7 @@ namespace API.Controllers.Management
             {
                 return new ResponseData { Success = false, Message = "Empty" };
             }
-            return new ResponseData { Success = true, Data = await _context.Users.ToListAsync() };
+            return new ResponseData { Success = true, Data = await _context.Users.Where(x => !x.IsDeleted).ToListAsync() };
         }
 
         // GET: api/Users/5
@@ -43,7 +43,7 @@ namespace API.Controllers.Management
             {
                 return new ResponseData { Success = false, Message = "Empty" };
             }
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
             if (user == null)
             {
@@ -62,7 +62,7 @@ namespace API.Controllers.Management
                 return new ResponseData { Success = false, Message = "Bad request" };
 
 
-            var dbUser = _context.Users.Find(id);
+            var dbUser = _context.Users.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
             if (dbUser == null)
                 return new ResponseData { Success = false, Message = "Not found" };
 
@@ -111,7 +111,7 @@ namespace API.Controllers.Management
             {
                 return new ResponseData { Success = false, Message = "Empty" };
             }
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
             if (user == null)
             {
                 return new ResponseData { Success = false, Message = "Not found" };

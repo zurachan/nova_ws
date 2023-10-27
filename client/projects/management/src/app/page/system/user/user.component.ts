@@ -3,6 +3,7 @@ import { UserService } from '../../../shared/services/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { DeleteConfirmComponent } from '../../../shared/component/delete-confirm/delete-confirm.component';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-user',
@@ -11,7 +12,7 @@ import { DeleteConfirmComponent } from '../../../shared/component/delete-confirm
 })
 export class UserComponent implements OnInit {
 
-  constructor(private userService: UserService, private dialog: MatDialog) { }
+  constructor(private userService: UserService, private dialog: MatDialog, private notifier: NotifierService) { }
 
   userData = [];
 
@@ -29,17 +30,16 @@ export class UserComponent implements OnInit {
           return x;
         });
         this.userData = res.data
-        console.log(this.userData)
       }
     });
   }
 
-  onAdd() { }
 
-  onEdit(item: any) {
+  onAddEdit(type: 'add' | 'edit', item: any = null) {
     const dialogRef = this.dialog.open(UserDetailComponent, {
       data: {
-        title: 'Cập nhật quyền',
+        title: type == 'edit' ? 'Cập nhật nhân viên' : 'Thêm mới nhân viên',
+        type,
         item
       }
     });
@@ -50,18 +50,26 @@ export class UserComponent implements OnInit {
       }
     });
   }
+
 
   onDelete(item: any) {
     const dialogRef = this.dialog.open(DeleteConfirmComponent, {
       data: {
         title: 'Nhân viên',
-        item
+        item: item.fullName,
       }
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.getData()
+        this.userService.Delete(item.id).subscribe(res => {
+          if (res.success) {
+            this.getData()
+            this.notifier.notify('success', "Xoá nhân viên " + item.fullName + " thành công");
+          } else {
+            this.notifier.notify('error', "Xoá nhân viên " + item.fullName + " không thành công");
+          }
+        })
       }
     });
   }

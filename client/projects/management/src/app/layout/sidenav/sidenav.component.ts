@@ -38,8 +38,6 @@ export class SidenavComponent implements OnInit {
         return x;
       })
       this.menu = this.menu.filter(x => x.isShow);
-      console.log(this.menu)
-
     });
   }
 

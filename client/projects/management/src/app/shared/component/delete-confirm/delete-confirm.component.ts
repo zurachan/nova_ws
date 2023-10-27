@@ -13,13 +13,14 @@ export class DeleteConfirmComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<DeleteConfirmComponent>,
-    private notifier: NotifierService,
-    private roleService: RoleService) {
+    private notifier: NotifierService) {
     this.modal = data
   }
   modal: any
 
   ngOnInit() {
   }
-  onConfirm() { }
+  onConfirm() {
+    this.dialogRef.close(true)
+  }
 }

@@ -3,6 +3,7 @@ import { RoleDetailComponent } from './role-detail/role-detail.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RoleService } from '../../../shared/services/role.service';
 import { DeleteConfirmComponent } from '../../../shared/component/delete-confirm/delete-confirm.component';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-role',
@@ -11,7 +12,7 @@ import { DeleteConfirmComponent } from '../../../shared/component/delete-confirm
 })
 export class RoleComponent implements OnInit {
 
-  constructor(private roleService: RoleService, private dialog: MatDialog) { }
+  constructor(private roleService: RoleService, private dialog: MatDialog, private notifier: NotifierService) { }
 
   roleData = [];
 
@@ -50,13 +51,20 @@ export class RoleComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmComponent, {
       data: {
         title: 'Quyền',
-        item
+        item: item.name,
       }
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.getData()
+        this.roleService.Delete(item.id).subscribe(res => {
+          if (res.success) {
+            this.getData()
+            this.notifier.notify('success', "Xoá quyền " + item.name + " thành công");
+          } else {
+            this.notifier.notify('error', "Xoá quyền " + item.name + " không thành công");
+          }
+        })
       }
     });
   }

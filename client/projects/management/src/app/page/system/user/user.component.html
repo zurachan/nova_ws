@@ -22,62 +22,41 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Danh sách nhân viên</h3>
-              <button title="Thêm mới nhân viên" class="btn btn-primary btn-sm float-sm-right" (click)="onAdd()">
+              <button title="Thêm mới nhân viên" class="btn btn-primary btn-sm float-sm-right"
+                (click)="onAddEdit('add')">
                 <i class="fas fa-plus"></i> Thêm mới
               </button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table class="table table-bordered" mat-table [dataSource]="userData">
-                <!-- <thead>
+              <table class="table table-bordered">
+                <thead>
                   <tr>
                     <th style="width: 10px">#</th>
-                    <th>Tên</th>
+                    <th>Họ và tên</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
                     <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of userData">
                     <td>{{item.stt}}</td>
-                    <td>{{item.name}}</td>
+                    <td>{{item.fullName}}</td>
+                    <td>{{item.username}}</td>
+                    <td>{{item.telephone}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.address}}</td>
                     <td>
                       <div class="d-flex">
-                        <button class="btn btn-primary mr-3" (click)="onEdit(item)">Chỉnh sửa</button>
+                        <button class="btn btn-primary mr-3" (click)="onAddEdit('edit',item)">Chỉnh sửa</button>
                         <button class="btn btn-danger" (click)="onDelete(item)">Xoá</button>
                       </div>
                     </td>
                   </tr>
-                </tbody> -->
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                
-                <ng-container matColumnDef="stt">
-                  <th mat-header-cell *matHeaderCellDef>STT</th>
-                  <td mat-cell *matCellDef="let element"> {{element.stt}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="fullName">
-                  <th mat-header-cell *matHeaderCellDef> Họ và tên </th>
-                  <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="telephone">
-                  <th mat-header-cell *matHeaderCellDef> Số điện thoại </th>
-                  <td mat-cell *matCellDef="let element"> {{element.telephone}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef> Email </th>
-                  <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="address">
-                  <th mat-header-cell *matHeaderCellDef> Địa chỉ </th>
-                  <td mat-cell *matCellDef="let element"> {{element.address}} </td>
-                </ng-container>
-
-
-
+                </tbody>
               </table>
             </div>
             <!-- /.card-body -->

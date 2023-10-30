@@ -37,12 +37,13 @@ namespace API.Domains
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
-        //public DbSet<Content> Contents { get; set; }
-        //public DbSet<Event> Events { get; set; }
+        public DbSet<Content> Contents { get; set; }
+        public DbSet<Event> Events { get; set; }
         public DbSet<Partner> Partners { get; set; }
         public DbSet<Project> Projects { get; set; }
-        //public DbSet<ProjectContent> ProjectContents { get; set; }
-        //public DbSet<ProjectEvent> ProjectEvents { get; set; }
+        public DbSet<ProjectContent> ProjectContents { get; set; }
+        public DbSet<ProjectEvent> ProjectEvents { get; set; }
         public DbSet<ProjectPartner> ProjectPartners { get; set; }
+        public DbSet<File> Files { get; set; }
     }
 }

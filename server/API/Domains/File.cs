@@ -16,10 +16,7 @@ namespace API.Domains
         [Column("filename")]
         public string FileName { get; set; }
         [Required]
-        [Column("filepath")]
-        public string FilePath { get; set; }
-        [Required]
-        [Column("filetype")]
-        public string FileType { get; set; }
+        [Column("filedata")]
+        public byte[] FileData { get; set; }
     }
 }

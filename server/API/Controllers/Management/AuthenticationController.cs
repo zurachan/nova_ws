@@ -16,13 +16,11 @@ namespace API.Controllers.Management
     {
         private readonly AppDbContext _context;
         private IConfiguration _configuration;
-        private IHttpContextAccessor _contextAccessor;
 
-        public AuthenticationController(AppDbContext context, IConfiguration configuration, IHttpContextAccessor contextAccessor)
+        public AuthenticationController(AppDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
-            _contextAccessor = contextAccessor;
         }
 
         [AllowAnonymous]

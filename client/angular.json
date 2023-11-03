@@ -20,7 +20,12 @@
             "tsConfig": "projects/business/tsconfig.app.json",
             "assets": [
               "projects/business/src/favicon.ico",
-              "projects/business/src/assets"
+              "projects/business/src/assets",
+              {
+                "glob": "**/*",
+                "input": "../../upload",
+                "output": "./assets/"
+              }
             ],
             "styles": ["projects/business/src/styles.css"],
             "scripts": []

@@ -3,8 +3,6 @@
     public class ResponseData
     {
         private object _data;
-        private object _dataOutput;
-        private object _dataTotalValue;
         private bool _success;
         private string _message = string.Empty;
         private string _url = string.Empty;
@@ -37,18 +35,6 @@
         {
             get { return _data; }
             set { _data = value; }
-        }
-
-        public object DataOutput
-        {
-            get { return _dataOutput; }
-            set { _dataOutput = value; }
-        }
-
-        public object DataTotalValue
-        {
-            get { return _dataTotalValue; }
-            set { _dataTotalValue = value; }
         }
 
         /// <summary>

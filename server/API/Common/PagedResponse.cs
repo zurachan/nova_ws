@@ -8,8 +8,8 @@
         public int LastPage { get; set; }
         public int TotalPages { get; set; }
         public int TotalRecords { get; set; }
-        public int NextPage { get; set; }
-        public int PreviousPage { get; set; }
+        public int? NextPage { get; set; }
+        public int? PreviousPage { get; set; }
 
         public PagedResponse(T data, int pageNumber = 1, int pageSize = 10)
         {

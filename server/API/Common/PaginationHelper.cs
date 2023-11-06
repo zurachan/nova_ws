@@ -10,9 +10,9 @@ namespace API.Common
             var totalPages = ((double)totalRecords / (double)validFilter.PageSize);
             int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
 
-            respose.NextPage = validFilter.PageNumber + 1;
+            respose.NextPage = validFilter.PageNumber == roundedTotalPages ? null : validFilter.PageNumber + 1;
 
-            respose.PreviousPage = validFilter.PageNumber - 1;
+            respose.PreviousPage = validFilter.PageNumber == 1 ? null : validFilter.PageNumber - 1;
 
             respose.FirstPage = 1;
 

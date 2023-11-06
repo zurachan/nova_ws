@@ -29,4 +29,17 @@ namespace API.Common
         [Description("Bất động sản công nghiệp")]
         CongNghiep
     }
+
+    public enum ItemType
+    {
+        None,
+        UserProfile,
+        ProjectCover,
+        ProjectContent,
+        Content,
+        ContentCover,
+        Event,
+        EventCover,
+        Partner
+    }
 }

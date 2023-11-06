@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { DeleteConfirmComponent } from '../../../shared/component/delete-confirm/delete-confirm.component';
 import { NotifierService } from 'angular-notifier';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import _ from "lodash";
 
 @Component({
   selector: 'app-user',
@@ -12,18 +14,25 @@ import { NotifierService } from 'angular-notifier';
 })
 export class UserComponent implements OnInit {
 
-  constructor(private userService: UserService, private dialog: MatDialog, private notifier: NotifierService) { }
+  constructor(private userService: UserService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
 
   userData = [];
-
-  displayedColumns: string[] = ['stt', 'fullName', 'telephone', 'email', 'address'];
-
+  form: FormGroup
 
   ngOnInit() {
-    this.getData()
+    this.initForm();
+    this.getData();
   }
-  getData() {
-    this.userService.GetAll().subscribe((res: any) => {
+
+  initForm() {
+    this.form = this.fb.group({
+      user: [null]
+    })
+  }
+
+  getData(isSearch?: boolean) {
+    let param = _.cloneDeep(this.form.value);
+    this.userService.GetAll(param).subscribe((res: any) => {
       if (res.success) {
         res.data.map((x: any) => {
           x.stt = res.data.indexOf(x) + 1;
@@ -33,7 +42,6 @@ export class UserComponent implements OnInit {
       }
     });
   }
-
 
   onAddEdit(type: 'add' | 'edit', item: any = null) {
     const dialogRef = this.dialog.open(UserDetailComponent, {
@@ -50,7 +58,6 @@ export class UserComponent implements OnInit {
       }
     });
   }
-
 
   onDelete(item: any) {
     const dialogRef = this.dialog.open(DeleteConfirmComponent, {

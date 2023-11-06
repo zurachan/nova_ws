@@ -1,8 +1,10 @@
 ﻿using API.Common;
 using API.Domains;
 using API.Domains.Management;
+using API.Model.SearchFilter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -25,46 +27,55 @@ namespace API.Controllers.Management
         }
 
         // GET: api/Users
-        [HttpGet]
-        public async Task<ResponseData> GetUsers()
+        [HttpPost("search")]
+        public async Task<PagedResponse<List<User>>> GetUsers(UserSearchParam param)
         {
             if (_context.Users == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new PagedResponse<List<User>>(null) { Success = false };
             }
-            return new ResponseData { Success = true, Data = await _context.Users.Where(x => !x.IsDeleted).ToListAsync() };
+            var validFilter = new UserSearchParam(param.PageNumber, param.PageSize);
+            var pagedData = await _context.Users
+                .Where(x => !string.IsNullOrEmpty(param.User) ? !x.IsDeleted && (x.FullName.Contains(param.User) || x.Username.Contains(param.User)) : !x.IsDeleted)
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
+
+            var totalRecords = await _context.Users.CountAsync();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(pagedData, validFilter, totalRecords);
+            return pagedReponse;
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ResponseData> GetUser(int id)
+        public async Task<Response<User>> GetUser(int id)
         {
             if (_context.Users == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<User> { Success = false, Message = "Empty" };
             }
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
             if (user == null)
             {
-                return new ResponseData { Success = false, Message = "Not found" };
+                return new Response<User> { Success = false, Message = "Not found" };
             }
 
-            return new ResponseData { Success = true, Data = user };
+            return new Response<User>(user);
         }
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ResponseData> PutUser(int id, User user)
+        public async Task<Response<User>> PutUser(int id, User user)
         {
             if (id != user.Id)
-                return new ResponseData { Success = false, Message = "Bad request" };
+                return new Response<User> { Success = false, Message = "Bad request" };
 
 
             var dbUser = _context.Users.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
             if (dbUser == null)
-                return new ResponseData { Success = false, Message = "Not found" };
+                return new Response<User> { Success = false, Message = "Not found" };
 
 
             dbUser.Address = user.Address;
@@ -82,39 +93,39 @@ namespace API.Controllers.Management
             }
             catch (Exception ex)
             {
-                return new ResponseData { Success = false, Message = ex.Message };
+                return new Response<User> { Success = false, Message = ex.Message };
             }
 
-            return new ResponseData { Success = true, Data = dbUser };
+            return new Response<User>(dbUser);
         }
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ResponseData> PostUser(User user)
+        public async Task<Response<User>> PostUser(User user)
         {
             if (_context.Users == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<User> { Success = false, Message = "Empty" };
             }
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return new ResponseData { Success = true, Data = user };
+            return new Response<User>(user);
         }
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<ResponseData> DeleteUser(int id)
+        public async Task<Response<User>> DeleteUser(int id)
         {
             if (_context.Users == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<User> { Success = false, Message = "Empty" };
             }
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
             if (user == null)
             {
-                return new ResponseData { Success = false, Message = "Not found" };
+                return new Response<User> { Success = false, Message = "Not found" };
             }
 
             user.IsDeleted = true;
@@ -126,10 +137,10 @@ namespace API.Controllers.Management
             }
             catch (Exception ex)
             {
-                return new ResponseData { Success = false, Message = ex.Message };
+                return new Response<User> { Success = false, Message = ex.Message };
             }
 
-            return new ResponseData { Success = true };
+            return new Response<User>();
         }
     }
 }

@@ -21,11 +21,25 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Danh sách nhân viên</h3>
-              <button title="Thêm mới nhân viên" class="btn btn-primary btn-sm float-sm-right"
-                (click)="onAddEdit('add')">
-                <i class="fas fa-plus"></i> Thêm mới
-              </button>
+
+              <div class="d-flex align-items-center">
+                <form class="w-100" [formGroup]="form">
+                  <div class="input-group">
+                    <input type="text" class="form-control form-control-md" placeholder="Nhập tìm kiếm"
+                      formControlName="user">
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-md btn-default" (click)="getData(true)">
+                        <i class="fa fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+                <button style="width: 150px;" title="Thêm mới nhân viên" class="btn btn-primary btn-md ml-3"
+                  (click)="onAddEdit('add')">
+                  <i class="fas fa-plus"></i> Thêm mới
+                </button>
+              </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body">

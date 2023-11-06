@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of, switchMap } from 'rxjs';
 
 const urlApi = 'https://localhost:44322/api/Users';
 
@@ -11,9 +11,14 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  GetAll(): Observable<any[]> {
-    return this.http.get<any[]>(`${urlApi}`).pipe();
+  GetAll(param: any): Observable<any[]> {
+    return this.http.post(`${urlApi}/search`, param).pipe(catchError((error) => {
+      return of(error);
+    }), switchMap((response) => {
+      return of(response);
+    }));
   }
+
   /** GET ONE: find exactly by id */
   GetById(id: number): Observable<any> {
     return this.http.get<any>(`${urlApi}` + `/${id}`).pipe();

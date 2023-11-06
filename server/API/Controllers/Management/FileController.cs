@@ -22,21 +22,21 @@ namespace API.Controllers.Management
         /// <param name="file"></param>
         /// <returns></returns>
         [HttpPost("PostSingleFile")]
-        public async Task<ResponseData> PostSingleFile([FromForm] FileUpload fileDetails)
+        public async Task<Response<bool>> PostSingleFile([FromForm] FileUpload fileDetails)
         {
             if (fileDetails == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<bool> { Success = false, Message = "Empty" };
             }
             try
             {
                 var result = await _uploadService.PostFileAsync(fileDetails);
-                return new ResponseData { Success = result };
+                return new Response<bool> { Success = result };
 
             }
             catch (Exception)
             {
-                return new ResponseData { Success = false, Message = "Bad request" };
+                return new Response<bool> { Success = false, Message = "Bad request" };
             }
         }
 
@@ -46,20 +46,20 @@ namespace API.Controllers.Management
         /// <param name="file"></param>
         /// <returns></returns>
         [HttpPost("PostMultipleFile")]
-        public async Task<ResponseData> PostMultipleFile([FromForm] List<FileUpload> fileDetails)
+        public async Task<Response<bool>> PostMultipleFile([FromForm] List<FileUpload> fileDetails)
         {
             if (fileDetails == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<bool> { Success = false, Message = "Empty" };
             }
             try
             {
                 var result = await _uploadService.PostMultiFileAsync(fileDetails);
-                return new ResponseData { Success = result };
+                return new Response<bool> { Success = result };
             }
             catch (Exception)
             {
-                return new ResponseData { Success = false, Message = "Bad request" };
+                return new Response<bool> { Success = false, Message = "Bad request" };
             }
         }
 
@@ -69,22 +69,22 @@ namespace API.Controllers.Management
         /// <param name="file"></param>
         /// <returns></returns>
         [HttpGet("DownloadFile")]
-        public async Task<ResponseData> DownloadFile(int id)
+        public async Task<Response<FileResponse>> DownloadFile(int id)
         {
             if (id < 1)
             {
-                return new ResponseData { Success = false, Message = "Bad request" };
+                return new Response<FileResponse> { Success = false, Message = "Bad request" };
             }
 
             try
             {
                 var result = await _uploadService.DownloadFileById(id);
 
-                return new ResponseData { Success = true, Data = result };
+                return new Response<FileResponse>(result);
             }
             catch (Exception)
             {
-                return new ResponseData { Success = false, Message = "Bad request" };
+                return new Response<FileResponse> { Success = false, Message = "Bad request" };
             }
         }
 
@@ -95,22 +95,22 @@ namespace API.Controllers.Management
         /// <param name="itemType"></param>
         /// <returns></returns>
         [HttpGet("DownloadItemFile")]
-        public async Task<ResponseData> DownloadFile(int itemId, int itemType)
+        public async Task<Response<List<FileResponse>>> DownloadItemFile(int itemId, int itemType)
         {
             if (itemId < 1 || itemType < 1)
             {
-                return new ResponseData { Success = false, Message = "Bad request" };
+                return new Response<List<FileResponse>> { Success = false, Message = "Bad request" };
             }
 
             try
             {
                 var result = await _uploadService.DownloadFileByItem(itemId, itemType);
 
-                return new ResponseData { Success = true, Data = result };
+                return new Response<List<FileResponse>>(result);
             }
             catch (Exception)
             {
-                return new ResponseData { Success = false, Message = "Bad request" };
+                return new Response<List<FileResponse>> { Success = false, Message = "Bad request" };
             }
         }
     }

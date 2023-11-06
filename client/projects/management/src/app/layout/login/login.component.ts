@@ -1,6 +1,5 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenRequest } from '../../model/login.model';
-import { GoogleLogin } from './../../model/google-login.model';
 import { AuthenticateService } from './../../shared/services/authenticate.service';
 import { Component, OnInit } from '@angular/core';
 import _ from "lodash";

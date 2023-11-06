@@ -22,10 +22,10 @@
               "projects/business/src/favicon.ico",
               "projects/business/src/assets",
               {
-                "glob": "**/*",
-                "input": "../../upload",
-                "output": "./assets/"
-              }
+                "glob": "**.*",
+                "input": "../upload",
+                "output": "/upload/"
+              } 
             ],
             "styles": ["projects/business/src/styles.css"],
             "scripts": []
@@ -107,7 +107,12 @@
             "tsConfig": "projects/management/tsconfig.app.json",
             "assets": [
               "projects/management/src/favicon.ico",
-              "projects/management/src/assets"
+              "projects/management/src/assets",
+              {
+                "glob": "**.*",
+                "input": "../upload",
+                "output": "/upload/"
+              }
             ],
             "styles": ["projects/management/src/styles.css"],
             "scripts": [],

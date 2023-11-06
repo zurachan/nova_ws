@@ -19,47 +19,48 @@ namespace API.Controllers.Business
 
         // GET: api/Partners
         [HttpGet]
-        public async Task<ResponseData> GetPartners()
+        public async Task<Response<Partner>> GetPartners()
         {
-            if (_context.Partners == null)
-            {
-                return new ResponseData { Success = false, Message = "Empty" };
-            }
+            //if (_context.Partners == null)
+            //{
+            //    return new Response<Partner> { Success = false, Message = "Empty" };
+            //}
 
-            return new ResponseData { Success = true, Data = await _context.Partners.ToListAsync() };
+            //return new Response<Partner> { Success = true, Data = await _context.Partners.ToListAsync() };
+            return null;
         }
 
         // GET: api/Partners/5
         [HttpGet("{id}")]
-        public async Task<ResponseData> GetPartner(int id)
+        public async Task<Response<Partner>> GetPartner(int id)
         {
             if (_context.Partners == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<Partner> { Success = false, Message = "Empty" };
             }
             var partner = await _context.Partners.FindAsync(id);
 
             if (partner == null)
             {
-                return new ResponseData { Success = false, Message = "Not found" };
+                return new Response<Partner> { Success = false, Message = "Not found" };
             }
 
-            return new ResponseData { Success = true, Data = partner };
+            return new Response<Partner> { Success = true, Data = partner };
         }
 
         // PUT: api/Partners/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ResponseData> PutPartner(int id, Partner partner)
+        public async Task<Response<Partner>> PutPartner(int id, Partner partner)
         {
             if (id != partner.Id)
             {
-                return new ResponseData { Success = false, Message = "Bad request" };
+                return new Response<Partner> { Success = false, Message = "Bad request" };
             }
 
             var dbPartner = await _context.Partners.FindAsync(id);
             if (dbPartner == null)
-                return new ResponseData { Success = false, Message = "Not found" };
+                return new Response<Partner> { Success = false, Message = "Not found" };
 
             dbPartner.Name = partner.Name;
             dbPartner.Address = partner.Address;
@@ -73,40 +74,40 @@ namespace API.Controllers.Business
             }
             catch (Exception ex)
             {
-                return new ResponseData { Success = false, Message = ex.Message };
+                return new Response<Partner> { Success = false, Message = ex.Message };
             }
 
-            return new ResponseData { Success = true, Data = dbPartner };
+            return new Response<Partner> { Success = true, Data = dbPartner };
         }
 
         // POST: api/Partners
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ResponseData> PostPartner(Partner partner)
+        public async Task<Response<Partner>> PostPartner(Partner partner)
         {
             if (_context.Partners == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<Partner> { Success = false, Message = "Empty" };
             }
 
             _context.Partners.Add(partner);
             await _context.SaveChangesAsync();
 
-            return new ResponseData { Success = true, Data = partner };
+            return new Response<Partner> { Success = true, Data = partner };
         }
 
         // DELETE: api/Partners/5
         [HttpDelete("{id}")]
-        public async Task<ResponseData> DeletePartner(int id)
+        public async Task<Response<Partner>> DeletePartner(int id)
         {
             if (_context.Partners == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<Partner> { Success = false, Message = "Empty" };
             }
             var partner = await _context.Partners.FindAsync(id);
             if (partner == null)
             {
-                return new ResponseData { Success = false, Message = "Not found" };
+                return new Response<Partner> { Success = false, Message = "Not found" };
             }
 
             partner.IsDeleted = true;
@@ -118,10 +119,10 @@ namespace API.Controllers.Business
             }
             catch (Exception ex)
             {
-                return new ResponseData { Success = false, Message = ex.Message };
+                return new Response<Partner> { Success = false, Message = ex.Message };
             }
 
-            return new ResponseData { Success = true };
+            return new Response<Partner> { Success = true };
         }
     }
 }

@@ -19,106 +19,111 @@ namespace API.Controllers.Management
 
         // GET: api/Roles
         [HttpGet]
-        public async Task<ResponseData> GetRoles()
+        public async Task<PagedResponse<List<Role>>> GetRoles()
         {
-            if (_context.Roles == null)
-            {
-                return new ResponseData { Success = false, Message = "Empty" };
-            }
+            //if (_context.Roles == null)
+            //{
+            //    return new Response { Success = false, Message = "Empty" };
+            //}
 
-            return new ResponseData { Success = true, Data = await _context.Roles.ToListAsync() };
+            //return new Response { Success = true, Data = await _context.Roles.ToListAsync() };
+            return null;
         }
 
         // GET: api/Roles/5
         [HttpGet("{id}")]
-        public async Task<ResponseData> GetRole(int id)
+        public async Task<Response<Role>> GetRole(int id)
         {
-            if (_context.Roles == null)
-            {
-                return new ResponseData { Success = false, Message = "Empty" };
-            }
-            var role = await _context.Roles.FindAsync(id);
+            //if (_context.Roles == null)
+            //{
+            //    return new Response { Success = false, Message = "Empty" };
+            //}
+            //var role = await _context.Roles.FindAsync(id);
 
-            if (role == null)
-            {
-                return new ResponseData { Success = false, Message = "Not found" };
-            }
+            //if (role == null)
+            //{
+            //    return new Response { Success = false, Message = "Not found" };
+            //}
 
-            return new ResponseData { Success = true, Data = role };
+            //return new Response { Success = true, Data = role };
+            return null;
         }
 
         // PUT: api/Roles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ResponseData> PutRole(int id, Role role)
+        public async Task<Response<Role>> PutRole(int id, Role role)
         {
-            if (id != role.Id)
-            {
-                return new ResponseData { Success = false, Message = "Bad request" };
-            }
+            //if (id != role.Id)
+            //{
+            //    return new Response { Success = false, Message = "Bad request" };
+            //}
 
-            var dbRole = await _context.Roles.FindAsync(id);
-            if (dbRole == null)
-                return new ResponseData { Success = false, Message = "Not found" };
+            //var dbRole = await _context.Roles.FindAsync(id);
+            //if (dbRole == null)
+            //    return new Response { Success = false, Message = "Not found" };
 
-            dbRole.Name = role.Name;
-            dbRole.UpdatedDate = DateTime.Now;
+            //dbRole.Name = role.Name;
+            //dbRole.UpdatedDate = DateTime.Now;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return new ResponseData { Success = false, Message = ex.Message };
-            }
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    return new Response { Success = false, Message = ex.Message };
+            //}
 
-            return new ResponseData { Success = true, Data = dbRole };
+            //return new Response { Success = true, Data = dbRole };
+            return null;
         }
 
         // POST: api/Roles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ResponseData> PostRole(Role role)
+        public async Task<Response<Role>> PostRole(Role role)
         {
-            if (_context.Roles == null)
-            {
-                return new ResponseData { Success = false, Message = "Empty" };
-            }
+            //if (_context.Roles == null)
+            //{
+            //    return new Response { Success = false, Message = "Empty" };
+            //}
 
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
+            //_context.Roles.Add(role);
+            //await _context.SaveChangesAsync();
 
-            return new ResponseData { Success = true, Data = role };
+            //return new Response { Success = true, Data = role };
+            return null;
         }
 
         // DELETE: api/Roles/5
         [HttpDelete("{id}")]
-        public async Task<ResponseData> DeleteRole(int id)
+        public async Task<Response<bool>> DeleteRole(int id)
         {
-            if (_context.Roles == null)
-            {
-                return new ResponseData { Success = false, Message = "Empty" };
-            }
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return new ResponseData { Success = false, Message = "Not found" };
-            }
+            //if (_context.Roles == null)
+            //{
+            //    return new Response { Success = false, Message = "Empty" };
+            //}
+            //var role = await _context.Roles.FindAsync(id);
+            //if (role == null)
+            //{
+            //    return new Response { Success = false, Message = "Not found" };
+            //}
 
-            role.IsDeleted = true;
-            role.UpdatedDate = DateTime.Now;
+            //role.IsDeleted = true;
+            //role.UpdatedDate = DateTime.Now;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return new ResponseData { Success = false, Message = ex.Message };
-            }
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    return new Response { Success = false, Message = ex.Message };
+            //}
 
-            return new ResponseData { Success = true };
+            //return new Response { Success = true };
+            return null;
         }
     }
 }

@@ -10,7 +10,11 @@
   <div class="sidebar">
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        <img *ngIf="credential.image; else none" src="upload/{{credential.image}}" class="img-circle elevation-2"
+          alt="User Image">
+        <ng-template #none>
+          <img class="img-circle elevation-2" alt="User Image">
+        </ng-template>
       </div>
       <div class="info">
         <a [routerLink]="['/profile']" routerLinkActive="router-link-active"

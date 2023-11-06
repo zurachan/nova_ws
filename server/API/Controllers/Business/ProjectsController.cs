@@ -19,46 +19,47 @@ namespace API.Controllers.Business
 
         // GET: api/Projects
         [HttpGet]
-        public async Task<ResponseData> GetProjects()
+        public async Task<Response<Project>> GetProjects()
         {
             if (_context.Projects == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<Project> { Success = false, Message = "Empty" };
             }
-            return new ResponseData { Success = true, Data = await _context.Projects.ToListAsync() };
+            //return new Response<Project> { Success = true, Data = await _context.Projects.ToListAsync() };
+            return null;
         }
 
         // GET: api/Projects/5
         [HttpGet("{id}")]
-        public async Task<ResponseData> GetProject(int id)
+        public async Task<Response<Project>> GetProject(int id)
         {
             if (_context.Projects == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<Project> { Success = false, Message = "Empty" };
             }
             var project = await _context.Projects.FindAsync(id);
 
             if (project == null)
             {
-                return new ResponseData { Success = false, Message = "Not found" };
+                return new Response<Project> { Success = false, Message = "Not found" };
             }
 
-            return new ResponseData { Success = true, Data = project };
+            return new Response<Project> { Success = true, Data = project };
         }
 
         // PUT: api/Projects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ResponseData> PutProject(int id, Project project)
+        public async Task<Response<Project>> PutProject(int id, Project project)
         {
             if (id != project.Id)
             {
-                return new ResponseData { Success = false, Message = "Bad request" };
+                return new Response<Project> { Success = false, Message = "Bad request" };
             }
 
             var dbProject = await _context.Projects.FindAsync(id);
             if (dbProject == null)
-                return new ResponseData { Success = false, Message = "Not found" };
+                return new Response<Project> { Success = false, Message = "Not found" };
 
             dbProject.Name = project.Name;
             dbProject.Content = project.Content;
@@ -74,39 +75,39 @@ namespace API.Controllers.Business
             }
             catch (Exception ex)
             {
-                return new ResponseData { Success = false, Message = ex.Message };
+                return new Response<Project> { Success = false, Message = ex.Message };
             }
 
-            return new ResponseData { Success = true, Data = dbProject };
+            return new Response<Project> { Success = true, Data = dbProject };
         }
 
         // POST: api/Projects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ResponseData> PostProject(Project project)
+        public async Task<Response<Project>> PostProject(Project project)
         {
             if (_context.Projects == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<Project> { Success = false, Message = "Empty" };
             }
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();
 
-            return new ResponseData { Success = true, Data = project };
+            return new Response<Project> { Success = true, Data = project };
         }
 
         // DELETE: api/Projects/5
         [HttpDelete("{id}")]
-        public async Task<ResponseData> DeleteProject(int id)
+        public async Task<Response<Project>> DeleteProject(int id)
         {
             if (_context.Projects == null)
             {
-                return new ResponseData { Success = false, Message = "Empty" };
+                return new Response<Project> { Success = false, Message = "Empty" };
             }
             var project = await _context.Projects.FindAsync(id);
             if (project == null)
             {
-                return new ResponseData { Success = false, Message = "Not found" };
+                return new Response<Project> { Success = false, Message = "Not found" };
             }
 
             project.IsDeleted = false;
@@ -118,10 +119,10 @@ namespace API.Controllers.Business
             }
             catch (Exception ex)
             {
-                return new ResponseData { Success = false, Message = ex.Message };
+                return new Response<Project> { Success = false, Message = ex.Message };
             }
 
-            return new ResponseData { Success = true };
+            return new Response<Project> { Success = true };
         }
     }
 }

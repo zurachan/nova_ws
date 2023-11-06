@@ -7,6 +7,7 @@ import { ContentComponent } from './page/content/content.component';
 import { EventComponent } from './page/event/event.component';
 import { LoginComponent } from './layout/login/login.component';
 import { ProfileComponent } from './layout/profile/profile.component';
+import { AuthenticateGuard } from './shared/services/authenticate.service';
 
 const routes: Routes = [
   { path: 'content', component: ContentComponent },
@@ -19,8 +20,9 @@ const routes: Routes = [
   {
     path: 'system',
     loadChildren: () => import('../app/page/system/system.module').then((m) => m.SystemModule),
-    // canActivate: [AuthenticateGuard]
+    canActivate: [AuthenticateGuard]
   },
+  // { path: '**', component: PageNotFoundComponent }, 
 ];
 
 @NgModule({

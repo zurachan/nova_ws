@@ -29,9 +29,11 @@ namespace API.Services
         {
             try
             {
+
+                Guid guid = Guid.NewGuid();
                 var file = new File
                 {
-                    FileName = fileUpload.FileDetails.FileName,
+                    FileName = guid.ToString() + fileUpload.FileDetails.FileName,
                     ItemId = fileUpload.ItemId,
                     ItemType = fileUpload.ItemType,
                 };

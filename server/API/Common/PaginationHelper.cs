@@ -10,17 +10,19 @@ namespace API.Common
             var totalPages = ((double)totalRecords / (double)validFilter.PageSize);
             int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
 
-            respose.NextPage = validFilter.PageNumber == roundedTotalPages ? null : validFilter.PageNumber + 1;
+            respose.Paging.NextPage = validFilter.PageNumber >= roundedTotalPages ? null : validFilter.PageNumber + 1;
 
-            respose.PreviousPage = validFilter.PageNumber == 1 ? null : validFilter.PageNumber - 1;
+            respose.Paging.PreviousPage = validFilter.PageNumber == 1 ? null : validFilter.PageNumber - 1;
 
-            respose.FirstPage = 1;
+            respose.Paging.FirstPage = 1;
 
-            respose.LastPage = roundedTotalPages;
+            respose.Paging.LastPage = roundedTotalPages;
 
-            respose.TotalPages = roundedTotalPages;
+            respose.Paging.TotalPages = roundedTotalPages;
 
-            respose.TotalRecords = totalRecords;
+            respose.Paging.TotalRecords = totalRecords;
+
+            respose.Paging.CurrentRecords = pagedData.Count;
 
             return respose;
         }

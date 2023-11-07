@@ -23,6 +23,8 @@ import { PartnerComponent } from './page/partner/partner.component';
 import { ProjectComponent } from './page/project/project.component';
 import { ProfileComponent } from './layout/profile/profile.component';
 import { ProjectDetailComponent } from './page/project/project-detail/project-detail.component';
+import { PaginationModule } from './shared/component/pagination/pagination.module';
+import { DeleteConfirmModule } from './shared/component/delete-confirm/delete-confirm.module';
 /**
  * Custom angular notifier options
  */
@@ -81,7 +83,7 @@ const customNotifierOptions: NotifierOptions = {
     PartnerComponent,
     ProjectComponent,
     ProjectDetailComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -106,6 +108,8 @@ const customNotifierOptions: NotifierOptions = {
         },
       },
     }),
+    PaginationModule,
+    DeleteConfirmModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

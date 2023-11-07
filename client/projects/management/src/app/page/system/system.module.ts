@@ -10,17 +10,24 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DeleteConfirmComponent } from '../../shared/component/delete-confirm/delete-confirm.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { MatTableModule } from '@angular/material/table';
+import { PaginationModule } from '../../shared/component/pagination/pagination.module';
+import { DeleteConfirmModule } from '../../shared/component/delete-confirm/delete-confirm.module';
 @NgModule({
   declarations: [
     RoleComponent,
     RoleDetailComponent,
     UserComponent,
     UserDetailComponent,
-    PermissionComponent,
-    DeleteConfirmComponent
+    PermissionComponent
   ],
   imports: [
-    CommonModule, SystemRoutingModule, MatDialogModule, ReactiveFormsModule, MatTableModule
+    CommonModule,
+    SystemRoutingModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    PaginationModule,
+    DeleteConfirmModule
   ],
 })
 export class SystemModule { }

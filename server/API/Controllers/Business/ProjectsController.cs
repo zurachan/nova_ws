@@ -1,8 +1,11 @@
 ﻿using API.Common;
 using API.Domains;
 using API.Domains.Business;
+using API.Domains.Management;
+using API.Model.SearchFilter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace API.Controllers.Business
 {
@@ -11,22 +14,38 @@ namespace API.Controllers.Business
     public class ProjectsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        int UserId;
 
-        public ProjectsController(AppDbContext context)
+        public ProjectsController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            UserId = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue("UserId"));
         }
 
         // GET: api/Projects
-        [HttpGet]
-        public async Task<Response<Project>> GetProjects()
+        [HttpPost("search")]
+        public async Task<PagedResponse<List<Project>>> GetProjects(ProjectSearchParam param)
         {
             if (_context.Projects == null)
             {
-                return new Response<Project> { Success = false, Message = "Empty" };
+                return new PagedResponse<List<Project>>(null) { Success = false };
             }
-            //return new Response<Project> { Success = true, Data = await _context.Projects.ToListAsync() };
-            return null;
+            var validFilter = new UserSearchParam(param.PageNumber, param.PageSize);
+
+            var query = _context.Projects
+                .Where(x => !string.IsNullOrEmpty(param.Project) ? !x.IsDeleted && x.Name.Contains(param.Project) : !x.IsDeleted)
+                .OrderByDescending(x => x.Id);
+
+            var pagedData = await query
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
+
+            var totalRecords = await query.CountAsync();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(pagedData, validFilter, totalRecords);
+            return pagedReponse;
         }
 
         // GET: api/Projects/5
@@ -37,37 +56,32 @@ namespace API.Controllers.Business
             {
                 return new Response<Project> { Success = false, Message = "Empty" };
             }
-            var project = await _context.Projects.FindAsync(id);
+            var role = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
-            if (project == null)
+            if (role == null)
             {
                 return new Response<Project> { Success = false, Message = "Not found" };
             }
 
-            return new Response<Project> { Success = true, Data = project };
+            return new Response<Project>(role);
         }
 
         // PUT: api/Projects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<Response<Project>> PutProject(int id, Project project)
+        public async Task<Response<Project>> PutProject(int id, Project role)
         {
-            if (id != project.Id)
-            {
+            if (id != role.Id)
                 return new Response<Project> { Success = false, Message = "Bad request" };
-            }
 
-            var dbProject = await _context.Projects.FindAsync(id);
+            var dbProject = _context.Projects.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
             if (dbProject == null)
                 return new Response<Project> { Success = false, Message = "Not found" };
 
-            dbProject.Name = project.Name;
-            dbProject.Content = project.Content;
-            dbProject.Type = project.Type;
-            dbProject.Phase = project.Phase;
-            dbProject.ManagerId = project.ManagerId;
+            dbProject.Name = role.Name;
 
             dbProject.UpdatedDate = DateTime.Now;
+            dbProject.UpdatedById = UserId;
 
             try
             {
@@ -78,22 +92,25 @@ namespace API.Controllers.Business
                 return new Response<Project> { Success = false, Message = ex.Message };
             }
 
-            return new Response<Project> { Success = true, Data = dbProject };
+            return new Response<Project>(dbProject);
         }
 
         // POST: api/Projects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<Response<Project>> PostProject(Project project)
+        public async Task<Response<Project>> PostProject(Project role)
         {
             if (_context.Projects == null)
             {
                 return new Response<Project> { Success = false, Message = "Empty" };
             }
-            _context.Projects.Add(project);
+
+            role.CreatedDate = DateTime.Now;
+            role.CreatedById = UserId;
+            _context.Projects.Add(role);
             await _context.SaveChangesAsync();
 
-            return new Response<Project> { Success = true, Data = project };
+            return new Response<Project>(role);
         }
 
         // DELETE: api/Projects/5
@@ -104,14 +121,15 @@ namespace API.Controllers.Business
             {
                 return new Response<Project> { Success = false, Message = "Empty" };
             }
-            var project = await _context.Projects.FindAsync(id);
-            if (project == null)
+            var user = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            if (user == null)
             {
                 return new Response<Project> { Success = false, Message = "Not found" };
             }
 
-            project.IsDeleted = false;
-            project.UpdatedDate = DateTime.Now;
+            user.IsDeleted = true;
+            user.UpdatedDate = DateTime.Now;
+            user.UpdatedById = UserId;
 
             try
             {
@@ -122,7 +140,7 @@ namespace API.Controllers.Business
                 return new Response<Project> { Success = false, Message = ex.Message };
             }
 
-            return new Response<Project> { Success = true };
+            return new Response<Project>();
         }
     }
 }

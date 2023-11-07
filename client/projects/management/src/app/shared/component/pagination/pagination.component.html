@@ -1,0 +1,19 @@
+<div class="d-flex align-items-center justify-content-between">
+  <div>Hiển thị kết quả {{page.recordStart}} đến {{page.recordEnd}} trong số {{page.totalRecords}} bản ghi</div>
+
+  <ul class="pagination pagination-sm m-0 float-right">
+    <li *ngIf="page.totalPages > 1 && page.previousPage != null" class="page-item"><a class="page-link"
+        (click)="pageChange(page.firstPage, page.pageSize)">&laquo;</a></li>
+
+    <li *ngIf="page.previousPage != null" class="page-item"><a class="page-link"
+        (click)="pageChange(page.previousPage, page.pageSize)">{{page.previousPage}}</a></li>
+
+    <li class="page-item active"><a class="page-link">{{page.pageNumber}}</a></li>
+
+    <li *ngIf="page.nextPage != null" class="page-item"><a class="page-link"
+        (click)="pageChange(page.nextPage, page.pageSize)">{{page.nextPage}}</a></li>
+
+    <li *ngIf="page.totalPages > 1 && page.nextPage != null" class="page-item"><a class="page-link"
+        (click)="pageChange(page.lastPage, page.pageSize)">&raquo;</a></li>
+  </ul>
+</div>

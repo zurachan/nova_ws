@@ -18,6 +18,19 @@ export class UserComponent implements OnInit {
 
   userData = [];
   form: FormGroup
+  paging = {
+    pageNumber: null,
+    pageSize: null,
+    firstPage: null,
+    lastPage: null,
+    totalPages: null,
+    totalRecords: null,
+    nextPage: null,
+    previousPage: null,
+    currentRecords: null,
+    recordStart: null,
+    recordEnd: null,
+  };
 
   ngOnInit() {
     this.initForm();
@@ -26,16 +39,26 @@ export class UserComponent implements OnInit {
 
   initForm() {
     this.form = this.fb.group({
-      user: [null]
+      user: [null],
+      pageNumber: 1,
+      pageSize: 10
     })
   }
 
   getData(isSearch?: boolean) {
     let param = _.cloneDeep(this.form.value);
+    if (isSearch) param.pageNumber = 0
+
     this.userService.GetAll(param).subscribe((res: any) => {
       if (res.success) {
+        this.paging = res.paging;
+
+        this.paging.recordStart = this.paging.currentRecords < 1 ? 0 : (this.paging.pageNumber - 1) * this.paging.pageSize + 1
+        this.paging.recordEnd = this.paging.currentRecords < 1 ? 0 : this.paging.recordStart + this.paging.currentRecords - 1
+
+        let start = this.paging.recordStart;
         res.data.map((x: any) => {
-          x.stt = res.data.indexOf(x) + 1;
+          x.stt = start++;
           return x;
         });
         this.userData = res.data
@@ -79,5 +102,13 @@ export class UserComponent implements OnInit {
         })
       }
     });
+  }
+
+  pageChange(value) {
+    if (value.number)
+      this.form.controls.pageNumber.setValue(value.number)
+    if (value.size)
+      this.form.controls.pageSize.setValue(value.size)
+    this.getData();
   }
 }

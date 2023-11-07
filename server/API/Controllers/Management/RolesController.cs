@@ -1,8 +1,10 @@
 ﻿using API.Common;
 using API.Domains;
 using API.Domains.Management;
+using API.Model.SearchFilter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace API.Controllers.Management
 {
@@ -11,42 +13,56 @@ namespace API.Controllers.Management
     public class RolesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        int UserId;
 
-        public RolesController(AppDbContext context)
+        public RolesController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            UserId = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue("UserId"));
         }
 
         // GET: api/Roles
-        [HttpGet]
-        public async Task<PagedResponse<List<Role>>> GetRoles()
+        [HttpPost("search")]
+        public async Task<PagedResponse<List<Role>>> GetRoles(RoleSearchParam param)
         {
-            //if (_context.Roles == null)
-            //{
-            //    return new Response { Success = false, Message = "Empty" };
-            //}
+            if (_context.Roles == null)
+            {
+                return new PagedResponse<List<Role>>(null) { Success = false };
+            }
+            var validFilter = new UserSearchParam(param.PageNumber, param.PageSize);
 
-            //return new Response { Success = true, Data = await _context.Roles.ToListAsync() };
-            return null;
+            var query = _context.Roles
+                .Where(x => !string.IsNullOrEmpty(param.Role) ? !x.IsDeleted && x.Name.Contains(param.Role) : !x.IsDeleted)
+                .OrderByDescending(x => x.Id);
+
+            var pagedData = await query
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
+
+            var totalRecords = await query.CountAsync();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(pagedData, validFilter, totalRecords);
+            return pagedReponse;
         }
 
         // GET: api/Roles/5
         [HttpGet("{id}")]
         public async Task<Response<Role>> GetRole(int id)
         {
-            //if (_context.Roles == null)
-            //{
-            //    return new Response { Success = false, Message = "Empty" };
-            //}
-            //var role = await _context.Roles.FindAsync(id);
+            if (_context.Roles == null)
+            {
+                return new Response<Role> { Success = false, Message = "Empty" };
+            }
+            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
-            //if (role == null)
-            //{
-            //    return new Response { Success = false, Message = "Not found" };
-            //}
+            if (role == null)
+            {
+                return new Response<Role> { Success = false, Message = "Not found" };
+            }
 
-            //return new Response { Success = true, Data = role };
-            return null;
+            return new Response<Role>(role);
         }
 
         // PUT: api/Roles/5
@@ -54,29 +70,28 @@ namespace API.Controllers.Management
         [HttpPut("{id}")]
         public async Task<Response<Role>> PutRole(int id, Role role)
         {
-            //if (id != role.Id)
-            //{
-            //    return new Response { Success = false, Message = "Bad request" };
-            //}
+            if (id != role.Id)
+                return new Response<Role> { Success = false, Message = "Bad request" };
 
-            //var dbRole = await _context.Roles.FindAsync(id);
-            //if (dbRole == null)
-            //    return new Response { Success = false, Message = "Not found" };
+            var dbRole = _context.Roles.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
+            if (dbRole == null)
+                return new Response<Role> { Success = false, Message = "Not found" };
 
-            //dbRole.Name = role.Name;
-            //dbRole.UpdatedDate = DateTime.Now;
+            dbRole.Name = role.Name;
 
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new Response { Success = false, Message = ex.Message };
-            //}
+            dbRole.UpdatedDate = DateTime.Now;
+            dbRole.UpdatedById = UserId;
 
-            //return new Response { Success = true, Data = dbRole };
-            return null;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return new Response<Role> { Success = false, Message = ex.Message };
+            }
+
+            return new Response<Role>(dbRole);
         }
 
         // POST: api/Roles
@@ -84,46 +99,47 @@ namespace API.Controllers.Management
         [HttpPost]
         public async Task<Response<Role>> PostRole(Role role)
         {
-            //if (_context.Roles == null)
-            //{
-            //    return new Response { Success = false, Message = "Empty" };
-            //}
+            if (_context.Roles == null)
+            {
+                return new Response<Role> { Success = false, Message = "Empty" };
+            }
 
-            //_context.Roles.Add(role);
-            //await _context.SaveChangesAsync();
+            role.CreatedDate = DateTime.Now;
+            role.CreatedById = UserId;
+            _context.Roles.Add(role);
+            await _context.SaveChangesAsync();
 
-            //return new Response { Success = true, Data = role };
-            return null;
+            return new Response<Role>(role);
         }
 
         // DELETE: api/Roles/5
         [HttpDelete("{id}")]
-        public async Task<Response<bool>> DeleteRole(int id)
+        public async Task<Response<Role>> DeleteRole(int id)
         {
-            //if (_context.Roles == null)
-            //{
-            //    return new Response { Success = false, Message = "Empty" };
-            //}
-            //var role = await _context.Roles.FindAsync(id);
-            //if (role == null)
-            //{
-            //    return new Response { Success = false, Message = "Not found" };
-            //}
+            if (_context.Roles == null)
+            {
+                return new Response<Role> { Success = false, Message = "Empty" };
+            }
+            var user = await _context.Roles.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            if (user == null)
+            {
+                return new Response<Role> { Success = false, Message = "Not found" };
+            }
 
-            //role.IsDeleted = true;
-            //role.UpdatedDate = DateTime.Now;
+            user.IsDeleted = true;
+            user.UpdatedDate = DateTime.Now;
+            user.UpdatedById = UserId;
 
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new Response { Success = false, Message = ex.Message };
-            //}
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return new Response<Role> { Success = false, Message = ex.Message };
+            }
 
-            //return new Response { Success = true };
-            return null;
+            return new Response<Role>();
         }
     }
 }

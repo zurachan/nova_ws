@@ -4,7 +4,6 @@ using API.Domains.Management;
 using API.Model.SearchFilter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -35,13 +34,17 @@ namespace API.Controllers.Management
                 return new PagedResponse<List<User>>(null) { Success = false };
             }
             var validFilter = new UserSearchParam(param.PageNumber, param.PageSize);
-            var pagedData = await _context.Users
+
+            var query = _context.Users
                 .Where(x => !string.IsNullOrEmpty(param.User) ? !x.IsDeleted && (x.FullName.Contains(param.User) || x.Username.Contains(param.User)) : !x.IsDeleted)
+                .OrderByDescending(x => x.Id);
+
+            var pagedData = await query
                 .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                 .Take(validFilter.PageSize)
                 .ToListAsync();
 
-            var totalRecords = await _context.Users.CountAsync();
+            var totalRecords = await query.CountAsync();
             var pagedReponse = PaginationHelper.CreatePagedReponse(pagedData, validFilter, totalRecords);
             return pagedReponse;
         }
@@ -82,8 +85,8 @@ namespace API.Controllers.Management
             dbUser.FullName = user.FullName;
             dbUser.Email = user.Email;
             dbUser.Telephone = user.Telephone;
-
             dbUser.Address = user.Address;
+
             dbUser.UpdatedDate = DateTime.Now;
             dbUser.UpdatedById = UserId;
 
@@ -108,6 +111,9 @@ namespace API.Controllers.Management
             {
                 return new Response<User> { Success = false, Message = "Empty" };
             }
+
+            user.CreatedDate = DateTime.Now;
+            user.CreatedById = UserId;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -130,6 +136,7 @@ namespace API.Controllers.Management
 
             user.IsDeleted = true;
             user.UpdatedDate = DateTime.Now;
+            user.UpdatedById = UserId;
 
             try
             {

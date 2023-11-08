@@ -57,38 +57,38 @@ namespace API.Controllers.Management
             {
                 return new Response<User> { Success = false, Message = "Empty" };
             }
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            var domain = await _context.Users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
-            if (user == null)
+            if (domain == null)
             {
                 return new Response<User> { Success = false, Message = "Not found" };
             }
 
-            return new Response<User>(user);
+            return new Response<User>(domain);
         }
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<Response<User>> PutUser(int id, User user)
+        public async Task<Response<User>> PutUser(int id, User model)
         {
-            if (id != user.Id)
+            if (id != model.Id)
                 return new Response<User> { Success = false, Message = "Bad request" };
 
 
-            var dbUser = _context.Users.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
-            if (dbUser == null)
+            var domain = _context.Users.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
+            if (domain == null)
                 return new Response<User> { Success = false, Message = "Not found" };
 
 
-            dbUser.Address = user.Address;
-            dbUser.FullName = user.FullName;
-            dbUser.Email = user.Email;
-            dbUser.Telephone = user.Telephone;
-            dbUser.Address = user.Address;
+            domain.Address = model.Address;
+            domain.FullName = model.FullName;
+            domain.Email = model.Email;
+            domain.Telephone = model.Telephone;
+            domain.Address = model.Address;
 
-            dbUser.UpdatedDate = DateTime.Now;
-            dbUser.UpdatedById = UserId;
+            domain.UpdatedDate = DateTime.Now;
+            domain.UpdatedById = UserId;
 
             try
             {
@@ -99,25 +99,25 @@ namespace API.Controllers.Management
                 return new Response<User> { Success = false, Message = ex.Message };
             }
 
-            return new Response<User>(dbUser);
+            return new Response<User>(domain);
         }
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<Response<User>> PostUser(User user)
+        public async Task<Response<User>> PostUser(User model)
         {
             if (_context.Users == null)
             {
                 return new Response<User> { Success = false, Message = "Empty" };
             }
 
-            user.CreatedDate = DateTime.Now;
-            user.CreatedById = UserId;
-            _context.Users.Add(user);
+            model.CreatedDate = DateTime.Now;
+            model.CreatedById = UserId;
+            _context.Users.Add(model);
             await _context.SaveChangesAsync();
 
-            return new Response<User>(user);
+            return new Response<User>(model);
         }
 
         // DELETE: api/Users/5
@@ -128,15 +128,15 @@ namespace API.Controllers.Management
             {
                 return new Response<User> { Success = false, Message = "Empty" };
             }
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
-            if (user == null)
+            var domain = await _context.Users.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            if (domain == null)
             {
                 return new Response<User> { Success = false, Message = "Not found" };
             }
 
-            user.IsDeleted = true;
-            user.UpdatedDate = DateTime.Now;
-            user.UpdatedById = UserId;
+            domain.IsDeleted = true;
+            domain.UpdatedDate = DateTime.Now;
+            domain.UpdatedById = UserId;
 
             try
             {

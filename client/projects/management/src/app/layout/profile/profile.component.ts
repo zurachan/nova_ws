@@ -19,7 +19,6 @@ export class ProfileComponent implements OnInit {
     private notifier: NotifierService,
     private fileService: FileService) {
     this.credential = this.authenService.GetCredential;
-    console.log(this.credential)
   }
   credential: any;
   userProfile = {

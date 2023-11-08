@@ -2,6 +2,7 @@
 using API.Domains;
 using API.Domains.Business;
 using API.Domains.Management;
+using API.Model.Management;
 using API.Model.SearchFilter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -50,38 +51,77 @@ namespace API.Controllers.Business
 
         // GET: api/Projects/5
         [HttpGet("{id}")]
-        public async Task<Response<Project>> GetProject(int id)
+        public async Task<Response<ProjectModel>> GetProject(int id)
         {
             if (_context.Projects == null)
             {
-                return new Response<Project> { Success = false, Message = "Empty" };
+                return new Response<ProjectModel> { Success = false, Message = "Empty" };
             }
-            var role = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            var domain = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
-            if (role == null)
+            if (domain == null)
             {
-                return new Response<Project> { Success = false, Message = "Not found" };
+                return new Response<ProjectModel> { Success = false, Message = "Not found" };
             }
 
-            return new Response<Project>(role);
+            var partners = await _context.ProjectPartners.Where(x => x.ProjectId == domain.Id && !x.IsDeleted).ToListAsync();
+
+            var model = new ProjectModel()
+            {
+                Id = domain.Id,
+                Name = domain.Name,
+                Content = domain.Content,
+                Type = domain.Type,
+                Phase = domain.Phase,
+                UserId = domain.UserId,
+                PartnerIds = partners.Select(x => x.PartnerId).ToList()
+            };
+
+            return new Response<ProjectModel>(model);
         }
 
         // PUT: api/Projects/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<Response<Project>> PutProject(int id, Project role)
+        public async Task<Response<ProjectModel>> PutProject(int id, ProjectModel model)
         {
-            if (id != role.Id)
-                return new Response<Project> { Success = false, Message = "Bad request" };
+            if (id != model.Id)
+                return new Response<ProjectModel> { Success = false, Message = "Bad request" };
 
-            var dbProject = _context.Projects.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
-            if (dbProject == null)
-                return new Response<Project> { Success = false, Message = "Not found" };
+            var domain = _context.Projects.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
+            if (domain == null)
+                return new Response<ProjectModel> { Success = false, Message = "Not found" };
 
-            dbProject.Name = role.Name;
+            domain.Name = model.Name;
+            domain.Content = model.Content;
+            domain.Type = model.Type;
+            domain.Phase = model.Phase;
+            domain.UserId = model.UserId;
+            domain.UpdatedDate = DateTime.Now;
+            domain.UpdatedById = UserId;
 
-            dbProject.UpdatedDate = DateTime.Now;
-            dbProject.UpdatedById = UserId;
+            var domainProjectPartners = _context.ProjectPartners.Where(x => x.ProjectId == domain.Id && !x.IsDeleted).ToList();
+            if (domainProjectPartners.Any())
+            {
+                domainProjectPartners.ForEach(x =>
+                {
+                    x.IsDeleted = true;
+                    x.UpdatedDate = DateTime.Now;
+                    x.UpdatedById = UserId;
+                });
+            }
+
+            model.PartnerIds.ForEach(x =>
+            {
+                var domainProjectPartner = new ProjectPartner
+                {
+                    Project = domain,
+                    PartnerId = x,
+                    CreatedById = UserId,
+                    CreatedDate = DateTime.Now,
+                };
+                _context.ProjectPartners.Add(domainProjectPartner);
+            });
 
             try
             {
@@ -89,28 +129,50 @@ namespace API.Controllers.Business
             }
             catch (Exception ex)
             {
-                return new Response<Project> { Success = false, Message = ex.Message };
+                return new Response<ProjectModel> { Success = false, Message = ex.Message };
             }
 
-            return new Response<Project>(dbProject);
+            return new Response<ProjectModel>(model);
         }
 
         // POST: api/Projects
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<Response<Project>> PostProject(Project role)
+        public async Task<Response<ProjectModel>> PostProject(ProjectModel model)
         {
             if (_context.Projects == null)
             {
-                return new Response<Project> { Success = false, Message = "Empty" };
+                return new Response<ProjectModel> { Success = false, Message = "Empty" };
             }
 
-            role.CreatedDate = DateTime.Now;
-            role.CreatedById = UserId;
-            _context.Projects.Add(role);
+            var domainProject = new Project
+            {
+                Name = model.Name,
+                Content = model.Content,
+                Type = model.Type,
+                Phase = model.Phase,
+                UserId = model.UserId,
+                CreatedById = UserId,
+                CreatedDate = DateTime.Now,
+            };
+            _context.Projects.Add(domainProject);
+            model.Id = domainProject.Id;
+
+            foreach (var item in model.PartnerIds)
+            {
+                var domainProjectPartner = new ProjectPartner
+                {
+                    Project = domainProject,
+                    PartnerId = item,
+                    CreatedById = UserId,
+                    CreatedDate = DateTime.Now,
+                };
+                _context.ProjectPartners.Add(domainProjectPartner);
+            }
+
             await _context.SaveChangesAsync();
 
-            return new Response<Project>(role);
+            return new Response<ProjectModel>(model);
         }
 
         // DELETE: api/Projects/5
@@ -121,15 +183,15 @@ namespace API.Controllers.Business
             {
                 return new Response<Project> { Success = false, Message = "Empty" };
             }
-            var user = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
-            if (user == null)
+            var domain = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            if (domain == null)
             {
                 return new Response<Project> { Success = false, Message = "Not found" };
             }
 
-            user.IsDeleted = true;
-            user.UpdatedDate = DateTime.Now;
-            user.UpdatedById = UserId;
+            domain.IsDeleted = true;
+            domain.UpdatedDate = DateTime.Now;
+            domain.UpdatedById = UserId;
 
             try
             {
@@ -140,7 +202,7 @@ namespace API.Controllers.Business
                 return new Response<Project> { Success = false, Message = ex.Message };
             }
 
-            return new Response<Project>();
+            return new Response<Project> { Success = true };
         }
     }
 }

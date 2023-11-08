@@ -1,3 +1,83 @@
-<p>
-  partner works!
-</p>
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Đối tác</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a [routerLink]="['']" routerLinkActive="router-link-active">Home</a></li>
+            <li class="breadcrumb-item active">Đối tác</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+
+              <div class="d-flex align-items-center">
+                <form class="w-100" [formGroup]="form">
+                  <div class="input-group">
+                    <input type="text" class="form-control form-control-md" placeholder="Nhập tìm kiếm"
+                      formControlName="partner">
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-md btn-default" (click)="getData(true)">
+                        <i class="fa fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+                <button style="width: 150px;" title="Thêm mới đối tác" class="btn btn-primary btn-md ml-3"
+                  (click)="onAddEdit('add')">
+                  <i class="fas fa-plus"></i> Thêm mới
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Tên cá nhân/ doanh nghiệp</th>
+                    <th>Địa chỉ</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of userData">
+                    <td>{{item.stt}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.address}}</td>
+                    <td>{{item.telephone}}</td>
+                    <td>{{item.email}}</td>
+                    <td>
+                      <div class="d-flex">
+                        <button class="btn btn-primary mr-3" (click)="onAddEdit('edit',item)">Chỉnh sửa</button>
+                        <button class="btn btn-danger" (click)="onDelete(item)">Xoá</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              <app-pagination [page]="paging" (pageChangeEvent)="pageChange($event)"></app-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

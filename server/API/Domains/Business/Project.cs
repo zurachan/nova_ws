@@ -23,7 +23,7 @@ namespace API.Domains.Business
         public int Phase { get; set; } = 1;
 
         [ForeignKey("user")]
-        public int ManagerId { get; set; }
+        public int UserId { get; set; }
         public virtual User User { get; set; }
     }
 }

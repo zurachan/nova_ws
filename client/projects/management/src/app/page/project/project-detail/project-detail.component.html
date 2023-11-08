@@ -7,18 +7,111 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="max-height: 600px; overflow: auto;">
         <form [formGroup]="form">
-          <label for="name">Tên quyền</label>
-          <input class="form-control" id="name" name="name" type="text" formControlName="name">
-          <mat-error class="textError" *ngIf="form.controls.name.touched && form.controls.name.hasError('required')">
-            Tên role không được bỏ trống
-          </mat-error>
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="name">Tên dự án</label>
+              <input class="form-control" id="name" name="name" type="text" formControlName="name"
+                placeholder="Nhập tên dự án...">
+              <mat-error class="textError"
+                *ngIf="form.controls.name.touched && form.controls.name.hasError('required')">
+                Tên dự án không được bỏ trống
+              </mat-error>
+            </div>
+            <div class="col-md-12 form-group">
+              <label for="content">Mô tả</label>
+              <textarea class="form-control" formControlName="content" rows="3"
+                placeholder="Nhập mô tả dự án..."></textarea>
+
+              <mat-error class="textError"
+                *ngIf="form.controls.content.touched && form.controls.content.hasError('required')">
+                Mô tả dự án không được bỏ trống
+              </mat-error>
+            </div>
+            <div class="col-md-12 form-group">
+              <label for="type">Loại dự án</label>
+              <select class="custom-select form-control-border border-width-2" formControlName="type">
+                <option disabled hidden selected value="null">--Chọn--</option>
+                <option *ngFor="let item of projectType" [value]="item.id">{{item.name}}</option>
+              </select>
+              <mat-error class="textError"
+                *ngIf="form.controls.type.touched && form.controls.type.hasError('required')">
+                Loại dự án không được bỏ trống
+              </mat-error>
+            </div>
+            <div class="col-md-12 form-group">
+              <label for="phase">Giai đoạn</label>
+              <select class="custom-select form-control-border border-width-2" formControlName="phase">
+                <option disabled hidden selected value="null">--Chọn--</option>
+                <option *ngFor="let item of projectPhase" [value]="item.id">{{item.name}}</option>
+              </select>
+              <mat-error class="textError"
+                *ngIf="form.controls.phase.touched && form.controls.phase.hasError('required')">
+                Giai đoạn không được bỏ trống
+              </mat-error>
+            </div>
+            <div class="col-md-12 form-group">
+              <label for="partnerIds">Đơn vị thi công</label>
+              <select multiple="" class="custom-select form-control-border border-width-2" formControlName="partnerIds">
+                <option disabled hidden selected value="null">--Chọn--</option>
+                <option *ngFor="let item of listPartner" [value]="item.id">{{item.name}}</option>
+              </select>
+
+              <mat-error class="textError"
+                *ngIf="form.controls.partnerIds.touched && form.controls.partnerIds.hasError('required')">
+                Đơn vị thi công không được bỏ trống
+              </mat-error>
+            </div>
+            <div class="col-md-12 form-group">
+              <label for="userId">Nhân viên sale phụ trách</label>
+              <select class="custom-select form-control-border border-width-2" formControlName="userId">
+                <option disabled hidden selected value="null">--Chọn--</option>
+                <option *ngFor="let item of listUser" [value]="item.id">{{item.fullName}}</option>
+              </select>
+              <mat-error class="textError"
+                *ngIf="form.controls.userId.touched && form.controls.userId.hasError('required')">
+                Đơn vị thi công không được bỏ trống
+              </mat-error>
+            </div>
+          </div>
         </form>
+
+        <div class="col-md-12 form-group">
+          <label for="userId">Ảnh cover (chọn 1)</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="coverImage"
+                (change)="onUploadCoverImage($event.target.files)">
+              <label class="custom-file-label" for="coverImage">Choose file</label>
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text">Upload</span>
+            </div>
+          </div>
+
+          <img width="100%" *ngIf="coverImageUrl" [src]="coverImageUrl" class="image">
+        </div>
+
+        <div class="col-md-12 form-group">
+          <label for="userId">Ảnh mô tả (chọn nhiều)</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <input type="file" multiple class="custom-file-input" id="contentImage"
+                (change)="onUploadContentImage($event.target.files)">
+              <label class="custom-file-label" for="contentImage">Choose file</label>
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text">Upload</span>
+            </div>
+          </div>
+          <img width="100%" *ngIf="contentImageUrl" [src]="contentImageUrl" class="image">
+
+        </div>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" mat-dialog-close>Đóng</button>
-        <button type="button" class="btn btn-primary" (click)="onSave()">Lưu</button>
+        <button *ngIf="modal.type !== 'view'" type="button" class="btn btn-primary" (click)="onSave()">Lưu</button>
       </div>
     </div>
   </div>

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class Init_Db : Migration
+    public partial class Init_db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -148,7 +147,6 @@ namespace API.Migrations
                     content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     type = table.Column<int>(type: "int", nullable: false),
                     phase = table.Column<int>(type: "int", nullable: false),
-                    ManagerId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -296,9 +294,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedDate", "IsDeleted", "name", "UpdatedById", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4278), false, "ADMIN", null, null },
-                    { 2, null, new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4280), false, "CONTENT CREATOR", null, null },
-                    { 3, null, new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4280), false, "SALE", null, null }
+                    { 1, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7574), false, "ADMIN", null, null },
+                    { 2, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7575), false, "CONTENT CREATOR", null, null },
+                    { 3, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7576), false, "SALE", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -306,9 +304,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "address", "CreatedById", "CreatedDate", "email", "fullname", "IsDeleted", "password", "telephone", "UpdatedById", "UpdatedDate", "username" },
                 values: new object[,]
                 {
-                    { 1, "Hà Nội", null, new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4151), null, "Admin", false, "123456", null, null, null, "admin" },
-                    { 2, "Đà Nẵng", null, new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4166), null, "Nhân viên 1", false, "123456", null, null, null, "nv01" },
-                    { 3, "Tp. Hồ Chí Minh", null, new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4168), null, "Nhân viên 2", false, "123456", null, null, null, "nv02" }
+                    { 1, "Hà Nội", null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7436), null, "Admin", false, "123456", null, null, null, "admin" },
+                    { 2, "Đà Nẵng", null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7451), null, "Nhân viên 1", false, "123456", null, null, null, "nv01" },
+                    { 3, "Tp. Hồ Chí Minh", null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7452), null, "Nhân viên 2", false, "123456", null, null, null, "nv02" }
                 });
 
             migrationBuilder.InsertData(
@@ -316,9 +314,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedDate", "IsDeleted", "RoleId", "UpdatedById", "UpdatedDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4292), false, 1, null, null, 1 },
-                    { 2, null, new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4293), false, 2, null, null, 2 },
-                    { 3, null, new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4294), false, 3, null, null, 3 }
+                    { 1, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7586), false, 1, null, null, 1 },
+                    { 2, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7588), false, 2, null, null, 2 },
+                    { 3, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7589), false, 3, null, null, 3 }
                 });
 
             migrationBuilder.CreateIndex(

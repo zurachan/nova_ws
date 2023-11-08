@@ -7,7 +7,6 @@ import { PermissionComponent } from './permission/permission.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RoleDetailComponent } from './role/role-detail/role-detail.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DeleteConfirmComponent } from '../../shared/component/delete-confirm/delete-confirm.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { MatTableModule } from '@angular/material/table';
 import { PaginationModule } from '../../shared/component/pagination/pagination.module';

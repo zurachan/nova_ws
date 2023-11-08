@@ -41,7 +41,7 @@ export class UserComponent implements OnInit {
     this.form = this.fb.group({
       user: [null],
       pageNumber: 1,
-      pageSize: 10
+      pageSize: 5
     })
   }
 

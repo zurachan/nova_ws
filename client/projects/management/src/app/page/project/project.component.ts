@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DeleteConfirmComponent } from '../../shared/component/delete-confirm/delete-confirm.component';
 import _ from "lodash";
 import { ProjectService } from '../../shared/services/project.service';
+import { ProjectPhase, ProjectType } from '../../shared/core/Enum';
 
 @Component({
   selector: 'app-project',
@@ -41,7 +42,7 @@ export class ProjectComponent implements OnInit {
     this.form = this.fb.group({
       project: [null],
       pageNumber: 1,
-      pageSize: 10
+      pageSize: 5
     })
   }
 
@@ -62,16 +63,15 @@ export class ProjectComponent implements OnInit {
           return x;
         });
         this.projectData = res.data
-
-        console.log(res)
+        console.log(this.projectData)
       }
     });
   }
 
-  onAddEdit(type: 'add' | 'edit', item: any = null) {
+  onAddViewEdit(type: 'add' | 'edit' | 'view', item: any = null) {
     const dialogRef = this.dialog.open(ProjectDetailComponent, {
       data: {
-        title: type == 'edit' ? 'Cập nhật dự án' : 'Thêm mới dự án',
+        title: type == 'edit' ? 'Cập nhật dự án' : type == 'add' ? 'Thêm mới dự án' : 'Chi tiết dự án',
         type,
         item
       }
@@ -112,5 +112,15 @@ export class ProjectComponent implements OnInit {
     if (value.size)
       this.form.controls.pageSize.setValue(value.size)
     this.getData();
+  }
+
+  getProjectTypeStr(typeId) {
+    let type = ProjectType.find(x => x.id == typeId);
+    return type ? type.name : null;
+  }
+
+  getProjectPhaseStr(phaseId) {
+    let phase = ProjectPhase.find(x => x.id == phaseId);
+    return phase ? phase.name : null;
   }
 }

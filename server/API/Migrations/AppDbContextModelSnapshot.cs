@@ -183,9 +183,6 @@ namespace API.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ManagerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -411,21 +408,21 @@ namespace API.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4278),
+                            CreatedDate = new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7574),
                             IsDeleted = false,
                             Name = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4280),
+                            CreatedDate = new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7575),
                             IsDeleted = false,
                             Name = "CONTENT CREATOR"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4280),
+                            CreatedDate = new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7576),
                             IsDeleted = false,
                             Name = "SALE"
                         });
@@ -490,7 +487,7 @@ namespace API.Migrations
                         {
                             Id = 1,
                             Address = "Hà Nội",
-                            CreatedDate = new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4151),
+                            CreatedDate = new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7436),
                             FullName = "Admin",
                             IsDeleted = false,
                             Password = "123456",
@@ -500,7 +497,7 @@ namespace API.Migrations
                         {
                             Id = 2,
                             Address = "Đà Nẵng",
-                            CreatedDate = new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4166),
+                            CreatedDate = new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7451),
                             FullName = "Nhân viên 1",
                             IsDeleted = false,
                             Password = "123456",
@@ -510,7 +507,7 @@ namespace API.Migrations
                         {
                             Id = 3,
                             Address = "Tp. Hồ Chí Minh",
-                            CreatedDate = new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4168),
+                            CreatedDate = new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7452),
                             FullName = "Nhân viên 2",
                             IsDeleted = false,
                             Password = "123456",
@@ -559,7 +556,7 @@ namespace API.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4292),
+                            CreatedDate = new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7586),
                             IsDeleted = false,
                             RoleId = 1,
                             UserId = 1
@@ -567,7 +564,7 @@ namespace API.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4293),
+                            CreatedDate = new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7588),
                             IsDeleted = false,
                             RoleId = 2,
                             UserId = 2
@@ -575,7 +572,7 @@ namespace API.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2023, 11, 3, 15, 9, 11, 543, DateTimeKind.Local).AddTicks(4294),
+                            CreatedDate = new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7589),
                             IsDeleted = false,
                             RoleId = 3,
                             UserId = 3

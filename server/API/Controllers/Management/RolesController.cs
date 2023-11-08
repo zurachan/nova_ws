@@ -55,32 +55,32 @@ namespace API.Controllers.Management
             {
                 return new Response<Role> { Success = false, Message = "Empty" };
             }
-            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            var domain = await _context.Roles.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
-            if (role == null)
+            if (domain == null)
             {
                 return new Response<Role> { Success = false, Message = "Not found" };
             }
 
-            return new Response<Role>(role);
+            return new Response<Role>(domain);
         }
 
         // PUT: api/Roles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<Response<Role>> PutRole(int id, Role role)
+        public async Task<Response<Role>> PutRole(int id, Role model)
         {
-            if (id != role.Id)
+            if (id != model.Id)
                 return new Response<Role> { Success = false, Message = "Bad request" };
 
-            var dbRole = _context.Roles.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
-            if (dbRole == null)
+            var domain = _context.Roles.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
+            if (domain == null)
                 return new Response<Role> { Success = false, Message = "Not found" };
 
-            dbRole.Name = role.Name;
+            domain.Name = model.Name;
 
-            dbRole.UpdatedDate = DateTime.Now;
-            dbRole.UpdatedById = UserId;
+            domain.UpdatedDate = DateTime.Now;
+            domain.UpdatedById = UserId;
 
             try
             {
@@ -91,25 +91,25 @@ namespace API.Controllers.Management
                 return new Response<Role> { Success = false, Message = ex.Message };
             }
 
-            return new Response<Role>(dbRole);
+            return new Response<Role>(domain);
         }
 
         // POST: api/Roles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<Response<Role>> PostRole(Role role)
+        public async Task<Response<Role>> PostRole(Role model)
         {
             if (_context.Roles == null)
             {
                 return new Response<Role> { Success = false, Message = "Empty" };
             }
 
-            role.CreatedDate = DateTime.Now;
-            role.CreatedById = UserId;
-            _context.Roles.Add(role);
+            model.CreatedDate = DateTime.Now;
+            model.CreatedById = UserId;
+            _context.Roles.Add(model);
             await _context.SaveChangesAsync();
 
-            return new Response<Role>(role);
+            return new Response<Role>(model);
         }
 
         // DELETE: api/Roles/5
@@ -120,15 +120,15 @@ namespace API.Controllers.Management
             {
                 return new Response<Role> { Success = false, Message = "Empty" };
             }
-            var user = await _context.Roles.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
-            if (user == null)
+            var domain = await _context.Roles.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            if (domain == null)
             {
                 return new Response<Role> { Success = false, Message = "Not found" };
             }
 
-            user.IsDeleted = true;
-            user.UpdatedDate = DateTime.Now;
-            user.UpdatedById = UserId;
+            domain.IsDeleted = true;
+            domain.UpdatedDate = DateTime.Now;
+            domain.UpdatedById = UserId;
 
             try
             {
@@ -139,7 +139,7 @@ namespace API.Controllers.Management
                 return new Response<Role> { Success = false, Message = ex.Message };
             }
 
-            return new Response<Role>();
+            return new Response<Role> { Success = true };
         }
     }
 }

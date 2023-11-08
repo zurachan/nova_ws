@@ -35,8 +35,8 @@
                   </div>
                 </form>
 
-                <button style="width: 150px;" title="Thêm mới nhân viên" class="btn btn-primary btn-md ml-3"
-                  (click)="onAddEdit('add')">
+                <button style="width: 150px;" title="Thêm mới dự án" class="btn btn-primary btn-md ml-3"
+                  (click)="onAddViewEdit('add')">
                   <i class="fas fa-plus"></i> Thêm mới
                 </button>
               </div>
@@ -50,22 +50,24 @@
                     <th>Tên dự án</th>
                     <th>Kiểu dự án</th>
                     <th>Giai đoạn dự án</th>
-                    <th>Đơn vị thi công</th>
                     <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of projectData">
                     <td>{{item.stt}}</td>
-                    <td>{{item.fullName}}</td>
-                    <td>{{item.username}}</td>
-                    <td>{{item.telephone}}</td>
-                    <td>{{item.email}}</td>
-                    <td>{{item.address}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{getProjectTypeStr(item.type)}}</td>
+                    <td>{{getProjectPhaseStr(item.phase)}}</td>
                     <td>
                       <div class="d-flex">
-                        <button class="btn btn-primary mr-3" (click)="onAddEdit('edit',item)">Chỉnh sửa</button>
-                        <button class="btn btn-danger" (click)="onDelete(item)">Xoá</button>
+                        <button title="Xem chi tiết dự án" class="btn btn-info mr-3"
+                          (click)="onAddViewEdit('view',item)">Chi
+                          tiết</button>
+                        <button title="Cập nhật dự án" class="btn btn-primary mr-3"
+                          (click)="onAddViewEdit('edit',item)">Chỉnh
+                          sửa</button>
+                        <button title="Xoá dự án" class="btn btn-danger" (click)="onDelete(item)">Xoá</button>
                       </div>
                     </td>
                   </tr>

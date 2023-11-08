@@ -1,0 +1,54 @@
+<div class="modal" style="display: block;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{modal.title}}</h4>
+        <button type="button" class="close" mat-dialog-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="name">Tên đối tác (cá nhân/ tổ chức)</label>
+              <input class="form-control" id="name" name="name" type="text" formControlName="name">
+              <mat-error class="textError"
+                *ngIf="form.controls.name.touched && form.controls.name.hasError('required')">
+                Tên đối tác không được bỏ trống
+              </mat-error>
+            </div>
+            <div class="col-md-12 form-group">
+              <label for="address">Địa chỉ</label>
+              <input class="form-control" id="address" name="address" type="text" formControlName="address">
+              <mat-error class="textError"
+                *ngIf="form.controls.address.touched && form.controls.address.hasError('required')">
+                Địa chỉ không được bỏ trống
+              </mat-error>
+            </div>
+            <div class="col-md-12 form-group">
+              <label for="telephone">Số điện thoại</label>
+              <input class="form-control" id="telephone" name="telephone" type="text" formControlName="telephone">
+              <mat-error class="textError"
+                *ngIf="form.controls.telephone.touched && form.controls.telephone.hasError('required')">
+                Số điện thoại không được bỏ trống
+              </mat-error>
+            </div>
+            <div class="col-md-12 form-group">
+              <label for="email">Email</label>
+              <input class="form-control" id="email" name="email" type="text" formControlName="email">
+              <mat-error class="textError"
+                *ngIf="form.controls.email.touched && form.controls.email.hasError('required')">
+                Email không được bỏ trống
+              </mat-error>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" mat-dialog-close>Đóng</button>
+        <button type="button" class="btn btn-primary" (click)="onSave()">Lưu</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -25,6 +25,8 @@ import { ProfileComponent } from './layout/profile/profile.component';
 import { ProjectDetailComponent } from './page/project/project-detail/project-detail.component';
 import { PaginationModule } from './shared/component/pagination/pagination.module';
 import { DeleteConfirmModule } from './shared/component/delete-confirm/delete-confirm.module';
+import { MatSelectModule } from '@angular/material/select';
+import { PartnerDetailComponent } from './page/partner/partner-detail/partner-detail.component';
 /**
  * Custom angular notifier options
  */
@@ -81,6 +83,7 @@ const customNotifierOptions: NotifierOptions = {
     CustomerComponent,
     EventComponent,
     PartnerComponent,
+    PartnerDetailComponent,
     ProjectComponent,
     ProjectDetailComponent,
     ProfileComponent,
@@ -94,6 +97,7 @@ const customNotifierOptions: NotifierOptions = {
     BrowserAnimationsModule,
     MatDialogModule,
     MatTableModule,
+    MatSelectModule,
     NotifierModule.withConfig(customNotifierOptions),
     JwtModule.forRoot({
       config: {

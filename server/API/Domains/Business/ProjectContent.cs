@@ -7,9 +7,9 @@ namespace API.Domains.Business
     {
         [ForeignKey("project")]
         public int ProjectId { get; set; }
-        public virtual required Project Project { get; set; }
+        public virtual Project Project { get; set; }
         [ForeignKey("content")]
         public int ContentId { get; set; }
-        public virtual required Content Content { get; set; }
+        public virtual Content Content { get; set; }
     }
 }

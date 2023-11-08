@@ -13,7 +13,7 @@ namespace API.Domains.Business
         [Column("maincontent")]
         public string MainContent { get; set; }
         [Required]
-        [Column("type")] //1: đô thị; 2: du lịch; 3: công nghiệp
+        [Column("type")] //1: bài viết giới thiệu; 2: bài viết cập nhật tiến độ; 3: bài viết review
         public int Type { get; set; }
     }
 }

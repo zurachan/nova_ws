@@ -27,6 +27,10 @@ import { PaginationModule } from './shared/component/pagination/pagination.modul
 import { DeleteConfirmModule } from './shared/component/delete-confirm/delete-confirm.module';
 import { MatSelectModule } from '@angular/material/select';
 import { PartnerDetailComponent } from './page/partner/partner-detail/partner-detail.component';
+import { ContentDetailComponent } from './page/content/content-detail/content-detail.component';
+import { EventDetailComponent } from './page/event/event-detail/event-detail.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 /**
  * Custom angular notifier options
  */
@@ -80,8 +84,10 @@ const customNotifierOptions: NotifierOptions = {
     UnauthenticatedComponent,
     LoginComponent,
     ContentComponent,
+    ContentDetailComponent,
     CustomerComponent,
     EventComponent,
+    EventDetailComponent,
     PartnerComponent,
     PartnerDetailComponent,
     ProjectComponent,
@@ -98,6 +104,8 @@ const customNotifierOptions: NotifierOptions = {
     MatDialogModule,
     MatTableModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     NotifierModule.withConfig(customNotifierOptions),
     JwtModule.forRoot({
       config: {

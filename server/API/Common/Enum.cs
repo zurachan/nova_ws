@@ -42,4 +42,48 @@ namespace API.Common
         EventCover,
         Partner
     }
+
+    public enum ContentType
+    {
+        None,
+
+        [Description("Bài viết giới thiệu")]
+        GioiThieu,
+
+        [Description("Bài viết cập nhật tiến độ")]
+        CapNhatTienDo,
+
+        [Description("Bài viết phản hồi")]
+        Review
+    }
+
+    public enum EventType
+    {
+        None,
+
+        [Description("Diễn ra định kỳ")]
+        DinhKy,
+
+        [Description("Diễn ra hàng nằm")]
+        HangNam,
+
+        [Description("Diễn ra một lần duy nhất")]
+        DuyNhat
+    }
+    public enum EventStatus
+    {
+        None,
+
+        [Description("Đang lên kế hoạch")]
+        LenKeHoach,
+
+        [Description("Sắp diễn ra")]
+        SapDienRa,
+
+        [Description("Đang diễn ra")]
+        DangDienRa,
+
+        [Description("Đã kết thúc")]
+        KetThuc
+    }
 }

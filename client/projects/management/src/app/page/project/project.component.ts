@@ -63,7 +63,6 @@ export class ProjectComponent implements OnInit {
           return x;
         });
         this.projectData = res.data
-        console.log(this.projectData)
       }
     });
   }

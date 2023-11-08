@@ -63,7 +63,7 @@ export class AuthenticateService {
         credential.role = res.role;
 
         let data = await lastValueFrom<any>(this.fileService.getImage({ itemId: res.user.id, itemType: 1 }))
-        if (data.success)
+        if (data.success && data.length > 0)
           credential.image = data.data[0].filePath
 
         this.credentialSubject.next(credential);

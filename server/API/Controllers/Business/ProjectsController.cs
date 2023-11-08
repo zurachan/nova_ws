@@ -1,7 +1,6 @@
 ﻿using API.Common;
 using API.Domains;
 using API.Domains.Business;
-using API.Domains.Management;
 using API.Model.Management;
 using API.Model.SearchFilter;
 using Microsoft.AspNetCore.Mvc;
@@ -145,7 +144,7 @@ namespace API.Controllers.Business
                 return new Response<ProjectModel> { Success = false, Message = "Empty" };
             }
 
-            var domainProject = new Project
+            var domain = new Project
             {
                 Name = model.Name,
                 Content = model.Content,
@@ -155,22 +154,22 @@ namespace API.Controllers.Business
                 CreatedById = UserId,
                 CreatedDate = DateTime.Now,
             };
-            _context.Projects.Add(domainProject);
-            model.Id = domainProject.Id;
+            _context.Projects.Add(domain);
 
-            foreach (var item in model.PartnerIds)
+            model.PartnerIds.ForEach(x =>
             {
                 var domainProjectPartner = new ProjectPartner
                 {
-                    Project = domainProject,
-                    PartnerId = item,
+                    Project = domain,
+                    PartnerId = x,
                     CreatedById = UserId,
                     CreatedDate = DateTime.Now,
                 };
                 _context.ProjectPartners.Add(domainProjectPartner);
-            }
+            });
 
             await _context.SaveChangesAsync();
+            model.Id = domain.Id;
 
             return new Response<ProjectModel>(model);
         }

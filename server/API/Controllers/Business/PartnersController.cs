@@ -2,12 +2,14 @@
 using API.Domains;
 using API.Domains.Business;
 using API.Model.SearchFilter;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace API.Controllers.Business
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PartnersController : ControllerBase

@@ -1,0 +1,96 @@
+<div class="modal" style="display: block;">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{modal.title}}</h4>
+        <button type="button" class="close" mat-dialog-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="max-height: 600px; overflow: auto;">
+        <form [formGroup]="form">
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="title">Tiêu đề</label>
+              <input class="form-control" id="title" name="title" type="text" formControlName="title"
+                placeholder="Nhập tiêu đề bài viết...">
+              <mat-error class="textError"
+                *ngIf="form.controls.title.touched && form.controls.title.hasError('required')">
+                Tiêu đề không được bỏ trống
+              </mat-error>
+            </div>
+            <div class="col-md-12 form-group">
+              <label for="mainContent">Nội dung</label>
+              <textarea class="form-control" formControlName="mainContent" rows="3"
+                placeholder="Nhập nội dung bài viết..."></textarea>
+              <mat-error class="textError"
+                *ngIf="form.controls.mainContent.touched && form.controls.mainContent.hasError('required')">
+                Nội dung bài viết không được bỏ trống
+              </mat-error>
+            </div>
+
+            <div class="col-md-12 form-group">
+              <label for="type">Loại bài viết</label>
+              <select class="custom-select form-control-border border-width-2" formControlName="type">
+                <option disabled hidden selected value="null">--Chọn--</option>
+                <option *ngFor="let item of contentType" [value]="item.id">{{item.name}}</option>
+              </select>
+              <mat-error class="textError"
+                *ngIf="form.controls.type.touched && form.controls.type.hasError('required')">
+                Loại bài viết không được bỏ trống
+              </mat-error>
+            </div>
+
+            <div class="col-md-12 form-group">
+              <label for="projectIds">Dự án</label>
+              <select multiple class="custom-select form-control-border border-width-2" formControlName="projectIds">
+                <option *ngFor="let item of listProject" [value]="item.id">{{item.name}}</option>
+              </select>
+
+              <mat-error class="textError"
+                *ngIf="form.controls.projectIds.touched && form.controls.projectIds.hasError('required')">
+                Dự án không được bỏ trống
+              </mat-error>
+            </div>
+          </div>
+        </form>
+
+        <div class="col-md-12 form-group">
+          <label for="userId">Ảnh cover (chọn 1)</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="coverImage"
+                (change)="onUploadCoverImage($event.target.files)">
+              <label class="custom-file-label" for="coverImage">Choose file</label>
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text">Upload</span>
+            </div>
+          </div>
+
+          <img width="100%" *ngIf="coverImageUrl" [src]="coverImageUrl" class="image">
+        </div>
+
+        <div class="col-md-12 form-group">
+          <label for="userId">Ảnh mô tả (chọn nhiều)</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <input type="file" multiple class="custom-file-input" id="contentImage"
+                (change)="onUploadContentImage($event.target.files)">
+              <label class="custom-file-label" for="contentImage">Choose file</label>
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text">Upload</span>
+            </div>
+          </div>
+          <img width="100%" *ngIf="contentImageUrl" [src]="contentImageUrl" class="image">
+
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" mat-dialog-close>Đóng</button>
+        <button *ngIf="modal.type !== 'view'" type="button" class="btn btn-primary" (click)="onSave()">Lưu</button>
+      </div>
+    </div>
+  </div>
+</div>

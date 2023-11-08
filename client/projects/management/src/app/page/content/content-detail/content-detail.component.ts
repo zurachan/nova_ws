@@ -1,13 +1,12 @@
-import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
+import { ContentType } from './../../../shared/core/Enum';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription, forkJoin } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
-import { ProjectPhase, ProjectType } from '../../../shared/core/Enum';
 import { ProjectService } from '../../../shared/services/project.service';
 import _ from "lodash";
-import { PartnerService } from '../../../shared/services/partner.service';
-import { UserService } from '../../../shared/services/user.service';
-import { Subscription, forkJoin } from 'rxjs';
+import { ContentService } from '../../../shared/services/content.service';
 
 interface data {
   title: string,
@@ -16,19 +15,18 @@ interface data {
 }
 
 @Component({
-  selector: 'app-project-detail',
-  templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.css']
+  selector: 'app-content-detail',
+  templateUrl: './content-detail.component.html',
+  styleUrls: ['./content-detail.component.css']
 })
-export class ProjectDetailComponent implements OnInit {
+export class ContentDetailComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: data,
-    private dialogRef: MatDialogRef<ProjectDetailComponent>,
+    private dialogRef: MatDialogRef<ContentDetailComponent>,
     private fb: FormBuilder,
     private notifier: NotifierService,
     private projectService: ProjectService,
-    private partnerService: PartnerService,
-    private userService: UserService) {
+    private contentService: ContentService) {
     this.modal = data;
   }
   subscriptions: Subscription[] = [];
@@ -36,10 +34,9 @@ export class ProjectDetailComponent implements OnInit {
 
   form: FormGroup;
   modal: any;
-  projectType = ProjectType;
-  projectPhase = ProjectPhase;
-  listPartner = [];
-  listUser = [];
+  contentType = ContentType;
+
+  listProject = [];
 
   coverImage: any;
   coverImageUrl: any
@@ -56,18 +53,16 @@ export class ProjectDetailComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       id: [0],
-      name: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
-      content: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
+      title: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
+      mainContent: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       type: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
-      phase: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
-      partnerIds: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
-      userId: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
+      projectIds: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
     })
   }
 
   getDetail() {
     if (this.modal.type !== 'add') {
-      this.projectService.GetById(this.modal.item.id).subscribe((res: any) => {
+      this.contentService.GetById(this.modal.item.id).subscribe((res: any) => {
         if (res.success) {
           this.form.patchValue(res.data)
         }
@@ -80,20 +75,14 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   getDropdownData() {
-    const subscription = forkJoin([this.getUser(), this.getPartner()])
-      .subscribe(([user, partner]: any) => {
-        this.listUser = user.data;
-        this.listPartner = partner.data;
-      });
+    const subscription = this.getProject().subscribe((project: any) => {
+      this.listProject = project.data;
+    });
     this.subscriptions.push(subscription);
   }
 
-  getUser() {
-    return this.userService.GetAll({ pageNumber: 1, pageSize: 10000, user: null }).pipe();
-  }
-
-  getPartner() {
-    return this.partnerService.GetAll({ pageNumber: 1, pageSize: 10000, partner: null }).pipe();
+  getProject() {
+    return this.projectService.GetAll({ pageNumber: 1, pageSize: 10000, project: null }).pipe();
   }
 
   onSave() {
@@ -102,7 +91,7 @@ export class ProjectDetailComponent implements OnInit {
 
     let model = _.cloneDeep(this.form.getRawValue());
 
-    let request = this.modal.type == 'add' ? this.projectService.Insert(model) : this.projectService.Update(model);
+    let request = this.modal.type == 'add' ? this.contentService.Insert(model) : this.contentService.Update(model);
 
     request.subscribe((res: any) => {
       if (res.success) {

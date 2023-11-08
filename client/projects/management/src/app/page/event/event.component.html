@@ -1,3 +1,84 @@
-<p>
-  event works!
-</p>
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Sự kiện</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a [routerLink]="['']" routerLinkActive="router-link-active">Home</a></li>
+            <li class="breadcrumb-item active">Sự kiện</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+
+              <div class="d-flex align-items-center">
+                <form class="w-100" [formGroup]="form">
+                  <div class="input-group">
+                    <input type="text" class="form-control form-control-md" placeholder="Nhập tìm kiếm"
+                      formControlName="event">
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-md btn-default" (click)="getData(true)">
+                        <i class="fa fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+                <button style="width: 150px;" title="Thêm mới sự kiện" class="btn btn-primary btn-md ml-3"
+                  (click)="onAddViewEdit('add')">
+                  <i class="fas fa-plus"></i> Thêm mới
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Tiêu đề</th>
+                    <th>Nội dung</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of eventData">
+                    <td>{{item.stt}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.mainContent}}</td>
+                    <td>
+                      <div class="d-flex">
+                        <button title="Xem chi tiết sự kiện" class="btn btn-info mr-3"
+                          (click)="onAddViewEdit('view',item)">Chi
+                          tiết</button>
+                        <button title="Cập nhật sự kiện" class="btn btn-primary mr-3"
+                          (click)="onAddViewEdit('edit',item)">Chỉnh
+                          sửa</button>
+                        <button title="Xoá sự kiện" class="btn btn-danger" (click)="onDelete(item)">Xoá</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              <app-pagination [page]="paging" (pageChangeEvent)="pageChange($event)"></app-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

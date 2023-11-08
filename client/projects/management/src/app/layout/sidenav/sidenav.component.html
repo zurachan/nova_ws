@@ -13,7 +13,7 @@
         <img *ngIf="credential.image; else none" src="upload/{{credential.image}}" class="img-circle elevation-2"
           alt="User Image">
         <ng-template #none>
-          <img class="img-circle elevation-2" alt="User Image">
+          <img class="img-circle elevation-2" src="../../../assets/dist/img/defaul-avatar.png" alt="User Image none">
         </ng-template>
       </div>
       <div class="info">

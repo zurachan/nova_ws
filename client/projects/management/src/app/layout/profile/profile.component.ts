@@ -16,8 +16,7 @@ export class ProfileComponent implements OnInit {
   constructor(private authenService: AuthenticateService,
     private fb: FormBuilder,
     private userService: UserService,
-    private notifier: NotifierService,
-    private fileService: FileService) {
+    private notifier: NotifierService) {
     this.credential = this.authenService.GetCredential;
   }
   credential: any;
@@ -30,7 +29,6 @@ export class ProfileComponent implements OnInit {
     this.initForm();
     this.bindValueForm();
     this.authenService.updateCredential.subscribe((res: any) => { this.credential = res; })
-    // this.getUserProfileImage();
   }
 
   form: FormGroup;
@@ -49,12 +47,6 @@ export class ProfileComponent implements OnInit {
   bindValueForm() {
     this.form.patchValue(this.credential.user)
   }
-
-  // getUserProfileImage() {
-  //   this.fileService.getImage({ itemId: this.credential.user.id, itemType: 1 }).subscribe((res: any) => {
-  //     this.userProfile = res.data[0];
-  //   })
-  // }
 
   onSave() {
     this.form.markAllAsTouched();

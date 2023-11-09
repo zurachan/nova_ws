@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
@@ -32,7 +32,6 @@ export class ProjectDetailComponent implements OnInit {
     this.modal = data;
   }
   subscriptions: Subscription[] = [];
-  changeDetectorRef: ChangeDetectorRef;
 
   form: FormGroup;
   modal: any;

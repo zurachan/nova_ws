@@ -1,3 +1,59 @@
-<p>
-  permission works!
-</p>
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Phân quyền</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a [routerLink]="['']" routerLinkActive="router-link-active">Home</a></li>
+            <li class="breadcrumb-item active">Phân quyền</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h2>Mã trận phân quyền người dùng</h2>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>
+                      Users\Roles
+                    </th>
+                    <th class="text-center" *ngFor="let role of roles">{{role.name}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of users">
+                    <td>{{user.fullName}}</td>
+                    <td class="text-center" *ngFor="let role of roles">
+                      <!-- <input *ngIf="checkExisted(user.id, role.id); else noExisted" type="checkbox" checked>
+                      <ng-template #noExisted>
+                        <input *ngIf="checkExisted(user.id, role.id); else noExisted" type="checkbox">
+                      </ng-template> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              <!-- <app-pagination [page]="paging" (pageChangeEvent)="pageChange($event)"></app-pagination> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

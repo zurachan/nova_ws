@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231108181213_Add_description_event")]
-    partial class Add_description_event
+    [Migration("20231109070031_Init_Db")]
+    partial class Init_Db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,54 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("content");
+                });
+
+            modelBuilder.Entity("API.Domains.Business.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("address");
+
+                    b.Property<int?>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("email");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("fullname");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Telephone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("telephone");
+
+                    b.Property<int?>("UpdatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("customer");
                 });
 
             modelBuilder.Entity("API.Domains.Business.Event", b =>
@@ -258,6 +306,44 @@ namespace API.Migrations
                     b.ToTable("project_content");
                 });
 
+            modelBuilder.Entity("API.Domains.Business.ProjectCustomer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("project_customer");
+                });
+
             modelBuilder.Entity("API.Domains.Business.ProjectEvent", b =>
                 {
                     b.Property<int>("Id")
@@ -416,21 +502,24 @@ namespace API.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 11, 9, 1, 12, 13, 709, DateTimeKind.Local).AddTicks(6047),
+                            CreatedById = 1,
+                            CreatedDate = new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3150),
                             IsDeleted = false,
                             Name = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 11, 9, 1, 12, 13, 709, DateTimeKind.Local).AddTicks(6049),
+                            CreatedById = 1,
+                            CreatedDate = new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3151),
                             IsDeleted = false,
                             Name = "CONTENT CREATOR"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2023, 11, 9, 1, 12, 13, 709, DateTimeKind.Local).AddTicks(6050),
+                            CreatedById = 1,
+                            CreatedDate = new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3153),
                             IsDeleted = false,
                             Name = "SALE"
                         });
@@ -495,7 +584,7 @@ namespace API.Migrations
                         {
                             Id = 1,
                             Address = "Hà Nội",
-                            CreatedDate = new DateTime(2023, 11, 9, 1, 12, 13, 709, DateTimeKind.Local).AddTicks(5877),
+                            CreatedDate = new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(2986),
                             FullName = "Admin",
                             IsDeleted = false,
                             Password = "123456",
@@ -505,7 +594,8 @@ namespace API.Migrations
                         {
                             Id = 2,
                             Address = "Đà Nẵng",
-                            CreatedDate = new DateTime(2023, 11, 9, 1, 12, 13, 709, DateTimeKind.Local).AddTicks(5890),
+                            CreatedById = 1,
+                            CreatedDate = new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3000),
                             FullName = "Nhân viên 1",
                             IsDeleted = false,
                             Password = "123456",
@@ -515,7 +605,8 @@ namespace API.Migrations
                         {
                             Id = 3,
                             Address = "Tp. Hồ Chí Minh",
-                            CreatedDate = new DateTime(2023, 11, 9, 1, 12, 13, 709, DateTimeKind.Local).AddTicks(5892),
+                            CreatedById = 1,
+                            CreatedDate = new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3002),
                             FullName = "Nhân viên 2",
                             IsDeleted = false,
                             Password = "123456",
@@ -564,7 +655,7 @@ namespace API.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 11, 9, 1, 12, 13, 709, DateTimeKind.Local).AddTicks(6066),
+                            CreatedDate = new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3166),
                             IsDeleted = false,
                             RoleId = 1,
                             UserId = 1
@@ -572,7 +663,7 @@ namespace API.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 11, 9, 1, 12, 13, 709, DateTimeKind.Local).AddTicks(6067),
+                            CreatedDate = new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3168),
                             IsDeleted = false,
                             RoleId = 2,
                             UserId = 2
@@ -580,7 +671,7 @@ namespace API.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2023, 11, 9, 1, 12, 13, 709, DateTimeKind.Local).AddTicks(6068),
+                            CreatedDate = new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3169),
                             IsDeleted = false,
                             RoleId = 3,
                             UserId = 3
@@ -613,6 +704,25 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.Navigation("Content");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("API.Domains.Business.ProjectCustomer", b =>
+                {
+                    b.HasOne("API.Domains.Business.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Domains.Business.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
 
                     b.Navigation("Project");
                 });

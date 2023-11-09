@@ -1,4 +1,4 @@
-﻿namespace API.Model.Management
+﻿namespace API.Model.Business
 {
     public class ContentModel
     {

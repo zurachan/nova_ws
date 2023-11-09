@@ -16,7 +16,7 @@ export class PartnerComponent implements OnInit {
 
   constructor(private partnerService: PartnerService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
 
-  userData = [];
+  datasource = [];
   form: FormGroup
   paging = {
     pageNumber: null,
@@ -61,7 +61,7 @@ export class PartnerComponent implements OnInit {
           x.stt = start++;
           return x;
         });
-        this.userData = res.data
+        this.datasource = res.data
       }
     });
   }

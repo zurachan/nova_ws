@@ -1,7 +1,7 @@
 ﻿using API.Common;
 using API.Domains;
 using API.Domains.Business;
-using API.Model.Management;
+using API.Model.Business;
 using API.Model.SearchFilter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -69,6 +69,7 @@ namespace API.Controllers.Business
             {
                 Id = domain.Id,
                 Name = domain.Name,
+                Description = domain.Description,
                 Start = domain.Start,
                 End = domain.End,
                 Status = domain.Status,
@@ -148,6 +149,7 @@ namespace API.Controllers.Business
             Event domain = new()
             {
                 Name = model.Name,
+                Description = model.Description,
                 Start = model.Start,
                 End = model.End,
                 Status = model.Status,

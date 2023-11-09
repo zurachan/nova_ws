@@ -30,12 +30,17 @@
             </div>
             <div class="col-md-6 form-group">
               <label for="start">Ngày bắt đầu</label>
-              <!-- <input class="form-control" id="start" name="start" type="text" formControlName="start"
-                placeholder="Ngày bắt đầu sự kiện..."> -->
 
-              <!-- <input matInput [matDatepicker]="picker">
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker> -->
+              <div class="input-group">
+                <div class="custom-file">
+                  <input class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="start"
+                    formControlName="start">
+                </div>
+                <div class="input-group-append">
+                  <mat-datepicker-toggle matIconSuffix [for]="start"></mat-datepicker-toggle>
+                  <mat-datepicker #start></mat-datepicker>
+                </div>
+              </div>
 
               <mat-error class="textError"
                 *ngIf="form.controls.start.touched && form.controls.start.hasError('required')">
@@ -44,8 +49,16 @@
             </div>
             <div class="col-md-6 form-group">
               <label for="end">Ngày kết thúc</label>
-              <input class="form-control" id="end" name="end" type="text" formControlName="end"
-                placeholder="Ngày kết thúc sự kiện...">
+              <div class="input-group">
+                <div class="custom-file">
+                  <input class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="end"
+                    formControlName="end">
+                </div>
+                <div class="input-group-append">
+                  <mat-datepicker-toggle matIconSuffix [for]="end"></mat-datepicker-toggle>
+                  <mat-datepicker #end></mat-datepicker>
+                </div>
+              </div>
               <mat-error class="textError" *ngIf="form.controls.end.touched && form.controls.end.hasError('required')">
                 Ngày kết thúc sự kiện không được bỏ trống
               </mat-error>
@@ -53,10 +66,10 @@
 
             <div class="col-md-12 form-group">
               <label for="status">Trạng thái</label>
-              <!-- <select class="custom-select form-control-border border-width-2" formControlName="status">
-                <option disabled hidden selected value="null">--Chọn--</option>
-                <option *ngFor="let item of eventStatus" [value]="item.id">{{item.name}}</option>
-              </select> -->
+              <mat-select class="custom-select form-control-border border-width-2" formControlName="status"
+                placeholder="Chọn trạng thái sự kiện">
+                <mat-option *ngFor="let item of eventStatus" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
               <mat-error class="textError"
                 *ngIf="form.controls.status.touched && form.controls.status.hasError('required')">
                 Trạng thái không được bỏ trống
@@ -65,10 +78,11 @@
 
             <div class="col-md-12 form-group">
               <label for="type">Loại sự kiện</label>
-              <select class="custom-select form-control-border border-width-2" formControlName="type">
-                <option disabled hidden selected value="null">--Chọn--</option>
-                <option *ngFor="let item of eventType" [value]="item.id">{{item.name}}</option>
-              </select>
+              <mat-select class="custom-select form-control-border border-width-2" formControlName="type"
+                placeholder="Chọn loại sự kiện">
+                <mat-option *ngFor="let item of eventType" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+
               <mat-error class="textError"
                 *ngIf="form.controls.type.touched && form.controls.type.hasError('required')">
                 Loại sự kiện không được bỏ trống
@@ -77,10 +91,10 @@
 
             <div class="col-md-12 form-group">
               <label for="projectIds">Dự án</label>
-              <select multiple class="custom-select form-control-border border-width-2" formControlName="projectIds">
-                <option *ngFor="let item of listProject" [value]="item.id">{{item.name}}</option>
-              </select>
-
+              <mat-select class="custom-select form-control-border border-width-2" formControlName="projectIds" multiple
+                placeholder="Chọn dự án">
+                <mat-option *ngFor="let item of listProject" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
               <mat-error class="textError"
                 *ngIf="form.controls.projectIds.touched && form.controls.projectIds.hasError('required')">
                 Dự án không được bỏ trống
@@ -89,7 +103,7 @@
           </div>
         </form>
 
-        <div class="col-md-12 form-group">
+        <!-- <div class="col-md-12 form-group">
           <label for="userId">Ảnh cover (chọn 1)</label>
           <div class="input-group">
             <div class="custom-file">
@@ -119,7 +133,7 @@
           </div>
           <img width="100%" *ngIf="contentImageUrl" [src]="contentImageUrl" class="image">
 
-        </div>
+        </div> -->
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" mat-dialog-close>Đóng</button>

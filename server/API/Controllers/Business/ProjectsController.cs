@@ -1,7 +1,7 @@
 ﻿using API.Common;
 using API.Domains;
 using API.Domains.Business;
-using API.Model.Management;
+using API.Model.Business;
 using API.Model.SearchFilter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

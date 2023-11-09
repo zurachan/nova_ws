@@ -7,6 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EventService } from '../../../shared/services/event.service';
 import _ from "lodash";
+import { format, isDate } from 'date-fns';
 
 interface data {
   title: string,
@@ -95,6 +96,9 @@ export class EventDetailComponent implements OnInit {
 
     let model = _.cloneDeep(this.form.getRawValue());
 
+    model.start = isDate(model.start) ? format(model.start, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : model.start;
+    model.end = isDate(model.end) ? format(model.end, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : model.end;
+
     let request = this.modal.type == 'add' ? this.eventService.Insert(model) : this.eventService.Update(model);
 
     request.subscribe((res: any) => {
@@ -129,5 +133,5 @@ export class EventDetailComponent implements OnInit {
     }
     reader.readAsDataURL(this.contentImageUrl);
   }
-
+  onKey(value) { }
 }

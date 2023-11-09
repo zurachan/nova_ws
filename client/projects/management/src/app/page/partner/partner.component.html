@@ -46,16 +46,16 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th style="width: 10px">#</th>
-                    <th>Tên cá nhân/ doanh nghiệp</th>
-                    <th>Địa chỉ</th>
-                    <th>Số điện thoại</th>
-                    <th>Email</th>
-                    <th>Thao tác</th>
+                    <th class="text-center" style="width: 10px">#</th>
+                    <th class="text-center">Tên cá nhân/ doanh nghiệp</th>
+                    <th class="text-center">Địa chỉ</th>
+                    <th class="text-center">Số điện thoại</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of userData">
+                  <tr *ngFor="let item of datasource">
                     <td>{{item.stt}}</td>
                     <td>{{item.name}}</td>
                     <td>{{item.address}}</td>

@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of, switchMap } from 'rxjs';
-
-const urlApi = 'https://localhost:44322/api/Roles';
+const urlApi = 'https://localhost:44322/api/Customers';
 @Injectable({
   providedIn: 'root'
 })
-export class RoleService {
+export class CustomerService {
+
   constructor(private http: HttpClient) { }
 
   GetAll(param: any): Observable<any[]> {
@@ -16,6 +16,7 @@ export class RoleService {
       return of(response);
     }));
   }
+
   /** GET ONE: find exactly by id */
   GetById(id: number): Observable<any> {
     return this.http.get<any>(`${urlApi}` + `/${id}`).pipe();
@@ -32,4 +33,5 @@ export class RoleService {
   Delete(id: number): Observable<any> {
     return this.http.delete<any>(`${urlApi}` + `/${id}`).pipe();
   }
+
 }

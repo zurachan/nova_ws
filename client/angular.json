@@ -114,14 +114,8 @@
                 "output": "/upload/"
               }
             ],
-            "styles": [
-              "projects/management/src/styles.css",
-              "node_modules/select2/dist/css/select2.min.css"
-            ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.js",
-              "node_modules/select2/dist/js/select2.min.js"
-            ],
+            "styles": ["projects/management/src/styles.css"],
+            "scripts": [],
             "allowedCommonJsDependencies": ["lodash"]
           },
           "configurations": {

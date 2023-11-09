@@ -46,14 +46,14 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th style="width: 10px">#</th>
-                    <th>Tiêu đề</th>
-                    <th>Nội dung</th>
-                    <th>Thao tác</th>
+                    <th class="text-center" style="width: 10px">#</th>
+                    <th class="text-center">Tiêu đề</th>
+                    <th class="text-center">Nội dung</th>
+                    <th class="text-center">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of contentData">
+                  <tr *ngFor="let item of datasource">
                     <td>{{item.stt}}</td>
                     <td>{{item.title}}</td>
                     <td>{{item.mainContent}}</td>

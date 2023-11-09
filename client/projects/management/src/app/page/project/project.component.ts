@@ -17,7 +17,7 @@ export class ProjectComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
 
-  projectData = [];
+  datasource = [];
   form: FormGroup
   paging = {
     pageNumber: null,
@@ -62,7 +62,7 @@ export class ProjectComponent implements OnInit {
           x.stt = start++;
           return x;
         });
-        this.projectData = res.data
+        this.datasource = res.data
       }
     });
   }

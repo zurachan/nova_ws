@@ -6,6 +6,7 @@ import { EventService } from '../../shared/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { format } from 'date-fns';
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
@@ -15,7 +16,7 @@ export class EventComponent implements OnInit {
 
   constructor(private eventService: EventService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
 
-  eventData = [];
+  datasource = [];
   form: FormGroup
   paging = {
     pageNumber: null,
@@ -58,9 +59,11 @@ export class EventComponent implements OnInit {
         let start = this.paging.recordStart;
         res.data.map((x: any) => {
           x.stt = start++;
+          x.start = x.start ? format(new Date(Date.parse(x.start)), 'dd/MM/yyyy') : x.start;
+          x.end = x.end ? format(new Date(Date.parse(x.end)), 'dd/MM/yyyy') : x.end;
           return x;
         });
-        this.eventData = res.data
+        this.datasource = res.data
       }
     });
   }
@@ -85,7 +88,7 @@ export class EventComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmComponent, {
       data: {
         title: 'Sự kiện',
-        item: item.title,
+        item: item.name,
       }
     });
 
@@ -94,9 +97,9 @@ export class EventComponent implements OnInit {
         this.eventService.Delete(item.id).subscribe(res => {
           if (res.success) {
             this.getData()
-            this.notifier.notify('success', "Xoá sự kiện " + item.title + " thành công");
+            this.notifier.notify('success', "Xoá sự kiện " + item.name + " thành công");
           } else {
-            this.notifier.notify('error', "Xoá sự kiện " + item.title + " không thành công");
+            this.notifier.notify('error', "Xoá sự kiện " + item.name + " không thành công");
           }
         })
       }

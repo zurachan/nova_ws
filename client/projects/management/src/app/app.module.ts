@@ -30,7 +30,8 @@ import { PartnerDetailComponent } from './page/partner/partner-detail/partner-de
 import { ContentDetailComponent } from './page/content/content-detail/content-detail.component';
 import { EventDetailComponent } from './page/event/event-detail/event-detail.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { CustomerDetailComponent } from './page/customer/customer-detail/customer-detail.component';
 /**
  * Custom angular notifier options
  */
@@ -86,6 +87,7 @@ const customNotifierOptions: NotifierOptions = {
     ContentComponent,
     ContentDetailComponent,
     CustomerComponent,
+    CustomerDetailComponent,
     EventComponent,
     EventDetailComponent,
     PartnerComponent,
@@ -125,6 +127,7 @@ const customNotifierOptions: NotifierOptions = {
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
   ],
   bootstrap: [AppComponent],
 })

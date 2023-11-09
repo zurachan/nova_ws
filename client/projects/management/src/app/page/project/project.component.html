@@ -46,15 +46,15 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th style="width: 10px">#</th>
-                    <th>Tên dự án</th>
-                    <th>Kiểu dự án</th>
-                    <th>Giai đoạn dự án</th>
-                    <th>Thao tác</th>
+                    <th class="text-center" style="width: 10px">#</th>
+                    <th class="text-center">Tên dự án</th>
+                    <th class="text-center">Kiểu dự án</th>
+                    <th class="text-center">Giai đoạn dự án</th>
+                    <th class="text-center" style="width: 310px;">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of projectData">
+                  <tr *ngFor="let item of datasource">
                     <td>{{item.stt}}</td>
                     <td>{{item.name}}</td>
                     <td>{{getProjectTypeStr(item.type)}}</td>

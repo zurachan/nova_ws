@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,7 +8,7 @@
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class Init_db : Migration
+    public partial class Init_Db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,12 +34,34 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "customer",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    fullname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedById = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedById = table.Column<int>(type: "int", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_customer", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "event",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     start = table.Column<DateTime>(type: "datetime2", nullable: false),
                     end = table.Column<DateTime>(type: "datetime2", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
@@ -228,6 +251,37 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "project_customer",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CreatedById = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedById = table.Column<int>(type: "int", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_project_customer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_project_customer_customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_project_customer_project_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "project",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "project_event",
                 columns: table => new
                 {
@@ -294,9 +348,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedDate", "IsDeleted", "name", "UpdatedById", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7574), false, "ADMIN", null, null },
-                    { 2, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7575), false, "CONTENT CREATOR", null, null },
-                    { 3, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7576), false, "SALE", null, null }
+                    { 1, 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3150), false, "ADMIN", null, null },
+                    { 2, 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3151), false, "CONTENT CREATOR", null, null },
+                    { 3, 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3153), false, "SALE", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -304,9 +358,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "address", "CreatedById", "CreatedDate", "email", "fullname", "IsDeleted", "password", "telephone", "UpdatedById", "UpdatedDate", "username" },
                 values: new object[,]
                 {
-                    { 1, "Hà Nội", null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7436), null, "Admin", false, "123456", null, null, null, "admin" },
-                    { 2, "Đà Nẵng", null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7451), null, "Nhân viên 1", false, "123456", null, null, null, "nv01" },
-                    { 3, "Tp. Hồ Chí Minh", null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7452), null, "Nhân viên 2", false, "123456", null, null, null, "nv02" }
+                    { 1, "Hà Nội", null, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(2986), null, "Admin", false, "123456", null, null, null, "admin" },
+                    { 2, "Đà Nẵng", 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3000), null, "Nhân viên 1", false, "123456", null, null, null, "nv01" },
+                    { 3, "Tp. Hồ Chí Minh", 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3002), null, "Nhân viên 2", false, "123456", null, null, null, "nv02" }
                 });
 
             migrationBuilder.InsertData(
@@ -314,9 +368,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedDate", "IsDeleted", "RoleId", "UpdatedById", "UpdatedDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7586), false, 1, null, null, 1 },
-                    { 2, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7588), false, 2, null, null, 2 },
-                    { 3, null, new DateTime(2023, 11, 8, 15, 25, 23, 392, DateTimeKind.Local).AddTicks(7589), false, 3, null, null, 3 }
+                    { 1, null, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3166), false, 1, null, null, 1 },
+                    { 2, null, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3168), false, 2, null, null, 2 },
+                    { 3, null, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3169), false, 3, null, null, 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -332,6 +386,16 @@ namespace API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_project_content_ProjectId",
                 table: "project_content",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_project_customer_CustomerId",
+                table: "project_customer",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_project_customer_ProjectId",
+                table: "project_customer",
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
@@ -375,6 +439,9 @@ namespace API.Migrations
                 name: "project_content");
 
             migrationBuilder.DropTable(
+                name: "project_customer");
+
+            migrationBuilder.DropTable(
                 name: "project_event");
 
             migrationBuilder.DropTable(
@@ -385,6 +452,9 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "content");
+
+            migrationBuilder.DropTable(
+                name: "customer");
 
             migrationBuilder.DropTable(
                 name: "event");

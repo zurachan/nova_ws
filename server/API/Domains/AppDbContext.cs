@@ -19,13 +19,13 @@ namespace API.Domains
         {
             modelBuilder.Entity<User>().HasData(
                 new User { Id = 1, FullName = "Admin", Address = "Hà Nội", CreatedDate = DateTime.Now, Username = "admin", Password = "123456" },
-                new User { Id = 2, FullName = "Nhân viên 1", Address = "Đà Nẵng", CreatedDate = DateTime.Now, Username = "nv01", Password = "123456" },
-                new User { Id = 3, FullName = "Nhân viên 2", Address = "Tp. Hồ Chí Minh", CreatedDate = DateTime.Now, Username = "nv02", Password = "123456" });
+                new User { Id = 2, FullName = "Nhân viên 1", Address = "Đà Nẵng", CreatedDate = DateTime.Now, Username = "nv01", Password = "123456", CreatedById = 1 },
+                new User { Id = 3, FullName = "Nhân viên 2", Address = "Tp. Hồ Chí Minh", CreatedDate = DateTime.Now, Username = "nv02", Password = "123456", CreatedById = 1 });
 
             modelBuilder.Entity<Role>().HasData(
-                new Role { Id = 1, Name = "ADMIN", CreatedDate = DateTime.Now },
-                new Role { Id = 2, Name = "CONTENT CREATOR", CreatedDate = DateTime.Now },
-                new Role { Id = 3, Name = "SALE", CreatedDate = DateTime.Now });
+                new Role { Id = 1, Name = "ADMIN", CreatedDate = DateTime.Now, CreatedById = 1 },
+                new Role { Id = 2, Name = "CONTENT CREATOR", CreatedDate = DateTime.Now, CreatedById = 1 },
+                new Role { Id = 3, Name = "SALE", CreatedDate = DateTime.Now, CreatedById = 1 });
 
             modelBuilder.Entity<UserRole>().HasData(
                 new UserRole { Id = 1, UserId = 1, RoleId = 1, CreatedDate = DateTime.Now },
@@ -44,6 +44,8 @@ namespace API.Domains
         public DbSet<ProjectContent> ProjectContents { get; set; }
         public DbSet<ProjectEvent> ProjectEvents { get; set; }
         public DbSet<ProjectPartner> ProjectPartners { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<ProjectCustomer> ProjectCustomers { get; set; }
         public DbSet<File> Files { get; set; }
     }
 }

@@ -21,7 +21,6 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-
               <div class="d-flex align-items-center">
                 <form class="w-100" [formGroup]="form">
                   <div class="input-group">
@@ -46,17 +45,17 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th style="width: 10px">#</th>
-                    <th>Họ và tên</th>
-                    <th>Tên đăng nhập</th>
-                    <th>Số điện thoại</th>
-                    <th>Email</th>
-                    <th>Địa chỉ</th>
-                    <th>Thao tác</th>
+                    <th class="text-center" style="width: 10px">#</th>
+                    <th class="text-center">Họ và tên</th>
+                    <th class="text-center">Tên đăng nhập</th>
+                    <th class="text-center">Số điện thoại</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Địa chỉ</th>
+                    <th class="text-center">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of userData">
+                  <tr *ngFor="let item of datasource">
                     <td>{{item.stt}}</td>
                     <td>{{item.fullName}}</td>
                     <td>{{item.username}}</td>

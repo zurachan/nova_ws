@@ -16,7 +16,7 @@ export class UserComponent implements OnInit {
 
   constructor(private userService: UserService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
 
-  userData = [];
+  datasource = [];
   form: FormGroup
   paging = {
     pageNumber: null,
@@ -61,7 +61,7 @@ export class UserComponent implements OnInit {
           x.stt = start++;
           return x;
         });
-        this.userData = res.data
+        this.datasource = res.data
       }
     });
   }

@@ -16,7 +16,7 @@ export class ContentComponent implements OnInit {
 
   constructor(private contentService: ContentService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
 
-  contentData = [];
+  datasource = [];
   form: FormGroup
   paging = {
     pageNumber: null,
@@ -61,7 +61,7 @@ export class ContentComponent implements OnInit {
           x.stt = start++;
           return x;
         });
-        this.contentData = res.data
+        this.datasource = res.data
       }
     });
   }

@@ -11,13 +11,17 @@ import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { MatTableModule } from '@angular/material/table';
 import { PaginationModule } from '../../shared/component/pagination/pagination.module';
 import { DeleteConfirmModule } from '../../shared/component/delete-confirm/delete-confirm.module';
+import { PermissionUserComponent } from './permission/permission-user/permission-user.component';
+import { RoleUserComponent } from './role/role-user/role-user.component';
 @NgModule({
   declarations: [
     RoleComponent,
     RoleDetailComponent,
+    RoleUserComponent,
     UserComponent,
     UserDetailComponent,
-    PermissionComponent
+    PermissionComponent,
+    PermissionUserComponent
   ],
   imports: [
     CommonModule,

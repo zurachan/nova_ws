@@ -46,7 +46,8 @@
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 10px">#</th>
-                    <th class="text-center">Tên</th>
+                    <th class="text-center" style="width: 200px;">Quyền</th>
+                    <th class="text-center">Nhân sự thuộc quyền</th>
                     <th class="text-center" style="width: 200px;">Thao tác</th>
                   </tr>
                 </thead>
@@ -54,6 +55,14 @@
                   <tr *ngFor="let item of datasource">
                     <td>{{item.stt}}</td>
                     <td>{{item.name}}</td>
+                    <td>
+                      <button title="Phân quyền {{item.name}}" class="btn btn-primary btn-sm mr-2"
+                        (click)="onAddUserRole(item)"><i class="fas fa-edit"></i></button> |
+                      <span class="ml-2">
+                        {{item.listUser}}
+                      </span>
+                    </td>
+
                     <td>
                       <div class="d-flex">
                         <button class="btn btn-primary mr-3" (click)="onEditRole(item)">Chỉnh sửa</button>

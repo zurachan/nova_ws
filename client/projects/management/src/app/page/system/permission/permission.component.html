@@ -28,20 +28,19 @@
               <table class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>
-                      Users\Roles
-                    </th>
-                    <th class="text-center" *ngFor="let role of roles">{{role.name}}</th>
+                    <th class="text-center" style="width: 200px;"> Quyền </th>
+                    <th class="text-center"> Nhân sự </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let user of users">
-                    <td>{{user.fullName}}</td>
-                    <td class="text-center" *ngFor="let role of roles">
-                      <!-- <input *ngIf="checkExisted(user.id, role.id); else noExisted" type="checkbox" checked>
-                      <ng-template #noExisted>
-                        <input *ngIf="checkExisted(user.id, role.id); else noExisted" type="checkbox">
-                      </ng-template> -->
+                  <tr *ngFor="let role of roles">
+                    <td>{{role.name}}</td>
+                    <td>
+                      <button title="Phân quyền {{role.name}}" class="btn btn-primary btn-sm mr-2"
+                        (click)="onAddUserRole(role.id)"><i class="fas fa-edit"></i></button> |
+                      <span class="ml-2">
+                        {{role.listUser}}
+                      </span>
                     </td>
                   </tr>
                 </tbody>

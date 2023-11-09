@@ -22,24 +22,36 @@ export class PermissionComponent implements OnInit {
     const subscription = forkJoin([this.getUser(), this.getRole(), this.getUserRole()])
       .subscribe(([userRes, roleRes, userRoleRes]: any) => {
         this.users = userRes.data;
-        this.roles = roleRes.data;
         this.userRoles = userRoleRes.data;
+
+        this.roles = roleRes.data.map((role: any) => {
+          let userRoles = this.userRoles.filter(ur => ur.roleId == role.id).map(ur => ur.userId);
+          let usersHasRole = this.users.filter(ur => userRoles.includes(ur.id))
+          role.listUser = [];
+          usersHasRole.forEach(x => { role.listUser.push(x) })
+          role.listUser = role.listUser.map(x => x.fullName).toString();
+          return role;
+        });
       });
     this.subscriptions.push(subscription);
   }
   getUser() {
-    return this.userService.GetAll({ pageNumber: 1, pageSize: 10000, user: null }).pipe();
+    return this.userService.GetPagingData({ pageNumber: 1, pageSize: 10000, user: null }).pipe();
   }
   getRole() {
-    return this.roleService.GetAll({ pageNumber: 1, pageSize: 10000, user: null }).pipe();
+    return this.roleService.GetPagingData({ pageNumber: 1, pageSize: 10000, user: null }).pipe();
   }
   getUserRole() {
     return this.userRoleService.GetAllUserRoles().pipe();
   }
 
-  // checkExisted(userId: number, roleId: number): boolean {
-  //   let userRole = this.userRoles.find(x => x.userId == userId && x.roleId == roleId);
-  //   return userRole ? true : false;
-  // }
+  getData() {
+
+  }
+
+
+  onAddUserRole(roleId: number) {
+    alert(roleId)
+  }
 
 }

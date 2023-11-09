@@ -9,7 +9,7 @@ export class CustomerService {
 
   constructor(private http: HttpClient) { }
 
-  GetAll(param: any): Observable<any[]> {
+  GetPagingData(param: any): Observable<any[]> {
     return this.http.post(`${urlApi}/search`, param).pipe(catchError((error) => {
       return of(error);
     }), switchMap((response) => {

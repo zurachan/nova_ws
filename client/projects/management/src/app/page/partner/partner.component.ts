@@ -49,7 +49,7 @@ export class PartnerComponent implements OnInit {
     let param = _.cloneDeep(this.form.value);
     if (isSearch) param.pageNumber = 0
 
-    this.partnerService.GetAll(param).subscribe((res: any) => {
+    this.partnerService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
 

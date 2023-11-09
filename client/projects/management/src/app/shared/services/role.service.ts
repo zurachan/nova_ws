@@ -9,12 +9,16 @@ const urlApi = 'https://localhost:44322/api/Roles';
 export class RoleService {
   constructor(private http: HttpClient) { }
 
-  GetAll(param: any): Observable<any[]> {
+  GetPagingData(param: any): Observable<any[]> {
     return this.http.post(`${urlApi}/search`, param).pipe(catchError((error) => {
       return of(error);
     }), switchMap((response) => {
       return of(response);
     }));
+  }
+
+  GetAll() {
+    return this.http.get<any>(`${urlApi}`).pipe();
   }
   /** GET ONE: find exactly by id */
   GetById(id: number): Observable<any> {

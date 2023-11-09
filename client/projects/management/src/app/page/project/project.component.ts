@@ -50,7 +50,7 @@ export class ProjectComponent implements OnInit {
     let param = _.cloneDeep(this.form.value);
     if (isSearch) param.pageNumber = 0
 
-    this.projectService.GetAll(param).subscribe((res: any) => {
+    this.projectService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
 

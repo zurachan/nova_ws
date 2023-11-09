@@ -6,6 +6,10 @@ import { DeleteConfirmComponent } from '../../../shared/component/delete-confirm
 import { NotifierService } from 'angular-notifier';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import _ from "lodash";
+import { UserService } from '../../../shared/services/user.service';
+import { UserRoleService } from '../../../shared/services/user-role.service';
+import { Subscription, forkJoin } from 'rxjs';
+import { RoleUserComponent } from './role-user/role-user.component';
 
 @Component({
   selector: 'app-role',
@@ -14,8 +18,8 @@ import _ from "lodash";
 })
 export class RoleComponent implements OnInit {
 
-  constructor(private roleService: RoleService, private fb: FormBuilder, private dialog: MatDialog, private notifier: NotifierService) { }
-
+  constructor(private userService: UserService, private roleService: RoleService, private userRoleService: UserRoleService, private fb: FormBuilder, private dialog: MatDialog, private notifier: NotifierService) { }
+  subscriptions: Subscription[] = [];
   form: FormGroup;
   datasource = [];
   paging = {
@@ -31,6 +35,10 @@ export class RoleComponent implements OnInit {
     recordStart: null,
     recordEnd: null,
   };
+
+  users = [];
+  userRoles = [];
+
 
   ngOnInit() {
     this.initForm();
@@ -48,21 +56,56 @@ export class RoleComponent implements OnInit {
   getData(isSearch?: boolean) {
     let param = _.cloneDeep(this.form.value);
     if (isSearch) param.pageNumber = 0
-    this.roleService.GetAll(param).subscribe((res: any) => {
-      if (res.success) {
-        this.paging = res.paging;
 
+    const subscription = forkJoin([this.getUser(), this.getRole(param), this.getUserRole()])
+      .subscribe(([userRes, roleRes, userRoleRes]: any) => {
+        this.users = userRes.data;
+        this.userRoles = userRoleRes.data;
+
+        this.paging = roleRes.paging;
         this.paging.recordStart = this.paging.currentRecords < 1 ? 0 : (this.paging.pageNumber - 1) * this.paging.pageSize + 1
         this.paging.recordEnd = this.paging.currentRecords < 1 ? 0 : this.paging.recordStart + this.paging.currentRecords - 1
-
         let start = this.paging.recordStart;
-        res.data.map((x: any) => {
-          x.stt = start++;
-          return x;
+
+        this.datasource = roleRes.data.map((role: any) => {
+          role.stt = start++;
+          let userRoles = this.userRoles.filter(ur => ur.roleId == role.id).map(ur => ur.userId);
+          let usersHasRole = this.users.filter(ur => userRoles.includes(ur.id))
+          role.listUser = [];
+          usersHasRole.forEach(x => { role.listUser.push(x) })
+          role.listUser = role.listUser.map(x => x.fullName).toString();
+          return role;
         });
-        this.datasource = res.data
-      }
-    });
+      });
+    this.subscriptions.push(subscription);
+
+    // this.roleService.GetPagingData(param).subscribe((res: any) => {
+    //   if (res.success) {
+    //     this.paging = res.paging;
+
+    //     this.paging.recordStart = this.paging.currentRecords < 1 ? 0 : (this.paging.pageNumber - 1) * this.paging.pageSize + 1
+    //     this.paging.recordEnd = this.paging.currentRecords < 1 ? 0 : this.paging.recordStart + this.paging.currentRecords - 1
+
+    //     let start = this.paging.recordStart;
+    //     res.data.map((x: any) => {
+    //       x.stt = start++;
+    //       return x;
+    //     });
+    //     this.datasource = res.data
+    //   }
+    // });
+  }
+
+  getUser() {
+    return this.userService.GetPagingData({ pageNumber: 1, pageSize: 10000, user: null }).pipe();
+  }
+
+  getRole(param: any) {
+    return this.roleService.GetPagingData(param).pipe();
+  }
+
+  getUserRole() {
+    return this.userRoleService.GetAllUserRoles().pipe();
   }
 
   onEditRole(item: any) {
@@ -107,5 +150,20 @@ export class RoleComponent implements OnInit {
     if (value.size)
       this.form.controls.pageSize.setValue(value.size)
     this.getData();
+  }
+
+  onAddUserRole(role) {
+    const dialogRef = this.dialog.open(RoleUserComponent, {
+      data: {
+        title: 'Danh sách nhân sự quyền ' + role.name,
+        role,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.getData()
+      }
+    });
   }
 }

@@ -13,11 +13,6 @@
         "title": "Role",
         "path": "system/role",
         "icon": "far fa-circle"
-      },
-      {
-        "title": "Phân quyền",
-        "path": "system/permission",
-        "icon": "far fa-circle"
       }
     ],
     "permission": ["ADMIN"]

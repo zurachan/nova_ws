@@ -17,6 +17,14 @@ export class UserRoleService {
     }));
   }
 
+  getUsersByRole(roleId: number): Observable<any[]> {
+    return this.http.get(`${urlApi}/Role/${roleId}`).pipe(catchError((error) => {
+      return of(error);
+    }), switchMap((response) => {
+      return of(response);
+    }));
+  }
+
   SaveUserRoles(model: any): Observable<any> {
     return this.http.post<any>(`${urlApi}`, model).pipe();
   }

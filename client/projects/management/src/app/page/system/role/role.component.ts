@@ -73,27 +73,11 @@ export class RoleComponent implements OnInit {
           let usersHasRole = this.users.filter(ur => userRoles.includes(ur.id))
           role.listUser = [];
           usersHasRole.forEach(x => { role.listUser.push(x) })
-          role.listUser = role.listUser.map(x => x.fullName).toString();
+          role.listUser = role.listUser.map(x => x.fullName).toString().replaceAll(',', '; ');
           return role;
         });
       });
     this.subscriptions.push(subscription);
-
-    // this.roleService.GetPagingData(param).subscribe((res: any) => {
-    //   if (res.success) {
-    //     this.paging = res.paging;
-
-    //     this.paging.recordStart = this.paging.currentRecords < 1 ? 0 : (this.paging.pageNumber - 1) * this.paging.pageSize + 1
-    //     this.paging.recordEnd = this.paging.currentRecords < 1 ? 0 : this.paging.recordStart + this.paging.currentRecords - 1
-
-    //     let start = this.paging.recordStart;
-    //     res.data.map((x: any) => {
-    //       x.stt = start++;
-    //       return x;
-    //     });
-    //     this.datasource = res.data
-    //   }
-    // });
   }
 
   getUser() {
@@ -153,14 +137,14 @@ export class RoleComponent implements OnInit {
   }
 
   onAddUserRole(role) {
-    const dialogRef = this.dialog.open(RoleUserComponent, {
+    const userRoldDialog = this.dialog.open(RoleUserComponent, {
       data: {
         title: 'Danh sách nhân sự quyền ' + role.name,
-        role,
+        item: role,
       }
     });
 
-    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+    userRoldDialog.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.getData()
       }

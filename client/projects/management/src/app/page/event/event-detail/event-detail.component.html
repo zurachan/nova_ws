@@ -21,16 +21,16 @@
             </div>
             <div class="col-md-12 form-group">
               <label for="description">Mô tả sự kiện</label>
-              <input class="form-control" id="description" name="description" type="text" formControlName="description"
-                placeholder="Nhập mô tả sự kiện...">
+              <textarea class="form-control" formControlName="description" rows="3"
+                placeholder="Nhập mô tả sự kiện..."></textarea>
               <mat-error class="textError"
                 *ngIf="form.controls.description.touched && form.controls.description.hasError('required')">
                 Mô tả sự kiện không được bỏ trống
               </mat-error>
             </div>
+
             <div class="col-md-6 form-group">
               <label for="start">Ngày bắt đầu</label>
-
               <div class="input-group">
                 <div class="custom-file">
                   <input class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="start"
@@ -41,12 +41,12 @@
                   <mat-datepicker #start></mat-datepicker>
                 </div>
               </div>
-
               <mat-error class="textError"
                 *ngIf="form.controls.start.touched && form.controls.start.hasError('required')">
                 Ngày bắt đầu sự kiện không được bỏ trống
               </mat-error>
             </div>
+
             <div class="col-md-6 form-group">
               <label for="end">Ngày kết thúc</label>
               <div class="input-group">

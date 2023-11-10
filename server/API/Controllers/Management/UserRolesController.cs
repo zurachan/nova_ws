@@ -42,6 +42,27 @@ namespace API.Controllers.Management
             return new Response<List<UserRole>>(domains);
         }
 
+        [HttpGet("Role/{roleId}")]
+        public async Task<Response<List<int>>> GetUsersByRole(int roleId)
+        {
+            if (_context.UserRoles == null)
+            {
+                return new Response<List<int>> { Success = false, Message = "Empty" };
+            }
+            var domains = await _context.UserRoles.Where(x => !x.IsDeleted && x.RoleId == roleId)
+                .Select(x => x.UserId)
+                .ToListAsync();
+
+            if (!domains.Any())
+            {
+                return new Response<List<int>> { Success = false, Message = "Not found" };
+            }
+
+            return new Response<List<int>>(domains);
+        }
+
+
+
         // POST: api/UserRoles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -52,39 +73,26 @@ namespace API.Controllers.Management
                 return new Response<bool> { Success = false, Message = "Empty" };
             }
 
-            var exitUserRole = await _context.UserRoles.FirstOrDefaultAsync(x => x.RoleId == model.RoleId && x.UserId == model.UserId && !x.IsDeleted);
+            var userRoles = await _context.UserRoles.Where(x => !x.IsDeleted && x.RoleId == model.RoleId).ToListAsync();
 
-            if (model.State)
+            userRoles.ForEach(x =>
             {
-                if (exitUserRole == null)
-                {
-                    var entity = new UserRole
-                    {
-                        UserId = model.UserId,
-                        RoleId = model.RoleId,
-                        CreatedDate = DateTime.Now,
-                        CreatedById = UserId,
+                x.IsDeleted = true;
+                x.UpdatedDate = DateTime.Now;
+                x.UpdatedById = UserId;
+            });
 
+            if (model.UserId.Any())
+            {
+                model.UserId.ForEach(x =>
+                {
+                    UserRole entity = new()
+                    {
+                        UserId = x,
+                        RoleId = model.RoleId,
                     };
                     _context.UserRoles.Add(entity);
-                }
-                else
-                {
-                    return new Response<bool> { Success = false, Message = "Duplicated" };
-                }
-            }
-            else
-            {
-                if (exitUserRole == null)
-                {
-                    return new Response<bool> { Success = false, Message = "Not existed" };
-                }
-                else
-                {
-                    exitUserRole.IsDeleted = true;
-                    exitUserRole.UpdatedDate = DateTime.Now;
-                    exitUserRole.UpdatedById = UserId;
-                }
+                });
             }
 
             try
@@ -96,7 +104,7 @@ namespace API.Controllers.Management
                 return new Response<bool> { Success = false, Message = ex.Message };
             }
 
-            return new Response<bool>();
+            return new Response<bool> { Success = true };
         }
     }
 }

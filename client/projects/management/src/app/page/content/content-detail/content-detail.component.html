@@ -31,10 +31,11 @@
 
             <div class="col-md-12 form-group">
               <label for="type">Loại bài viết</label>
-              <select class="custom-select form-control-border border-width-2" formControlName="type">
-                <option disabled hidden selected value="null">--Chọn--</option>
-                <option *ngFor="let item of contentType" [value]="item.id">{{item.name}}</option>
-              </select>
+              <mat-select class="custom-select form-control-border border-width-2" formControlName="type"
+                placeholder="Chọn loại sự kiện">
+                <mat-option *ngFor="let item of contentType" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
+
               <mat-error class="textError"
                 *ngIf="form.controls.type.touched && form.controls.type.hasError('required')">
                 Loại bài viết không được bỏ trống
@@ -43,10 +44,10 @@
 
             <div class="col-md-12 form-group">
               <label for="projectIds">Dự án</label>
-              <select multiple class="custom-select form-control-border border-width-2" formControlName="projectIds">
-                <option *ngFor="let item of listProject" [value]="item.id">{{item.name}}</option>
-              </select>
-
+              <mat-select class="custom-select form-control-border border-width-2" formControlName="projectIds" multiple
+                placeholder="Chọn dự án">
+                <mat-option *ngFor="let item of listProject" [value]="item.id">{{item.name}}</mat-option>
+              </mat-select>
               <mat-error class="textError"
                 *ngIf="form.controls.projectIds.touched && form.controls.projectIds.hasError('required')">
                 Dự án không được bỏ trống
@@ -55,7 +56,7 @@
           </div>
         </form>
 
-        <div class="col-md-12 form-group">
+        <!-- <div class="col-md-12 form-group">
           <label for="userId">Ảnh cover (chọn 1)</label>
           <div class="input-group">
             <div class="custom-file">
@@ -85,7 +86,7 @@
           </div>
           <img width="100%" *ngIf="contentImageUrl" [src]="contentImageUrl" class="image">
 
-        </div>
+        </div> -->
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" mat-dialog-close>Đóng</button>

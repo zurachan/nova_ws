@@ -68,6 +68,7 @@ export class ProjectDetailComponent implements OnInit {
     if (this.modal.type !== 'add') {
       this.projectService.GetById(this.modal.item.id).subscribe((res: any) => {
         if (res.success) {
+          debugger
           this.form.patchValue(res.data)
         }
       });

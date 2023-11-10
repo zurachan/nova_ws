@@ -20,6 +20,13 @@ export class ProjectService {
   GetById(id: number): Observable<any> {
     return this.http.get<any>(`${urlApi}` + `/${id}`).pipe();
   }
+  // GetById(id: number): Observable<any> {
+  //   return this.http.get<any>(`${urlApi}` + `/${id}`).pipe(catchError((error) => {
+  //     return of(error);
+  //   }), switchMap((response) => {
+  //     return of(response);
+  //   }));
+  // }
   /** CREATE: add  new  */
   Insert(model: any): Observable<any> {
     return this.http.post<any>(`${urlApi}`, model).pipe();

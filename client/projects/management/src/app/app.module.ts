@@ -32,6 +32,7 @@ import { EventDetailComponent } from './page/event/event-detail/event-detail.com
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { CustomerDetailComponent } from './page/customer/customer-detail/customer-detail.component';
+import { NgxSummernoteModule } from 'ngx-summernote';
 /**
  * Custom angular notifier options
  */
@@ -123,7 +124,8 @@ const customNotifierOptions: NotifierOptions = {
       },
     }),
     PaginationModule,
-    DeleteConfirmModule
+    DeleteConfirmModule,
+    NgxSummernoteModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -23,7 +23,7 @@ namespace API.Controllers.Management
         /// <returns></returns>
         [HttpPost("PostSingleFile")]
         public async Task<Response<bool>> PostSingleFile([FromForm] FileUpload fileDetails)
-        {
+         {
             if (fileDetails == null)
             {
                 return new Response<bool> { Success = false, Message = "Empty" };

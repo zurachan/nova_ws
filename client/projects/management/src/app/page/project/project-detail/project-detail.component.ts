@@ -2,12 +2,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
-import { ProjectPhase, ProjectType } from '../../../shared/core/Enum';
+import { ItemType, ProjectPhase, ProjectType } from '../../../shared/core/Enum';
 import { ProjectService } from '../../../shared/services/project.service';
 import _ from "lodash";
 import { PartnerService } from '../../../shared/services/partner.service';
 import { UserService } from '../../../shared/services/user.service';
 import { Subscription, forkJoin } from 'rxjs';
+import { FileService } from '../../../shared/services/file.service';
 
 interface data {
   title: string,
@@ -28,7 +29,8 @@ export class ProjectDetailComponent implements OnInit {
     private notifier: NotifierService,
     private projectService: ProjectService,
     private partnerService: PartnerService,
-    private userService: UserService) {
+    private userService: UserService,
+    private fileService: FileService) {
     this.modal = data;
   }
   subscriptions: Subscription[] = [];
@@ -39,12 +41,40 @@ export class ProjectDetailComponent implements OnInit {
   projectPhase = ProjectPhase;
   listPartner = [];
   listUser = [];
+  editorDisabled = false
 
   coverImage: any;
   coverImageUrl: any
+  coverFormFile = new FormData();
 
-  contentImage: any;
-  contentImageUrl: any
+  contentImage = [];
+  contentImageUrl = [];
+  contentFormFile = new FormData();
+
+  //Summernote
+  config: any = {
+    airMode: false,
+    tabDisable: true,
+    height: '200px',
+    uploadImagePath: '/api/upload',
+    toolbar: [
+      ['misc', ['undo', 'redo']],
+      [
+        'font',
+        [
+          'bold',
+          'italic',
+          'underline',
+          'strikethrough',
+          'clear'
+        ]
+      ],
+      ['fontsize', ['fontname', 'fontsize', 'color']],
+      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
+      ['view', ['codeview']]
+    ],
+  };
+  //
 
   ngOnInit() {
     this.initForm();
@@ -61,17 +91,23 @@ export class ProjectDetailComponent implements OnInit {
       phase: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       partnerIds: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       userId: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
+      coverImage: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
     })
   }
 
   getDetail() {
     if (this.modal.type !== 'add') {
-      this.projectService.GetById(this.modal.item.id).subscribe((res: any) => {
-        if (res.success) {
-          debugger
-          this.form.patchValue(res.data)
+      const subscription = forkJoin([
+        this.projectService.GetById(this.modal.item.id),
+        this.getCoverImage({ itemId: this.modal.item.id, itemType: ItemType.ProjectCover })
+      ]).subscribe(([detail, image]: any) => {
+        if (detail.success) { this.form.patchValue(detail.data) }
+        if (image.success && image.data.length > 0) {
+          this.coverImageUrl = "upload/" + image.data[0].filePath;
+          this.coverFormFile.append('Id', image.data[0].id);
         }
       });
+      this.subscriptions.push(subscription);
     }
   }
 
@@ -106,34 +142,54 @@ export class ProjectDetailComponent implements OnInit {
 
     request.subscribe((res: any) => {
       if (res.success) {
-        this.dialogRef.close(true)
-        let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
-        this.notifier.notify('success', message);
+        this.coverFormFile.append('ItemId', res.data.id);
+        this.coverFormFile.append('ItemType', ItemType.ProjectCover.toString());
+
+        this.fileService.uploadFile(this.coverFormFile).subscribe(imgRes => {
+          if (imgRes) {
+            this.dialogRef.close(true)
+            let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
+            this.notifier.notify('success', message);
+          } else {
+            this.notifier.notify('error', "Upload ảnh cover dự án không thành công");
+          }
+        })
       } else {
         this.notifier.notify('error', res.message);
       }
     })
   }
 
-  onUploadCoverImage(file: FileList) {
-    this.coverImage = file.item(0);
-
+  onUploadCoverImage(fileList: FileList) {
+    this.coverImage = fileList[0];
     //Show image preview
     let reader = new FileReader();
+    this.coverFormFile.append('FileDetails', this.coverImage);
     reader.onload = (event: any) => {
       this.coverImageUrl = event.target.result;
     }
+    debugger
     reader.readAsDataURL(this.coverImage);
+    console.log(this.coverFormFile)
   }
 
-  onUploadContentImage(file: FileList) {
-    this.contentImage = file.item(0);
+  onUploadContentImage(fileList: FileList) {
+    debugger
+    Array.from(fileList).forEach(file => {
+      this.contentImage.push(file);
+    });
+    debugger
+    this.contentImage.forEach(x => {
+      //Show image preview
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.contentImageUrl.push(event.target.result);
+      }
+      reader.readAsDataURL(x)
+    })
+  }
 
-    //Show image preview
-    let reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.contentImageUrl = event.target.result;
-    }
-    reader.readAsDataURL(this.contentImageUrl);
+  getCoverImage(param) {
+    return this.fileService.getImage(param).pipe()
   }
 }

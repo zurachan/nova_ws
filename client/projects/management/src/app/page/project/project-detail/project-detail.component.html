@@ -1,4 +1,5 @@
-<div class="modal" style="display: block;">
+<div class="modal fade show" id="modal-xl" data-keyboard="false" aria-modal="true" role="dialog"
+  style="padding-right: 15px; display: block;">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
@@ -21,8 +22,8 @@
             </div>
             <div class="col-md-12 form-group">
               <label for="content">Mô tả</label>
-              <textarea class="form-control" formControlName="content" rows="3"
-                placeholder="Nhập mô tả dự án..."></textarea>
+              <div [ngxSummernote]="config" [ngxSummernoteDisabled]="modal.type == 'view'" formControlName="content">
+              </div>
 
               <mat-error class="textError"
                 *ngIf="form.controls.content.touched && form.controls.content.hasError('required')">
@@ -74,45 +75,46 @@
               </mat-error>
             </div>
           </div>
+
+          <div class="col-md-12 form-group">
+            <label for="coverImage">Ảnh cover</label>
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="coverImage" formControlName="coverImage"
+                  (change)="onUploadCoverImage($event.target.files)">
+                <label class="custom-file-label" for="coverImage">Chọn 1 ảnh</label>
+              </div>
+            </div>
+            <mat-error class="textError"
+              *ngIf="form.controls.coverImage.touched && form.controls.coverImage.hasError('required')">
+              Ảnh cover không được bỏ trống
+            </mat-error>
+            <div class="d-flex justify-content-center">
+              <img width="30%" *ngIf="coverImageUrl" [src]="coverImageUrl" class="image">
+            </div>
+          </div>
+
+          <div class="col-md-12 form-group">
+            <label for="userId">Ảnh mô tả</label>
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" multiple class="custom-file-input" id="contentImage"
+                  (change)="onUploadContentImage($event.target.files)">
+                <label class="custom-file-label" for="contentImage">Chọn nhiều ảnh</label>
+              </div>
+            </div>
+            <ng-container *ngIf="contentImageUrl">
+              <img width="20%" *ngFor="let item of contentImageUrl" [src]="item" class="image">
+            </ng-container>
+          </div>
         </form>
-
-        <!-- <div class="col-md-12 form-group">
-          <label for="userId">Ảnh cover (chọn 1)</label>
-          <div class="input-group">
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="coverImage"
-                (change)="onUploadCoverImage($event.target.files)">
-              <label class="custom-file-label" for="coverImage">Choose file</label>
-            </div>
-            <div class="input-group-append">
-              <span class="input-group-text">Upload</span>
-            </div>
-          </div>
-
-          <img width="100%" *ngIf="coverImageUrl" [src]="coverImageUrl" class="image">
-        </div>
-
-        <div class="col-md-12 form-group">
-          <label for="userId">Ảnh mô tả (chọn nhiều)</label>
-          <div class="input-group">
-            <div class="custom-file">
-              <input type="file" multiple class="custom-file-input" id="contentImage"
-                (change)="onUploadContentImage($event.target.files)">
-              <label class="custom-file-label" for="contentImage">Choose file</label>
-            </div>
-            <div class="input-group-append">
-              <span class="input-group-text">Upload</span>
-            </div>
-          </div>
-          <img width="100%" *ngIf="contentImageUrl" [src]="contentImageUrl" class="image">
-
-        </div> -->
-
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" mat-dialog-close>Đóng</button>
         <button *ngIf="modal.type !== 'view'" type="button" class="btn btn-primary" (click)="onSave()">Lưu</button>
       </div>
     </div>
+    <!-- /.modal-content -->
   </div>
+  <!-- /.modal-dialog -->
 </div>

@@ -25,3 +25,15 @@ export const EventStatus = [
     { id: 3, name: 'Đang diễn ra' },
     { id: 4, name: 'Đã kết thúc' }
 ];
+
+export enum ItemType {
+    None = 0,
+    UserProfile = 1,
+    ProjectCover = 2,
+    ProjectContent = 3,
+    Content = 4,
+    ContentCover = 5,
+    Event = 6,
+    EventCover = 7,
+    Partner = 8
+}

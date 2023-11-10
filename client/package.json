@@ -23,8 +23,11 @@
     "@auth0/angular-jwt": "^5.1.2",
     "angular-notifier": "^14.0.0",
     "date-fns": "^2.30.0",
+    "jquery": "^3.7.1",
     "lodash": "^4.17.21",
+    "ngx-summernote": "^1.0.0",
     "rxjs": "~7.8.0",
+    "summernote": "^0.8.20",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },

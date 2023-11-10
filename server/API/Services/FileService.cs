@@ -29,23 +29,36 @@ namespace API.Services
         {
             try
             {
-
-                Guid guid = Guid.NewGuid();
-                var file = new File
+                if (fileUpload.Id != 0)
                 {
-                    FileName = guid.ToString() + fileUpload.FileDetails.FileName,
-                    ItemId = fileUpload.ItemId,
-                    ItemType = fileUpload.ItemType,
-                };
+                    var domain = await _context.Files.FirstOrDefaultAsync(x => x.Id == fileUpload.Id && !x.IsDeleted);
+                    if (domain == null) { return false; }
 
-                using (var stream = new MemoryStream())
-                {
-                    fileUpload.FileDetails.CopyTo(stream);
-                    file.FileData = stream.ToArray();
+                    domain.FileName = Guid.NewGuid().ToString() + fileUpload.FileDetails.FileName;
+                    using (var stream = new MemoryStream())
+                    {
+                        fileUpload.FileDetails.CopyTo(stream);
+                        domain.FileData = stream.ToArray();
+                    }
                 }
+                else
+                {
+                    Guid guid = Guid.NewGuid();
+                    var file = new File
+                    {
+                        FileName = guid.ToString() + fileUpload.FileDetails.FileName,
+                        ItemId = fileUpload.ItemId,
+                        ItemType = fileUpload.ItemType,
+                    };
 
-                var result = _context.Files.Add(file);
+                    using (var stream = new MemoryStream())
+                    {
+                        fileUpload.FileDetails.CopyTo(stream);
+                        file.FileData = stream.ToArray();
+                    }
 
+                    var result = _context.Files.Add(file);
+                }
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -103,6 +116,7 @@ namespace API.Services
                     await CopyStream(content, path);
                     var fileResponse = new FileResponse
                     {
+                        Id = file.Id,
                         FileName = file.FileName,
                         FilePath = file.FileName,
                     };

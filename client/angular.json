@@ -114,8 +114,14 @@
                 "output": "/upload/"
               }
             ],
-            "styles": ["projects/management/src/styles.css"],
-            "scripts": [],
+            "styles": [
+              "projects/management/src/styles.css",
+              "node_modules/summernote/dist/summernote-lite.min.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/summernote/dist/summernote-lite.min.js"
+            ],
             "allowedCommonJsDependencies": ["lodash"]
           },
           "configurations": {

@@ -16,7 +16,7 @@ import { AboutComponent } from './page/about/about.component';
     NavbarComponent,
     ContactComponent,
     AboutComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

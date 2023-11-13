@@ -33,6 +33,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { CustomerDetailComponent } from './page/customer/customer-detail/customer-detail.component';
 import { NgxSummernoteModule } from 'ngx-summernote';
+import { ErrorComponent } from './layout/error/error.component';
+import { HomeComponent } from './layout/home/home.component';
 /**
  * Custom angular notifier options
  */
@@ -96,6 +98,8 @@ const customNotifierOptions: NotifierOptions = {
     ProjectComponent,
     ProjectDetailComponent,
     ProfileComponent,
+    ErrorComponent,
+    HomeComponent
   ],
   imports: [
     ReactiveFormsModule,

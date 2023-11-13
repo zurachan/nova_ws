@@ -12,7 +12,7 @@ import { ErrorComponent } from './layout/error/error.component';
 import { HomeComponent } from './layout/home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, canActivate: [AuthenticateGuard] },
   { path: 'content', component: ContentComponent, canActivate: [AuthenticateGuard] },
   { path: 'customer', component: CustomerComponent, canActivate: [AuthenticateGuard] },
   { path: 'event', component: EventComponent, canActivate: [AuthenticateGuard] },

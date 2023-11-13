@@ -12,13 +12,13 @@ import { ErrorComponent } from './layout/error/error.component';
 import { HomeComponent } from './layout/home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AuthenticateGuard] },
+  { path: '', component: HomeComponent },
   { path: 'content', component: ContentComponent, canActivate: [AuthenticateGuard] },
   { path: 'customer', component: CustomerComponent, canActivate: [AuthenticateGuard] },
   { path: 'event', component: EventComponent, canActivate: [AuthenticateGuard] },
   { path: 'partner', component: PartnerComponent, canActivate: [AuthenticateGuard] },
   { path: 'project', component: ProjectComponent, canActivate: [AuthenticateGuard] },
-  { path: 'login', component: LoginComponent, canActivate: [AuthenticateGuard] },
+  { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthenticateGuard] },
   {
     path: 'system',

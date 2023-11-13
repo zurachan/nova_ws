@@ -1,4 +1,4 @@
-import { ContentType } from './../../../shared/core/Enum';
+import { ContentType, ItemType } from './../../../shared/core/Enum';
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, forkJoin } from 'rxjs';
@@ -7,6 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { ProjectService } from '../../../shared/services/project.service';
 import _ from "lodash";
 import { ContentService } from '../../../shared/services/content.service';
+import { FileService } from '../../../shared/services/file.service';
 
 interface data {
   title: string,
@@ -26,11 +27,10 @@ export class ContentDetailComponent implements OnInit {
     private fb: FormBuilder,
     private notifier: NotifierService,
     private projectService: ProjectService,
-    private contentService: ContentService) {
+    private contentService: ContentService,
+    private fileService: FileService) {
     this.modal = data;
   }
-  subscriptions: Subscription[] = [];
-  changeDetectorRef: ChangeDetectorRef;
 
   form: FormGroup;
   modal: any;
@@ -38,11 +38,38 @@ export class ContentDetailComponent implements OnInit {
 
   listProject = [];
 
-  coverImage: any;
   coverImageUrl: any
+  coverFormFile = new FormData();
 
-  contentImage: any;
-  contentImageUrl: any
+  contentImageUrl = [];
+  contentFormFile = new FormData();
+
+  //Summernote
+  config: any = {
+    airMode: false,
+    tabDisable: true,
+    height: '200px',
+    uploadImagePath: '/api/upload',
+    toolbar: [
+      ['misc', ['undo', 'redo']],
+      [
+        'font',
+        [
+          'bold',
+          'italic',
+          'underline',
+          'strikethrough',
+          'clear'
+        ]
+      ],
+      ['fontsize', ['fontname', 'fontsize', 'color']],
+      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
+      ['view', ['codeview']]
+    ],
+  };
+  //
+
+  itemId = 0;
 
   ngOnInit() {
     this.initForm();
@@ -57,28 +84,42 @@ export class ContentDetailComponent implements OnInit {
       mainContent: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       type: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       projectIds: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
+      coverImage: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
+      contentImage: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required]
     })
   }
 
   getDetail() {
     if (this.modal.type !== 'add') {
-      this.contentService.GetById(this.modal.item.id).subscribe((res: any) => {
-        if (res.success) {
-          this.form.patchValue(res.data)
+      forkJoin([
+        this.contentService.GetById(this.modal.item.id),
+        this.fileService.getImage({ itemId: this.modal.item.id, itemType: ItemType.ContentCover }),
+        this.fileService.getImage({ itemId: this.modal.item.id, itemType: ItemType.Content })
+      ]).subscribe(([detail, cover, content]: any) => {
+        if (detail.success) { this.form.patchValue(detail.data) }
+        if (cover.success && cover.data.length > 0) {
+          this.form.controls.coverImage.clearValidators();
+          this.form.controls.coverImage.updateValueAndValidity();
+
+          this.coverImageUrl = "upload/" + cover.data[0].filePath;
+          this.coverFormFile.append('Id', cover.data[0].id);
         }
-      });
+        if (content.success && content.data.length > 0) {
+          this.form.controls.contentImage.clearValidators();
+          this.form.controls.contentImage.updateValueAndValidity();
+
+          content.data.forEach(img => {
+            this.contentImageUrl.push("upload/" + img.filePath);
+          });
+        }
+      })
     }
   }
 
-  bindValueForm() {
-    this.form.patchValue(this.modal.item);
-  }
-
   getDropdownData() {
-    const subscription = this.getProject().subscribe((project: any) => {
+    this.getProject().subscribe((project: any) => {
       this.listProject = project.data;
     });
-    this.subscriptions.push(subscription);
   }
 
   getProject() {
@@ -95,34 +136,50 @@ export class ContentDetailComponent implements OnInit {
 
     request.subscribe((res: any) => {
       if (res.success) {
-        this.dialogRef.close(true)
-        let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
-        this.notifier.notify('success', message);
+        this.itemId = res.data.id;
+        this.coverFormFile.append('ItemId', this.itemId.toString());
+        this.coverFormFile.append('ItemType', ItemType.ContentCover.toString());
+
+        this.contentFormFile.append('ItemId', this.itemId.toString());
+        this.contentFormFile.append('ItemType', ItemType.Content.toString());
+
+        forkJoin([this.fileService.uploadFile(this.coverFormFile), this.fileService.uploadMultiFile(this.contentFormFile)])
+          .subscribe(([singleRes, multiRes]: any) => {
+            if (!singleRes) {
+              this.notifier.notify('error', "Upload ảnh cover bài viết không thành công");
+            } else if (!multiRes) {
+              this.notifier.notify('error', "Upload ảnh nội dung bài viết không thành công");
+            } else {
+              this.dialogRef.close(true)
+              let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
+              this.notifier.notify('success', message);
+            }
+          })
       } else {
         this.notifier.notify('error', res.message);
       }
     })
   }
 
-  onUploadCoverImage(file: FileList) {
-    this.coverImage = file.item(0);
-
-    //Show image preview
+  onUploadCoverImage(fileList: FileList) {
     let reader = new FileReader();
+    this.coverFormFile.append('FileDetails', fileList[0]);
     reader.onload = (event: any) => {
       this.coverImageUrl = event.target.result;
     }
-    reader.readAsDataURL(this.coverImage);
+    reader.readAsDataURL(fileList[0]);
   }
 
-  onUploadContentImage(file: FileList) {
-    this.contentImage = file.item(0);
+  onUploadContentImage(fileList: FileList) {
+    this.contentImageUrl = [];
+    Array.from(fileList).forEach(file => {
+      this.contentFormFile.append('FileDetails', file)
 
-    //Show image preview
-    let reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.contentImageUrl = event.target.result;
-    }
-    reader.readAsDataURL(this.contentImageUrl);
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.contentImageUrl.push(event.target.result);
+      }
+      reader.readAsDataURL(file)
+    });
   }
 }

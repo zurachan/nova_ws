@@ -33,7 +33,6 @@ export class ProjectDetailComponent implements OnInit {
     private fileService: FileService) {
     this.modal = data;
   }
-  subscriptions: Subscription[] = [];
 
   form: FormGroup;
   modal: any;
@@ -43,14 +42,13 @@ export class ProjectDetailComponent implements OnInit {
   listUser = [];
   editorDisabled = false
 
-  coverImage: any;
   coverImageUrl: any
   coverFormFile = new FormData();
 
-  contentImage = [];
   contentImageUrl = [];
   contentFormFile = new FormData();
 
+  itemId = 0;
   //Summernote
   config: any = {
     airMode: false,
@@ -92,22 +90,34 @@ export class ProjectDetailComponent implements OnInit {
       partnerIds: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       userId: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       coverImage: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
+      contentImage: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required]
     })
   }
 
   getDetail() {
     if (this.modal.type !== 'add') {
-      const subscription = forkJoin([
+      forkJoin([
         this.projectService.GetById(this.modal.item.id),
-        this.getCoverImage({ itemId: this.modal.item.id, itemType: ItemType.ProjectCover })
-      ]).subscribe(([detail, image]: any) => {
+        this.fileService.getImage({ itemId: this.modal.item.id, itemType: ItemType.ProjectCover }),
+        this.fileService.getImage({ itemId: this.modal.item.id, itemType: ItemType.ProjectContent })
+      ]).subscribe(([detail, cover, content]: any) => {
         if (detail.success) { this.form.patchValue(detail.data) }
-        if (image.success && image.data.length > 0) {
-          this.coverImageUrl = "upload/" + image.data[0].filePath;
-          this.coverFormFile.append('Id', image.data[0].id);
+        if (cover.success && cover.data.length > 0) {
+          this.form.controls.coverImage.clearValidators();
+          this.form.controls.coverImage.updateValueAndValidity();
+
+          this.coverImageUrl = "upload/" + cover.data[0].filePath;
+          this.coverFormFile.append('Id', cover.data[0].id);
+        }
+        if (content.success && content.data.length > 0) {
+          this.form.controls.contentImage.clearValidators();
+          this.form.controls.contentImage.updateValueAndValidity();
+
+          content.data.forEach(img => {
+            this.contentImageUrl.push("upload/" + img.filePath);
+          });
         }
       });
-      this.subscriptions.push(subscription);
     }
   }
 
@@ -116,12 +126,10 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   getDropdownData() {
-    const subscription = forkJoin([this.getUser(), this.getPartner()])
-      .subscribe(([user, partner]: any) => {
-        this.listUser = user.data;
-        this.listPartner = partner.data;
-      });
-    this.subscriptions.push(subscription);
+    forkJoin([this.getUser(), this.getPartner()]).subscribe(([user, partner]: any) => {
+      this.listUser = user.data;
+      this.listPartner = partner.data;
+    });
   }
 
   getUser() {
@@ -135,25 +143,31 @@ export class ProjectDetailComponent implements OnInit {
   onSave() {
     this.form.markAllAsTouched();
     if (this.form.invalid) return
-
     let model = _.cloneDeep(this.form.getRawValue());
 
     let request = this.modal.type == 'add' ? this.projectService.Insert(model) : this.projectService.Update(model);
 
     request.subscribe((res: any) => {
       if (res.success) {
-        this.coverFormFile.append('ItemId', res.data.id);
+        this.itemId = res.data.id;
+        this.coverFormFile.append('ItemId', this.itemId.toString());
         this.coverFormFile.append('ItemType', ItemType.ProjectCover.toString());
 
-        this.fileService.uploadFile(this.coverFormFile).subscribe(imgRes => {
-          if (imgRes) {
-            this.dialogRef.close(true)
-            let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
-            this.notifier.notify('success', message);
-          } else {
-            this.notifier.notify('error', "Upload ảnh cover dự án không thành công");
-          }
-        })
+        this.contentFormFile.append('ItemId', this.itemId.toString());
+        this.contentFormFile.append('ItemType', ItemType.ProjectContent.toString());
+
+        forkJoin([this.fileService.uploadFile(this.coverFormFile), this.fileService.uploadMultiFile(this.contentFormFile)])
+          .subscribe(([singleRes, multiRes]: any) => {
+            if (!singleRes) {
+              this.notifier.notify('error', "Upload ảnh cover dự án không thành công");
+            } else if (!multiRes) {
+              this.notifier.notify('error', "Upload ảnh mô tả dự án không thành công");
+            } else {
+              this.dialogRef.close(true)
+              let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
+              this.notifier.notify('success', message);
+            }
+          })
       } else {
         this.notifier.notify('error', res.message);
       }
@@ -161,35 +175,24 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onUploadCoverImage(fileList: FileList) {
-    this.coverImage = fileList[0];
-    //Show image preview
     let reader = new FileReader();
-    this.coverFormFile.append('FileDetails', this.coverImage);
+    this.coverFormFile.append('FileDetails', fileList[0]);
     reader.onload = (event: any) => {
       this.coverImageUrl = event.target.result;
     }
-    debugger
-    reader.readAsDataURL(this.coverImage);
-    console.log(this.coverFormFile)
+    reader.readAsDataURL(fileList[0]);
   }
 
   onUploadContentImage(fileList: FileList) {
-    debugger
+    this.contentImageUrl = [];
     Array.from(fileList).forEach(file => {
-      this.contentImage.push(file);
-    });
-    debugger
-    this.contentImage.forEach(x => {
-      //Show image preview
+      this.contentFormFile.append('FileDetails', file)
+
       let reader = new FileReader();
       reader.onload = (event: any) => {
         this.contentImageUrl.push(event.target.result);
       }
-      reader.readAsDataURL(x)
-    })
-  }
-
-  getCoverImage(param) {
-    return this.fileService.getImage(param).pipe()
+      reader.readAsDataURL(file)
+    });
   }
 }

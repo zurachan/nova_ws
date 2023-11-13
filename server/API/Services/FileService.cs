@@ -1,7 +1,7 @@
-﻿using API.Common;
-using API.Domains;
+﻿using API.Domains;
 using API.Model.Management;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using File = API.Domains.File;
 
 namespace API.Services
@@ -10,7 +10,7 @@ namespace API.Services
     {
         Task<bool> PostFileAsync(FileUpload fileUpload);
 
-        Task<bool> PostMultiFileAsync(List<FileUpload> fileData);
+        Task<bool> PostMultiFileAsync(MultiFileUpload listFile);
 
         Task<List<FileResponse>> DownloadFileByItem(int itemId, int itemType);
 
@@ -19,10 +19,14 @@ namespace API.Services
     public class FileService : IFileService
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        int UserId;
 
-        public FileService(AppDbContext context)
+        public FileService(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            UserId = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue("UserId"));
         }
 
         public async Task<bool> PostFileAsync(FileUpload fileUpload)
@@ -57,7 +61,7 @@ namespace API.Services
                         file.FileData = stream.ToArray();
                     }
 
-                    var result = _context.Files.Add(file);
+                    _context.Files.Add(file);
                 }
                 await _context.SaveChangesAsync();
                 return true;
@@ -68,27 +72,43 @@ namespace API.Services
             }
         }
 
-        public async Task<bool> PostMultiFileAsync(List<FileUpload> fileData)
+        public async Task<bool> PostMultiFileAsync(MultiFileUpload listFile)
         {
             try
             {
-                foreach (FileUpload file in fileData)
+                var existed = await _context.Files.Where(x => x.ItemId == listFile.ItemId && x.ItemType == listFile.ItemType).ToListAsync();
+                if (existed.Any())
                 {
-                    var fileDetails = new File
+                    existed.ForEach(x =>
                     {
-                        FileName = file.FileDetails.FileName,
-                        ItemId = file.ItemId,
-                        ItemType = file.ItemType,
+                        x.IsDeleted = true;
+                        x.UpdatedDate = DateTime.Now;
+                        x.UpdatedById = UserId;
+                    });
+                }
+
+                listFile.FileDetails.ForEach(x =>
+                {
+                    Guid guid = Guid.NewGuid();
+                    var file = new File
+                    {
+                        FileName = guid.ToString() + x.FileName,
+                        ItemId = listFile.ItemId,
+                        ItemType = listFile.ItemType,
+                        CreatedById = UserId,
+                        CreatedDate = DateTime.Now,
                     };
 
                     using (var stream = new MemoryStream())
                     {
-                        file.FileDetails.CopyTo(stream);
-                        fileDetails.FileData = stream.ToArray();
+                        x.CopyTo(stream);
+                        file.FileData = stream.ToArray();
                     }
 
-                    var result = _context.Files.Add(fileDetails);
-                }
+                    _context.Files.Add(file);
+
+                });
+
                 await _context.SaveChangesAsync();
                 return true;
             }

@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
 import _ from "lodash";
+import { ContentType } from '../../shared/core/Enum';
 
 @Component({
   selector: 'app-content',
@@ -62,6 +63,7 @@ export class ContentComponent implements OnInit {
           return x;
         });
         this.datasource = res.data
+        console.log(this.datasource)
       }
     });
   }
@@ -110,6 +112,11 @@ export class ContentComponent implements OnInit {
     if (value.size)
       this.form.controls.pageSize.setValue(value.size)
     this.getData();
+  }
+
+  getTypeStr(typeId: number) {
+    let type = ContentType.find(x => x.id == typeId);
+    return type ? type.name : null;
   }
 
 }

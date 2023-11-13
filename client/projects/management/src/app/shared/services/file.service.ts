@@ -19,6 +19,14 @@ export class FileService {
     }));
   }
 
+  uploadMultiFile(param: any) {
+    return this.http.post(`${urlApi}/PostMultipleFile`, param).pipe(catchError((error) => {
+      return of(error);
+    }), switchMap((response) => {
+      return of(response);
+    }));
+  }
+
   getImage(param: any): Observable<any> {
     return this.http.get<any>(`${urlApi}/DownloadItemFile?itemId=${param.itemId}&itemType=${param.itemType}`).pipe();
   }

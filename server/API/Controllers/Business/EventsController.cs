@@ -93,6 +93,7 @@ namespace API.Controllers.Business
                 return new Response<EventModel> { Success = false, Message = "Not found" };
 
             domain.Name = model.Name;
+            domain.Description = model.Description;
             domain.Start = model.Start;
             domain.End = model.End;
             domain.Status = model.Status;

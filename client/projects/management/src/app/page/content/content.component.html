@@ -49,6 +49,7 @@
                     <th class="text-center" style="width: 10px">#</th>
                     <th class="text-center">Tiêu đề</th>
                     <th class="text-center">Nội dung</th>
+                    <th class="text-center">Loại bài viết</th>
                     <th class="text-center" style="width: 310px">Thao tác</th>
                   </tr>
                 </thead>
@@ -56,7 +57,10 @@
                   <tr *ngFor="let item of datasource">
                     <td>{{item.stt}}</td>
                     <td>{{item.title}}</td>
-                    <td>{{item.mainContent}}</td>
+                    <td>
+                      <div [ngxSummernoteView]=item.mainContent></div>
+                    </td>
+                    <td> {{getTypeStr(item.type)}}</td>
                     <td>
                       <div class="d-flex">
                         <button title="Xem chi tiết bài viết" class="btn btn-info mr-3"

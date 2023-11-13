@@ -23,7 +23,7 @@ namespace API.Controllers.Management
         /// <returns></returns>
         [HttpPost("PostSingleFile")]
         public async Task<Response<bool>> PostSingleFile([FromForm] FileUpload fileDetails)
-         {
+        {
             if (fileDetails == null)
             {
                 return new Response<bool> { Success = false, Message = "Empty" };
@@ -46,16 +46,16 @@ namespace API.Controllers.Management
         /// <param name="file"></param>
         /// <returns></returns>
         [HttpPost("PostMultipleFile")]
-        public async Task<Response<bool>> PostMultipleFile([FromForm] List<FileUpload> fileDetails)
+        public async Task<Response<bool>> PostMultipleFile([FromForm] MultiFileUpload listFiles)
         {
-            if (fileDetails == null)
+            if (!listFiles.FileDetails.Any())
             {
                 return new Response<bool> { Success = false, Message = "Empty" };
             }
             try
             {
-                var result = await _uploadService.PostMultiFileAsync(fileDetails);
-                return new Response<bool> { Success = result };
+                var result = await _uploadService.PostMultiFileAsync(listFiles);
+                return new Response<bool> { Success = true };
             }
             catch (Exception)
             {

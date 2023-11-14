@@ -20,10 +20,15 @@ namespace API.Services
     public class FileService : IFileService
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        int UserId;
 
-        public FileService(AppDbContext context)
+        public FileService(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            var value = _httpContextAccessor.HttpContext.User.FindFirstValue("UserId");
+            UserId = value != null ? int.Parse(value) : 0;
         }
 
         public async Task<bool> PostFileAsync(FileUpload fileUpload)
@@ -37,6 +42,7 @@ namespace API.Services
 
                     domain.FileName = Guid.NewGuid().ToString() + fileUpload.FileDetails.FileName;
                     domain.UpdatedDate = DateTime.Now;
+                    domain.UpdatedById = UserId;
                     using (var stream = new MemoryStream())
                     {
                         fileUpload.FileDetails.CopyTo(stream);
@@ -52,6 +58,7 @@ namespace API.Services
                         ItemId = fileUpload.ItemId,
                         ItemType = fileUpload.ItemType,
                         CreatedDate = DateTime.Now,
+                        CreatedById = UserId,
                     };
 
                     using (var stream = new MemoryStream())
@@ -82,6 +89,7 @@ namespace API.Services
                     {
                         x.IsDeleted = true;
                         x.UpdatedDate = DateTime.Now;
+                        x.UpdatedById = UserId;
                     });
                 }
 
@@ -94,6 +102,7 @@ namespace API.Services
                         ItemId = listFile.ItemId,
                         ItemType = listFile.ItemType,
                         CreatedDate = DateTime.Now,
+                        CreatedById = UserId,
                     };
 
                     using (var stream = new MemoryStream())

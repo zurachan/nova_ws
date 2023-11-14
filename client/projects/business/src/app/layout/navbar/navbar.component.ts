@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -8,8 +7,8 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute) { }
-  currentRoute = '';
+  constructor() { }
+
 
   menu = [
     { name: "Trang chủ", class: "nav-item", link: "" },

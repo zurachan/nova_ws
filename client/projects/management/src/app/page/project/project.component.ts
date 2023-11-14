@@ -41,6 +41,8 @@ export class ProjectComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       project: [null],
+      type: [0],
+      phase: [0],
       pageNumber: 1,
       pageSize: 5
     })

@@ -26,6 +26,13 @@ export const EventStatus = [
     { id: 4, name: 'Đã kết thúc' }
 ];
 
+export enum ProjectTypeEnum {
+    None,
+    Urban,
+    Tourism,
+    Industrial
+}
+
 export enum ItemType {
     None = 0,
     UserProfile = 1,

@@ -22,7 +22,8 @@ namespace API.Controllers.Management
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
-            UserId = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue("UserId"));
+            var value = _httpContextAccessor.HttpContext.User.FindFirstValue("UserId");
+            UserId = value != null ? int.Parse(value) : 0;
         }
 
         // GET: api/Users

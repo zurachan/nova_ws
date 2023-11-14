@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProjectGridComponent } from './project-grid/project-grid.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectComponent } from './project.component';
+
+import { ProjectGridComponent } from './project-grid/project-grid.component';
 
 const routes: Routes = [
   { path: '', component: ProjectComponent },

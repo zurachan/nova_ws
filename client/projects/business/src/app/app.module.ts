@@ -8,6 +8,8 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 import { DashboardComponent } from './page/dashboard/dashboard.component';
 import { ContactComponent } from './page/contact/contact.component';
 import { AboutComponent } from './page/about/about.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,10 @@ import { AboutComponent } from './page/about/about.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

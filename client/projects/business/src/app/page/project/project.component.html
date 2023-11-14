@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-12 col-lg-8">
         <div class="title-single-box">
-          <h1 class="title-single">Các loại hình dự án</h1>
+          <h1 class="title-single">Phân loại dự án</h1>
         </div>
       </div>
       <div class="col-md-12 col-lg-4">
@@ -28,14 +28,81 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="row">
-          <div class="col-md-4 col-lg-4">
-            Bất động sản đô thị
+        <div class="row mt-4 mb-4">
+          <div class="col-sm-12 col-md-6">
+            <div class="testimonial-img">
+              <a [routerLink]="['urban']" routerLinkActive="router-link-active"><img src="assets/img/bds-do-thi.jpg"
+                  alt="" class="img-fluid"></a>
+            </div>
           </div>
-          <div class="col-md-6 col-lg-6">
-
+          <div class="col-sm-12 col-md-6">
+            <div class="testimonial-ico">
+              <a [routerLink]="['urban']" routerLinkActive="router-link-active" class="text-uppercase"
+                style="font-size: 40px;font-weight: bolder ;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; ">
+                Bất động sản đô thị
+              </a>
+            </div>
+            <div class="testimonials-content">
+              <p class="testimonial-text">
+                Tập trung phát triển các dự án bất động sản nhà ở Trung tâm TP.HCM và Bất động sản Đô thị vệ tinh tại
+                các tỉnh thành lân cận.
+              </p>
+            </div>
+            <div class="testimonial-author-box">
+              <a [routerLink]="['urban']" routerLinkActive="router-link-active">Xem thêm</a>
+            </div>
           </div>
+        </div>
 
+        <div class="row mt-4 mb-4">
+          <div class="col-sm-12 col-md-6">
+            <div class="testimonial-ico">
+              <a [routerLink]="['tourism']" routerLinkActive="router-link-active" class="text-uppercase"
+                style="font-size: 40px;font-weight: bolder ;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; ">
+                Bất động sản du lịch
+              </a>
+            </div>
+            <div class="testimonials-content">
+              <p class="testimonial-text">
+                Tiếp tục phát triển bất động sản Du lịch tại các thành phố có tiềm năng du lịch.
+              </p>
+            </div>
+            <div class="testimonial-author-box">
+              <a [routerLink]="['tourism']" routerLinkActive="router-link-active">Xem thêm</a>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <div class="testimonial-img">
+              <a [routerLink]="['tourism']" routerLinkActive="router-link-active"><img src="assets/img/bds-du-lich.png"
+                  alt="" class="img-fluid"></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+          <div class="col-sm-12 col-md-6">
+            <div class="testimonial-img">
+              <a [routerLink]="['industrial']" routerLinkActive="router-link-active"><img
+                  src="assets/img/bds-cong-nghiep.jpg" alt="" class="img-fluid"></a>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <div class="testimonial-ico">
+              <a [routerLink]="['industrial']" routerLinkActive="router-link-active" class="text-uppercase"
+                style="font-size: 40px;font-weight: bolder ;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; ">
+                Bất động sản công nghiệp
+              </a>
+            </div>
+            <div class="testimonials-content">
+              <p class="testimonial-text">
+                Tập trung nghiên cứu và phát triển các cụm Khu công nghiệp ở các tỉnh thành như Bà Rịa - Vũng Tàu, Đồng
+                Nai, Long An, Tây Ninh...
+              </p>
+            </div>
+            <div class="testimonial-author-box">
+              <a [routerLink]="['industrial']" routerLinkActive="router-link-active">Xem thêm</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

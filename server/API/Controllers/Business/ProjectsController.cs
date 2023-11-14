@@ -22,7 +22,8 @@ namespace API.Controllers.Business
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
-            UserId = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue("UserId"));
+            var value = _httpContextAccessor.HttpContext.User.FindFirstValue("UserId");
+            UserId = value != null ? int.Parse(value) : 0;
         }
 
         // GET: api/Projects
@@ -35,9 +36,24 @@ namespace API.Controllers.Business
             }
             var validFilter = new UserSearchParam(param.PageNumber, param.PageSize);
 
-            var query = _context.Projects
-                .Where(x => !string.IsNullOrEmpty(param.Project) ? !x.IsDeleted && x.Name.Contains(param.Project) : !x.IsDeleted)
-                .OrderByDescending(x => x.Id);
+            var query = _context.Projects.Where(x => !x.IsDeleted);
+
+            if (!string.IsNullOrEmpty(param.Project))
+            {
+                query = query.Where(x => x.Name.Contains(param.Project));
+            }
+
+            if (param.Type != 0)
+            {
+                query = query.Where(x => x.Type == param.Type);
+            }
+
+            if (param.Phase != 0)
+            {
+                query = query.Where(x => x.Phase == param.Phase);
+            }
+
+            query.OrderByDescending(x => x.Id);
 
             var pagedData = await query
                 .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)

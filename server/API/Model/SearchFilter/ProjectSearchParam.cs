@@ -7,5 +7,7 @@
         }
 
         public string? Project { get; set; }
+        public int Type { get; set; }
+        public int Phase { get; set; }
     }
 }

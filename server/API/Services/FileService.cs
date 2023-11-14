@@ -1,4 +1,5 @@
 ﻿using API.Domains;
+using API.Domains.Management;
 using API.Model.Management;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -19,14 +20,10 @@ namespace API.Services
     public class FileService : IFileService
     {
         private readonly AppDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        int UserId;
 
-        public FileService(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public FileService(AppDbContext context)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
-            UserId = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue("UserId"));
         }
 
         public async Task<bool> PostFileAsync(FileUpload fileUpload)
@@ -39,6 +36,7 @@ namespace API.Services
                     if (domain == null) { return false; }
 
                     domain.FileName = Guid.NewGuid().ToString() + fileUpload.FileDetails.FileName;
+                    domain.UpdatedDate = DateTime.Now;
                     using (var stream = new MemoryStream())
                     {
                         fileUpload.FileDetails.CopyTo(stream);
@@ -53,6 +51,7 @@ namespace API.Services
                         FileName = guid.ToString() + fileUpload.FileDetails.FileName,
                         ItemId = fileUpload.ItemId,
                         ItemType = fileUpload.ItemType,
+                        CreatedDate = DateTime.Now,
                     };
 
                     using (var stream = new MemoryStream())
@@ -83,7 +82,6 @@ namespace API.Services
                     {
                         x.IsDeleted = true;
                         x.UpdatedDate = DateTime.Now;
-                        x.UpdatedById = UserId;
                     });
                 }
 
@@ -95,7 +93,6 @@ namespace API.Services
                         FileName = guid.ToString() + x.FileName,
                         ItemId = listFile.ItemId,
                         ItemType = listFile.ItemType,
-                        CreatedById = UserId,
                         CreatedDate = DateTime.Now,
                     };
 

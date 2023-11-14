@@ -104,45 +104,29 @@
 
     <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
       <ul class="navbar-nav">
+        <li class="{{item.class}}" *ngFor="let item of menu">
+          <a *ngIf="item.children && item.children.length > 0; else noChildren" class="nav-link dropdown-toggle"
+            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            (click)="onChangPage(item)" routerLink="{{item.link}}"
+            routerLinkActive="router-link-active">{{item.name}}</a>
 
-        <li class="nav-item">
-          <a class="nav-link active" [routerLink]="['']" routerLinkActive="router-link-active">Trang chủ</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link " [routerLink]="['/about']" routerLinkActive="router-link-active">Giới thiệu</a>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">Dự án</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" [routerLink]="['']" routerLinkActive="router-link-active">Bất động sản đô thị</a>
-            <a class="dropdown-item" [routerLink]="['']" routerLinkActive="router-link-active">Bất động sản du lịch</a>
-            <a class="dropdown-item" [routerLink]="['']" routerLinkActive="router-link-active">Bất động sản công
-              nghiệp</a>
+            <a class="dropdown-item" *ngFor="let child of item.children" (click)="onChangPage(item)"
+              [routerLink]="child.link" routerLinkActive="router-link-active">{{child.name}}</a>
           </div>
-        </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">Tin tức</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" [routerLink]="['content']" routerLinkActive="router-link-active">Bài viết</a>
-            <a class="dropdown-item" [routerLink]="['event']" routerLinkActive="router-link-active">Sự kiện</a>
-          </div>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="router-link-active">Liên hệ</a>
+          <ng-template #noChildren>
+            <a class="nav-link" (click)="onChangPage(item)" routerLink="{{item.link}}"
+              routerLinkActive="router-link-active">{{item.name}}</a>
+          </ng-template>
         </li>
       </ul>
     </div>
 
-    <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse"
+    <!-- <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse"
       data-bs-target="#navbarTogglerDemo01">
       <i class="bi bi-search"></i>
-    </button>
+    </button> -->
 
   </div>
 </nav><!-- End Header/Navbar -->

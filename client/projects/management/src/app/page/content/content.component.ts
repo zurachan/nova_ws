@@ -63,7 +63,6 @@ export class ContentComponent implements OnInit {
           return x;
         });
         this.datasource = res.data
-        console.log(this.datasource)
       }
     });
   }

@@ -9,7 +9,6 @@ using System.Security.Claims;
 
 namespace API.Controllers.Business
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PartnersController : ControllerBase
@@ -69,6 +68,7 @@ namespace API.Controllers.Business
 
         // PUT: api/Partners/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<Response<Partner>> PutPartner(int id, Partner model)
         {
@@ -101,6 +101,7 @@ namespace API.Controllers.Business
 
         // POST: api/Partners
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<Response<Partner>> PostPartner(Partner model)
         {
@@ -118,6 +119,7 @@ namespace API.Controllers.Business
         }
 
         // DELETE: api/Partners/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<Response<Partner>> DeletePartner(int id)
         {

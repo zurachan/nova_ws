@@ -37,7 +37,7 @@ export class SidenavComponent implements OnInit {
         this.currentUrl = event.url
         this.getMenu();
       });
-
+    this.getMenu();
     this.authenService.updateCredential.subscribe((res: any) => { this.credential = res; })
   }
 
@@ -50,6 +50,7 @@ export class SidenavComponent implements OnInit {
         x.isShow = found ? true : false
         return x;
       })
+      debugger
       this.menu = this.menu.filter(x => x.isShow);
       let urlArr = this.currentUrl.split('/').filter(x => x !== '');
       if (urlArr.length == 1) {

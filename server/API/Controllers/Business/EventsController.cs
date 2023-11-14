@@ -3,6 +3,7 @@ using API.Domains;
 using API.Domains.Business;
 using API.Model.Business;
 using API.Model.SearchFilter;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -82,6 +83,7 @@ namespace API.Controllers.Business
 
         // PUT: api/Events/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<Response<EventModel>> PutEvent(int id, EventModel model)
         {
@@ -139,6 +141,7 @@ namespace API.Controllers.Business
 
         // POST: api/Events
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<Response<EventModel>> PostEvent(EventModel model)
         {
@@ -179,6 +182,7 @@ namespace API.Controllers.Business
         }
 
         // DELETE: api/Events/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<Response<Event>> DeleteEvent(int id)
         {

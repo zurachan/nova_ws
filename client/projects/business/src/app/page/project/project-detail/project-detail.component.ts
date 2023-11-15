@@ -15,7 +15,8 @@ export class ProjectDetailComponent implements OnInit {
     name: null,
     content: null,
     type: null,
-    phase: null
+    phase: null,
+    pathImage: null
   };
 
   ngOnInit() {

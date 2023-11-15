@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import _ from "lodash";
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ProjectPhase, ProjectTypeEnum } from 'projects/management/src/app/shared/core/Enum';
 import { ProjectService } from 'projects/management/src/app/shared/services/project.service';
-import _ from "lodash";
 
 @Component({
   selector: 'app-project-grid',
@@ -12,7 +13,7 @@ import _ from "lodash";
 })
 export class ProjectGridComponent implements OnInit {
 
-  constructor(private router: Router, private fb: FormBuilder, private projectService: ProjectService) { }
+  constructor(private router: Router, private fb: FormBuilder, private projectService: ProjectService, private spinnerService: NgxSpinnerService) { }
 
   page = {
     title: ''
@@ -68,22 +69,21 @@ export class ProjectGridComponent implements OnInit {
   getData(isSearch?: boolean) {
     let param = _.cloneDeep(this.form.value);
     if (isSearch) param.pageNumber = 0
-
+    this.spinnerService.show()
     this.projectService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
-
-        this.paging.recordStart = this.paging.currentRecords < 1 ? 0 : (this.paging.pageNumber - 1) * this.paging.pageSize + 1
-        this.paging.recordEnd = this.paging.currentRecords < 1 ? 0 : this.paging.recordStart + this.paging.currentRecords - 1
-
-        let start = this.paging.recordStart;
-        res.data.map((x: any) => {
-          x.stt = start++;
-          x.pathImage = "upload/" + x.pathImage;
-          return x;
-        });
         this.datasource = res.data
+        this.spinnerService.hide()
       }
     });
+  }
+
+  pageChange(value) {
+    if (value.number)
+      this.form.controls.pageNumber.setValue(value.number)
+    if (value.size)
+      this.form.controls.pageSize.setValue(value.size)
+    this.getData();
   }
 }

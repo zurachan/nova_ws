@@ -1,40 +1,40 @@
-import { JwtInterceptor } from './shared/services/http-interceptor/jwt-interceptor';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { FooterComponent } from './layout/footer/footer.component';
-import { NavbarComponent } from './layout/navbar/navbar.component';
-import { SidenavComponent } from './layout/sidenav/sidenav.component';
-import { UnauthenticatedComponent } from './layout/unauthenticated/unauthenticated.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
-import { LoginComponent } from './layout/login/login.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatTableModule } from '@angular/material/table';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ContentComponent } from './page/content/content.component';
-import { CustomerComponent } from './page/customer/customer.component';
-import { EventComponent } from './page/event/event.component';
-import { PartnerComponent } from './page/partner/partner.component';
-import { ProjectComponent } from './page/project/project.component';
-import { ProfileComponent } from './layout/profile/profile.component';
-import { ProjectDetailComponent } from './page/project/project-detail/project-detail.component';
-import { PaginationModule } from './shared/component/pagination/pagination.module';
-import { DeleteConfirmModule } from './shared/component/delete-confirm/delete-confirm.module';
-import { MatSelectModule } from '@angular/material/select';
-import { PartnerDetailComponent } from './page/partner/partner-detail/partner-detail.component';
-import { ContentDetailComponent } from './page/content/content-detail/content-detail.component';
-import { EventDetailComponent } from './page/event/event-detail/event-detail.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import { CustomerDetailComponent } from './page/customer/customer-detail/customer-detail.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSummernoteModule } from 'ngx-summernote';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { ErrorComponent } from './layout/error/error.component';
+import { FooterComponent } from './layout/footer/footer.component';
 import { HomeComponent } from './layout/home/home.component';
+import { LoginComponent } from './layout/login/login.component';
+import { NavbarComponent } from './layout/navbar/navbar.component';
+import { ProfileComponent } from './layout/profile/profile.component';
+import { SidenavComponent } from './layout/sidenav/sidenav.component';
+import { UnauthenticatedComponent } from './layout/unauthenticated/unauthenticated.component';
+import { ContentDetailComponent } from './page/content/content-detail/content-detail.component';
+import { ContentComponent } from './page/content/content.component';
+import { CustomerDetailComponent } from './page/customer/customer-detail/customer-detail.component';
+import { CustomerComponent } from './page/customer/customer.component';
+import { EventDetailComponent } from './page/event/event-detail/event-detail.component';
+import { EventComponent } from './page/event/event.component';
+import { PartnerDetailComponent } from './page/partner/partner-detail/partner-detail.component';
+import { PartnerComponent } from './page/partner/partner.component';
+import { ProjectDetailComponent } from './page/project/project-detail/project-detail.component';
+import { ProjectComponent } from './page/project/project.component';
+import { DeleteConfirmModule } from './shared/component/delete-confirm/delete-confirm.module';
+import { PaginationModule } from './shared/component/pagination/pagination.module';
+import { JwtInterceptor } from './shared/services/http-interceptor/jwt-interceptor';
 /**
  * Custom angular notifier options
  */
@@ -129,7 +129,8 @@ const customNotifierOptions: NotifierOptions = {
     }),
     PaginationModule,
     DeleteConfirmModule,
-    NgxSummernoteModule
+    NgxSummernoteModule,
+    NgxSpinnerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

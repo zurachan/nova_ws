@@ -10,7 +10,7 @@
   <div class="sidebar">
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img *ngIf="credential.image; else none" src="upload/{{credential.user.pathImage}}"
+        <img *ngIf="credential.user.pathImage; else none" [src]="credential.user.pathImage"
           class="img-circle elevation-2" alt="User Image">
         <ng-template #none>
           <img class="img-circle elevation-2" src="../../../assets/dist/img/defaul-avatar.png" alt="User Image none">

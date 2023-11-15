@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticateService } from '../../shared/services/authenticate.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import _ from "lodash";
-import { UserService } from '../../shared/services/user.service';
 import { NotifierService } from 'angular-notifier';
-import { FileService } from '../../shared/services/file.service';
+import _ from "lodash";
+import { AuthenticateService } from '../../shared/services/authenticate.service';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
   selector: 'app-profile',

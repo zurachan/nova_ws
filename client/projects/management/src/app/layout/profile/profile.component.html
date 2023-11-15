@@ -28,8 +28,8 @@
           <div class="card card-primary card-outline">
             <div class="card-body box-profile">
               <div class="text-center">
-                <img *ngIf="credential.image; else none" class="profile-user-img img-fluid img-circle"
-                  src="upload/{{credential.image}}" alt="user avatar">
+                <img *ngIf="credential.user.pathImage; else none" class="profile-user-img img-fluid img-circle"
+                  [src]="credential.user.pathImage" alt="user avatar">
 
                 <ng-template #none>
                   <img class="profile-user-img img-fluid img-circle" src="../../../assets/dist/img/defaul-avatar.png"

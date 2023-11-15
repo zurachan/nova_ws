@@ -1,11 +1,10 @@
-import { Router } from '@angular/router';
 import { EventEmitter, Injectable, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, lastValueFrom } from 'rxjs';
 
-import { Credential } from '../../model/credential.model';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
-import { FileService } from './file.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Credential } from '../../model/credential.model';
 
 const urlApi = 'https://localhost:44322/api/';
 const currentData = 'Authentication';
@@ -15,7 +14,7 @@ const currentData = 'Authentication';
 })
 
 export class AuthenticateService {
-  constructor(private http: HttpClient, private router: Router, private fileService: FileService) {
+  constructor(private http: HttpClient, private router: Router) {
     this.credentialSubject = new BehaviorSubject<Credential>(JSON.parse(localStorage.getItem('credential')));
     this.credential = this.credentialSubject.asObservable();
   }
@@ -48,10 +47,6 @@ export class AuthenticateService {
     this.router.navigate(['/login']);
   }
 
-  // async getUserProfile(itemId, itemType) {
-  //   this.fileService.getImage({ itemId: itemId, itemType: itemType }).toPromise()
-  // }
-
   async Login(model: any) {
     try {
       let res = await lastValueFrom<any>(this.onLogin(model));
@@ -61,10 +56,6 @@ export class AuthenticateService {
         credential.token = res.token;
         credential.user = res.user;
         credential.role = res.role;
-
-        // let data = await lastValueFrom<any>(this.fileService.getImage({ itemId: res.user.id, itemType: 1 }))
-        // if (data.success && data.length > 0)
-        //   credential.image = data.data[0].filePath
 
         this.credentialSubject.next(credential);
 

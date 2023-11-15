@@ -7,6 +7,7 @@ import { DeleteConfirmComponent } from '../../shared/component/delete-confirm/de
 import _ from "lodash";
 import { ProjectService } from '../../shared/services/project.service';
 import { ProjectPhase, ProjectType } from '../../shared/core/Enum';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-project',
@@ -15,7 +16,11 @@ import { ProjectPhase, ProjectType } from '../../shared/core/Enum';
 })
 export class ProjectComponent implements OnInit {
 
-  constructor(private projectService: ProjectService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
+  constructor(private projectService: ProjectService,
+    private dialog: MatDialog,
+    private notifier: NotifierService,
+    private fb: FormBuilder,
+    private spinnerService: NgxSpinnerService) { }
 
   datasource = [];
   form: FormGroup
@@ -52,6 +57,7 @@ export class ProjectComponent implements OnInit {
     let param = _.cloneDeep(this.form.value);
     if (isSearch) param.pageNumber = 0
 
+    this.spinnerService.show();
     this.projectService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
@@ -65,6 +71,7 @@ export class ProjectComponent implements OnInit {
           return x;
         });
         this.datasource = res.data
+        this.spinnerService.hide()
       }
     });
   }

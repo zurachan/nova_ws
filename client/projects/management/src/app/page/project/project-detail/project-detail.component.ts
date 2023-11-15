@@ -1,14 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
-import { ItemType, ProjectPhase, ProjectType } from '../../../shared/core/Enum';
-import { ProjectService } from '../../../shared/services/project.service';
 import _ from "lodash";
+import { forkJoin } from 'rxjs';
+import { ProjectPhase, ProjectType } from '../../../shared/core/Enum';
 import { PartnerService } from '../../../shared/services/partner.service';
+import { ProjectService } from '../../../shared/services/project.service';
 import { UserService } from '../../../shared/services/user.service';
-import { Subscription, forkJoin } from 'rxjs';
-import { FileService } from '../../../shared/services/file.service';
 
 interface data {
   title: string,
@@ -29,8 +28,7 @@ export class ProjectDetailComponent implements OnInit {
     private notifier: NotifierService,
     private projectService: ProjectService,
     private partnerService: PartnerService,
-    private userService: UserService,
-    private fileService: FileService) {
+    private userService: UserService) {
     this.modal = data;
   }
 
@@ -43,10 +41,6 @@ export class ProjectDetailComponent implements OnInit {
   editorDisabled = false
 
   coverImageUrl: any
-  coverFormFile = new FormData();
-
-  contentImageUrl = [];
-  contentFormFile = new FormData();
 
   itemId = 0;
   //Summernote
@@ -98,7 +92,7 @@ export class ProjectDetailComponent implements OnInit {
       this.projectService.GetById(this.modal.item.id).subscribe((detail: any) => {
         if (detail.success) {
           this.form.patchValue(detail.data)
-          this.coverImageUrl = "upload/" + detail.data.pathImage;
+          this.coverImageUrl = detail.data.pathImage;
         }
       });
     }
@@ -127,23 +121,14 @@ export class ProjectDetailComponent implements OnInit {
     this.form.markAllAsTouched();
     if (this.form.invalid) return
     let model = _.cloneDeep(this.form.getRawValue());
+    model.pathImage = this.coverImageUrl
     let request = this.modal.type == 'add' ? this.projectService.Insert(model) : this.projectService.Update(model);
 
     request.subscribe((res: any) => {
       if (res.success) {
-        this.itemId = res.data.id;
-        this.coverFormFile.append('ItemId', this.itemId.toString());
-        this.coverFormFile.append('ItemType', ItemType.Project.toString());
-
-        this.fileService.uploadFile(this.coverFormFile).subscribe((fileRes: any) => {
-          if (!fileRes) {
-            this.notifier.notify('error', "Upload ảnh cover dự án không thành công");
-          } else {
-            this.dialogRef.close(true)
-            let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
-            this.notifier.notify('success', message);
-          }
-        })
+        this.dialogRef.close(true)
+        let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
+        this.notifier.notify('success', message);
       } else {
         this.notifier.notify('error', res.message);
       }
@@ -152,7 +137,6 @@ export class ProjectDetailComponent implements OnInit {
 
   onUploadCoverImage(fileList: FileList) {
     let reader = new FileReader();
-    this.coverFormFile.append('FileDetails', fileList[0]);
     reader.onload = (event: any) => {
       this.coverImageUrl = event.target.result;
     }

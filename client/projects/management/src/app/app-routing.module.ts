@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CustomerComponent } from './page/customer/customer.component';
-import { PartnerComponent } from './page/partner/partner.component';
-import { ProjectComponent } from './page/project/project.component';
-import { ContentComponent } from './page/content/content.component';
-import { EventComponent } from './page/event/event.component';
-import { LoginComponent } from './layout/login/login.component';
-import { ProfileComponent } from './layout/profile/profile.component';
-import { AuthenticateGuard } from './shared/services/authenticate.service';
 import { ErrorComponent } from './layout/error/error.component';
 import { HomeComponent } from './layout/home/home.component';
+import { LoginComponent } from './layout/login/login.component';
+import { ProfileComponent } from './layout/profile/profile.component';
+import { ContentComponent } from './page/content/content.component';
+import { CustomerComponent } from './page/customer/customer.component';
+import { EventComponent } from './page/event/event.component';
+import { PartnerComponent } from './page/partner/partner.component';
+import { ProjectComponent } from './page/project/project.component';
+import { AuthenticateGuard } from './shared/services/authenticate.service';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthenticateGuard] },

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DeleteConfirmComponent } from '../../shared/component/delete-confirm/delete-confirm.component';
-import { ContentDetailComponent } from './content-detail/content-detail.component';
-import { ContentService } from '../../shared/services/content.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
 import _ from "lodash";
+import { NgxSpinnerService } from 'ngx-spinner';
+import { DeleteConfirmComponent } from '../../shared/component/delete-confirm/delete-confirm.component';
 import { ContentType } from '../../shared/core/Enum';
+import { ContentService } from '../../shared/services/content.service';
+import { ContentDetailComponent } from './content-detail/content-detail.component';
 
 @Component({
   selector: 'app-content',
@@ -15,7 +16,7 @@ import { ContentType } from '../../shared/core/Enum';
 })
 export class ContentComponent implements OnInit {
 
-  constructor(private contentService: ContentService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
+  constructor(private contentService: ContentService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder, private spinnerService: NgxSpinnerService) { }
 
   datasource = [];
   form: FormGroup
@@ -49,7 +50,7 @@ export class ContentComponent implements OnInit {
   getData(isSearch?: boolean) {
     let param = _.cloneDeep(this.form.value);
     if (isSearch) param.pageNumber = 0
-
+    this.spinnerService.show()
     this.contentService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
@@ -63,6 +64,7 @@ export class ContentComponent implements OnInit {
           return x;
         });
         this.datasource = res.data
+        this.spinnerService.hide();
       }
     });
   }

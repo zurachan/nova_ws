@@ -114,6 +114,7 @@ namespace API.Controllers.Business
             domain.Content = model.Content;
             domain.Type = model.Type;
             domain.Phase = model.Phase;
+            domain.PathImage = model.PathImage;
             domain.UserId = model.UserId;
             domain.UpdatedDate = DateTime.Now;
             domain.UpdatedById = UserId;
@@ -171,6 +172,7 @@ namespace API.Controllers.Business
                 Type = model.Type,
                 Phase = model.Phase,
                 UserId = model.UserId,
+                PathImage = model.PathImage,
                 CreatedById = UserId,
                 CreatedDate = DateTime.Now,
             };

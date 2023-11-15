@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { format } from 'date-fns';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
@@ -14,7 +15,7 @@ import { format } from 'date-fns';
 })
 export class EventComponent implements OnInit {
 
-  constructor(private eventService: EventService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
+  constructor(private eventService: EventService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder, private spinnerService: NgxSpinnerService) { }
 
   datasource = [];
   form: FormGroup
@@ -48,7 +49,7 @@ export class EventComponent implements OnInit {
   getData(isSearch?: boolean) {
     let param = _.cloneDeep(this.form.value);
     if (isSearch) param.pageNumber = 0
-
+    this.spinnerService.show();
     this.eventService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
@@ -64,6 +65,7 @@ export class EventComponent implements OnInit {
           return x;
         });
         this.datasource = res.data
+        this.spinnerService.hide();
       }
     });
   }

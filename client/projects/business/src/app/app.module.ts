@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgxSummernoteModule } from 'ngx-summernote';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
-import { DashboardComponent } from './page/dashboard/dashboard.component';
-import { ContactComponent } from './page/contact/contact.component';
 import { AboutComponent } from './page/about/about.component';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxSummernoteModule } from 'ngx-summernote';
+import { ContactComponent } from './page/contact/contact.component';
+import { DashboardComponent } from './page/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { NgxSummernoteModule } from 'ngx-summernote';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxSummernoteModule
+    NgxSummernoteModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

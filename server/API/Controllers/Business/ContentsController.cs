@@ -73,6 +73,7 @@ namespace API.Controllers.Business
                 Title = domain.Title,
                 MainContent = domain.MainContent,
                 Type = domain.Type,
+                PathImage = domain.PathImage,
                 ProjectIds = projects.Select(x => x.ProjectId).ToList()
             };
 

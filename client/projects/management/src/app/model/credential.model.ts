@@ -2,7 +2,7 @@ export class Credential {
     token: string;
     user: object;
     role: []
-    image: string
+    // image: string
 
     constructor(init?: Partial<Credential>) {
         Object.assign(this, init);

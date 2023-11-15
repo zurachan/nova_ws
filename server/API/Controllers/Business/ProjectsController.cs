@@ -90,6 +90,7 @@ namespace API.Controllers.Business
                 Type = domain.Type,
                 Phase = domain.Phase,
                 UserId = domain.UserId,
+                PathImage = domain.PathImage,
                 PartnerIds = partners.Select(x => x.PartnerId).ToList()
             };
 

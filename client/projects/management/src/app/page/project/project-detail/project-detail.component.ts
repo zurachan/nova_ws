@@ -89,33 +89,16 @@ export class ProjectDetailComponent implements OnInit {
       phase: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       partnerIds: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       userId: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
-      coverImage: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
-      contentImage: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required]
+      coverImage: [{ value: null, disabled: this.modal.type == 'view' }],
     })
   }
 
   getDetail() {
     if (this.modal.type !== 'add') {
-      forkJoin([
-        this.projectService.GetById(this.modal.item.id),
-        this.fileService.getImage({ itemId: this.modal.item.id, itemType: ItemType.ProjectCover }),
-        this.fileService.getImage({ itemId: this.modal.item.id, itemType: ItemType.ProjectContent })
-      ]).subscribe(([detail, cover, content]: any) => {
-        if (detail.success) { this.form.patchValue(detail.data) }
-        if (cover.success && cover.data.length > 0) {
-          this.form.controls.coverImage.clearValidators();
-          this.form.controls.coverImage.updateValueAndValidity();
-
-          this.coverImageUrl = "upload/" + cover.data[0].filePath;
-          this.coverFormFile.append('Id', cover.data[0].id);
-        }
-        if (content.success && content.data.length > 0) {
-          this.form.controls.contentImage.clearValidators();
-          this.form.controls.contentImage.updateValueAndValidity();
-
-          content.data.forEach(img => {
-            this.contentImageUrl.push("upload/" + img.filePath);
-          });
+      this.projectService.GetById(this.modal.item.id).subscribe((detail: any) => {
+        if (detail.success) {
+          this.form.patchValue(detail.data)
+          this.coverImageUrl = "upload/" + detail.data.pathImage;
         }
       });
     }
@@ -144,30 +127,23 @@ export class ProjectDetailComponent implements OnInit {
     this.form.markAllAsTouched();
     if (this.form.invalid) return
     let model = _.cloneDeep(this.form.getRawValue());
-
     let request = this.modal.type == 'add' ? this.projectService.Insert(model) : this.projectService.Update(model);
 
     request.subscribe((res: any) => {
       if (res.success) {
         this.itemId = res.data.id;
         this.coverFormFile.append('ItemId', this.itemId.toString());
-        this.coverFormFile.append('ItemType', ItemType.ProjectCover.toString());
+        this.coverFormFile.append('ItemType', ItemType.Project.toString());
 
-        this.contentFormFile.append('ItemId', this.itemId.toString());
-        this.contentFormFile.append('ItemType', ItemType.ProjectContent.toString());
-
-        forkJoin([this.fileService.uploadFile(this.coverFormFile), this.fileService.uploadMultiFile(this.contentFormFile)])
-          .subscribe(([singleRes, multiRes]: any) => {
-            if (!singleRes) {
-              this.notifier.notify('error', "Upload ảnh cover dự án không thành công");
-            } else if (!multiRes) {
-              this.notifier.notify('error', "Upload ảnh mô tả dự án không thành công");
-            } else {
-              this.dialogRef.close(true)
-              let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
-              this.notifier.notify('success', message);
-            }
-          })
+        this.fileService.uploadFile(this.coverFormFile).subscribe((fileRes: any) => {
+          if (!fileRes) {
+            this.notifier.notify('error', "Upload ảnh cover dự án không thành công");
+          } else {
+            this.dialogRef.close(true)
+            let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
+            this.notifier.notify('success', message);
+          }
+        })
       } else {
         this.notifier.notify('error', res.message);
       }
@@ -183,16 +159,4 @@ export class ProjectDetailComponent implements OnInit {
     reader.readAsDataURL(fileList[0]);
   }
 
-  onUploadContentImage(fileList: FileList) {
-    this.contentImageUrl = [];
-    Array.from(fileList).forEach(file => {
-      this.contentFormFile.append('FileDetails', file)
-
-      let reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.contentImageUrl.push(event.target.result);
-      }
-      reader.readAsDataURL(file)
-    });
-  }
 }

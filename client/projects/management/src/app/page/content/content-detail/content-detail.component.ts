@@ -1,7 +1,7 @@
 import { ContentType, ItemType } from './../../../shared/core/Enum';
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
 import { ProjectService } from '../../../shared/services/project.service';
@@ -84,33 +84,16 @@ export class ContentDetailComponent implements OnInit {
       mainContent: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       type: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       projectIds: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
-      coverImage: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
-      contentImage: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required]
+      coverImage: [{ value: null, disabled: this.modal.type == 'view' }],
     })
   }
 
   getDetail() {
     if (this.modal.type !== 'add') {
-      forkJoin([
-        this.contentService.GetById(this.modal.item.id),
-        this.fileService.getImage({ itemId: this.modal.item.id, itemType: ItemType.ContentCover }),
-        this.fileService.getImage({ itemId: this.modal.item.id, itemType: ItemType.Content })
-      ]).subscribe(([detail, cover, content]: any) => {
-        if (detail.success) { this.form.patchValue(detail.data) }
-        if (cover.success && cover.data.length > 0) {
-          this.form.controls.coverImage.clearValidators();
-          this.form.controls.coverImage.updateValueAndValidity();
-
-          this.coverImageUrl = "upload/" + cover.data[0].filePath;
-          this.coverFormFile.append('Id', cover.data[0].id);
-        }
-        if (content.success && content.data.length > 0) {
-          this.form.controls.contentImage.clearValidators();
-          this.form.controls.contentImage.updateValueAndValidity();
-
-          content.data.forEach(img => {
-            this.contentImageUrl.push("upload/" + img.filePath);
-          });
+      this.contentService.GetById(this.modal.item.id).subscribe((detail: any) => {
+        if (detail.success) {
+          this.form.patchValue(detail.data)
+          this.coverImageUrl = "upload/" + detail.data.pathImage;
         }
       })
     }
@@ -138,23 +121,17 @@ export class ContentDetailComponent implements OnInit {
       if (res.success) {
         this.itemId = res.data.id;
         this.coverFormFile.append('ItemId', this.itemId.toString());
-        this.coverFormFile.append('ItemType', ItemType.ContentCover.toString());
+        this.coverFormFile.append('ItemType', ItemType.Content.toString());
 
-        this.contentFormFile.append('ItemId', this.itemId.toString());
-        this.contentFormFile.append('ItemType', ItemType.Content.toString());
-
-        forkJoin([this.fileService.uploadFile(this.coverFormFile), this.fileService.uploadMultiFile(this.contentFormFile)])
-          .subscribe(([singleRes, multiRes]: any) => {
-            if (!singleRes) {
-              this.notifier.notify('error', "Upload ảnh cover bài viết không thành công");
-            } else if (!multiRes) {
-              this.notifier.notify('error', "Upload ảnh nội dung bài viết không thành công");
-            } else {
-              this.dialogRef.close(true)
-              let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
-              this.notifier.notify('success', message);
-            }
-          })
+        this.fileService.uploadFile(this.coverFormFile).subscribe((fileRes: any) => {
+          if (!fileRes) {
+            this.notifier.notify('error', "Upload ảnh cover bài viết không thành công");
+          } else {
+            this.dialogRef.close(true)
+            let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
+            this.notifier.notify('success', message);
+          }
+        })
       } else {
         this.notifier.notify('error', res.message);
       }

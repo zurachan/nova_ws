@@ -48,9 +48,9 @@ export class AuthenticateService {
     this.router.navigate(['/login']);
   }
 
-  async getUserProfile(itemId, itemType) {
-    this.fileService.getImage({ itemId: itemId, itemType: itemType }).toPromise()
-  }
+  // async getUserProfile(itemId, itemType) {
+  //   this.fileService.getImage({ itemId: itemId, itemType: itemType }).toPromise()
+  // }
 
   async Login(model: any) {
     try {
@@ -62,9 +62,9 @@ export class AuthenticateService {
         credential.user = res.user;
         credential.role = res.role;
 
-        let data = await lastValueFrom<any>(this.fileService.getImage({ itemId: res.user.id, itemType: 1 }))
-        if (data.success && data.length > 0)
-          credential.image = data.data[0].filePath
+        // let data = await lastValueFrom<any>(this.fileService.getImage({ itemId: res.user.id, itemType: 1 }))
+        // if (data.success && data.length > 0)
+        //   credential.image = data.data[0].filePath
 
         this.credentialSubject.next(credential);
 

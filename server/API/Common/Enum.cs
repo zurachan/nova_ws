@@ -33,13 +33,10 @@ namespace API.Common
     public enum ItemType
     {
         None,
-        UserProfile,
-        ProjectCover,
-        ProjectContent,
+        User,
+        Project,
         Content,
-        ContentCover,
         Event,
-        EventCover,
         Partner
     }
 

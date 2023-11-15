@@ -10,7 +10,7 @@
         <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <a [routerLink]="['']" routerLinkActive="router-link-active">Home</a>
+              <a [routerLink]="['']" routerLinkActive="router-link-active">Trang chủ</a>
             </li>
             <li class="breadcrumb-item">
               <a [routerLink]="['/project']" routerLinkActive="router-link-active">Dự án</a>
@@ -54,7 +54,7 @@
       <div class="col-md-4" *ngFor="let item of datasource">
         <div class="card-box-a card-shadow">
           <div class="img-box-a">
-            <img src="assets/img/property-1.jpg" alt="" class="img-a img-fluid">
+            <img [src]="item.pathImage" alt="" class="img-a img-fluid">
           </div>
           <div class="card-overlay">
             <div class="card-overlay-a-content">

@@ -20,5 +20,8 @@ namespace API.Domains.Business
         [Required]
         [Column("telephone")]
         public string Telephone { get; set; }
+
+        [Column("pathImage")]
+        public string? PathImage { get; set; }
     }
 }

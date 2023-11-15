@@ -10,6 +10,7 @@ import { ContactComponent } from './page/contact/contact.component';
 import { AboutComponent } from './page/about/about.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSummernoteModule } from 'ngx-summernote';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    NgxSummernoteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

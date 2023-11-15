@@ -16,5 +16,8 @@ namespace API.Domains.Business
 
         [Column("address")]
         public string Address { get; set; }
+
+        [Column("pathImage")]
+        public string? PathImage { get; set; }
     }
 }

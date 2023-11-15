@@ -79,10 +79,10 @@ export class ProjectGridComponent implements OnInit {
         let start = this.paging.recordStart;
         res.data.map((x: any) => {
           x.stt = start++;
+          x.pathImage = "upload/" + x.pathImage;
           return x;
         });
         this.datasource = res.data
-        console.log(this.datasource)
       }
     });
   }

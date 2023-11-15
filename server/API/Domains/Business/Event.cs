@@ -23,5 +23,8 @@ namespace API.Domains.Business
         [Required]
         [Column("type")] // 1: Định kỳ; 2: hàng năm; 3: một lần duy nhất
         public int Type { get; set; }
+
+        [Column("pathImage")]
+        public string? PathImage { get; set; }
     }
 }

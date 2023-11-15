@@ -22,6 +22,9 @@ namespace API.Domains.Management
         [Column("password")]
         public string Password { get; set; } = "123456";
 
+        [Column("pathImage")]
+        public string? PathImage { get; set; }
+
         public virtual List<UserRole>? UserRoles { get; set; }
     }
 }

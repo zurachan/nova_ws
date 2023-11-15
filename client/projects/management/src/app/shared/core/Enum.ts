@@ -34,13 +34,10 @@ export enum ProjectTypeEnum {
 }
 
 export enum ItemType {
-    None = 0,
-    UserProfile = 1,
-    ProjectCover = 2,
-    ProjectContent = 3,
-    Content = 4,
-    ContentCover = 5,
-    Event = 6,
-    EventCover = 7,
-    Partner = 8
+    None,
+    User,
+    Project,
+    Content,
+    Event,
+    Partner
 }

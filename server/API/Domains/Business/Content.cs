@@ -15,5 +15,8 @@ namespace API.Domains.Business
         [Required]
         [Column("type")] //1: bài viết giới thiệu; 2: bài viết cập nhật tiến độ; 3: bài viết review
         public int Type { get; set; }
+
+        [Column("pathImage")]
+        public string? PathImage { get; set; }
     }
 }

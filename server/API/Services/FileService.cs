@@ -9,7 +9,7 @@ namespace API.Services
 {
     public interface IFileService
     {
-        Task<bool> PostFileAsync(FileUpload fileUpload);
+        Task<string> PostFileAsync(FileUpload fileUpload);
 
         Task<bool> PostMultiFileAsync(MultiFileUpload listFile);
 
@@ -31,18 +31,17 @@ namespace API.Services
             UserId = value != null ? int.Parse(value) : 0;
         }
 
-        public async Task<bool> PostFileAsync(FileUpload fileUpload)
+        public async Task<string> PostFileAsync(FileUpload fileUpload)
         {
             try
             {
-                if (fileUpload.Id != 0)
+                var domain = await _context.Files.FirstOrDefaultAsync(x => x.ItemId == fileUpload.ItemId && x.ItemType == fileUpload.ItemType && !x.IsDeleted);
+                if (domain != null)
                 {
-                    var domain = await _context.Files.FirstOrDefaultAsync(x => x.Id == fileUpload.Id && !x.IsDeleted);
-                    if (domain == null) { return false; }
-
                     domain.FileName = Guid.NewGuid().ToString() + fileUpload.FileDetails.FileName;
                     domain.UpdatedDate = DateTime.Now;
                     domain.UpdatedById = UserId;
+
                     using (var stream = new MemoryStream())
                     {
                         fileUpload.FileDetails.CopyTo(stream);
@@ -52,7 +51,7 @@ namespace API.Services
                 else
                 {
                     Guid guid = Guid.NewGuid();
-                    var file = new File
+                    domain = new File
                     {
                         FileName = guid.ToString() + fileUpload.FileDetails.FileName,
                         ItemId = fileUpload.ItemId,
@@ -64,17 +63,27 @@ namespace API.Services
                     using (var stream = new MemoryStream())
                     {
                         fileUpload.FileDetails.CopyTo(stream);
-                        file.FileData = stream.ToArray();
+                        domain.FileData = stream.ToArray();
                     }
-
-                    _context.Files.Add(file);
+                    _context.Files.Add(domain);
                 }
+
                 await _context.SaveChangesAsync();
-                return true;
+
+                var pathRoot = Directory.GetCurrentDirectory();
+                var pathArr = pathRoot.Split("server", StringSplitOptions.None);
+                var uploadFolder = pathArr[0] + "upload";
+
+                Directory.CreateDirectory(uploadFolder);
+                var path = Path.Combine(uploadFolder, domain.FileName);
+                var content = new MemoryStream(domain.FileData);
+                await CopyStream(content, path);
+
+                return domain.FileName;
             }
             catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -140,6 +149,8 @@ namespace API.Services
                     var content = new MemoryStream(file.FileData);
                     var path = Path.Combine(uploadFolder, file.FileName);
                     await CopyStream(content, path);
+
+
                     var fileResponse = new FileResponse
                     {
                         Id = file.Id,

@@ -111,33 +111,10 @@
                   <label class="custom-file-label" for="coverImage">Chọn 1 ảnh</label>
                 </div>
               </div>
-              <mat-error class="textError"
-                *ngIf="form.controls.coverImage.touched && form.controls.coverImage.hasError('required')">
-                Ảnh cover không được bỏ trống
-              </mat-error>
               <div class="d-flex justify-content-center">
                 <img width="30%" *ngIf="coverImageUrl" [src]="coverImageUrl" class="image mt-1">
               </div>
             </div>
-
-            <div class="col-md-12 form-group">
-              <label for="userId">Ảnh mô tả</label>
-              <div class="input-group">
-                <div class="custom-file">
-                  <input type="file" multiple class="custom-file-input" id="contentImage" formControlName="contentImage"
-                    (change)="onUploadContentImage($event.target.files)">
-                  <label class="custom-file-label" for="contentImage">Chọn nhiều ảnh</label>
-                </div>
-              </div>
-              <mat-error class="textError"
-                *ngIf="form.controls.contentImage.touched && form.controls.contentImage.hasError('required')">
-                Ảnh mô tả không được bỏ trống
-              </mat-error>
-              <ng-container *ngIf="contentImageUrl">
-                <img width="20%" *ngFor="let item of contentImageUrl" [src]="item" class="image mr-1 mt-1">
-              </ng-container>
-            </div>
-
           </div>
         </form>
 

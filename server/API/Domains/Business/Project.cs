@@ -22,6 +22,9 @@ namespace API.Domains.Business
         [Column("phase")] //1: 
         public int Phase { get; set; } = 1;
 
+        [Column("pathImage")]
+        public string? PathImage { get; set; }
+
         [ForeignKey("user")]
         public int UserId { get; set; }
         public virtual User User { get; set; }

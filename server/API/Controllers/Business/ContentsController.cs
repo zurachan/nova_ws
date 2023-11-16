@@ -74,6 +74,8 @@ namespace API.Controllers.Business
                 MainContent = domain.MainContent,
                 Type = domain.Type,
                 PathImage = domain.PathImage,
+                CreatedById = domain.CreatedById,
+                CreatedDate = domain.CreatedDate,
                 ProjectIds = projects.Select(x => x.ProjectId).ToList()
             };
 

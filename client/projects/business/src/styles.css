@@ -1,3 +1,5 @@
+@import url("../../../node_modules/angular-notifier/styles.css");
+
 .textError {
     width: 100%;
     margin-top: .25rem;

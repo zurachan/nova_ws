@@ -22,6 +22,6 @@ namespace API.Domains.Business
         public string Telephone { get; set; }
 
         [Column("pathImage")]
-        public string? PathImage { get; set; }
+        public byte[]? PathImage { get; set; }
     }
 }

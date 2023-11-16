@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -42,8 +43,9 @@ namespace API.Migrations
                     fullname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     pathImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    subcribeType = table.Column<int>(type: "int", nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedById = table.Column<int>(type: "int", nullable: true),
@@ -89,7 +91,7 @@ namespace API.Migrations
                     address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    pathImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    pathImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedById = table.Column<int>(type: "int", nullable: true),
@@ -333,9 +335,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedDate", "IsDeleted", "name", "UpdatedById", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4207), false, "ADMIN", null, null },
-                    { 2, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4209), false, "CONTENT CREATOR", null, null },
-                    { 3, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4211), false, "SALE", null, null }
+                    { 1, 1, new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(402), false, "ADMIN", null, null },
+                    { 2, 1, new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(404), false, "CONTENT CREATOR", null, null },
+                    { 3, 1, new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(405), false, "SALE", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -343,9 +345,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "address", "biography", "CreatedById", "CreatedDate", "email", "fullname", "IsDeleted", "password", "pathImage", "telephone", "UpdatedById", "UpdatedDate", "username" },
                 values: new object[,]
                 {
-                    { 1, "Hà Nội", null, null, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4049), null, "Admin", false, "123456", null, null, null, null, "admin" },
-                    { 2, "Đà Nẵng", null, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4064), null, "Nhân viên 1", false, "123456", null, null, null, null, "nv01" },
-                    { 3, "Tp. Hồ Chí Minh", null, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4066), null, "Nhân viên 2", false, "123456", null, null, null, null, "nv02" }
+                    { 1, "Hà Nội", null, null, new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(192), null, "Admin", false, "123456", null, null, null, null, "admin" },
+                    { 2, "Đà Nẵng", null, 1, new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(206), null, "Nhân viên 1", false, "123456", null, null, null, null, "nv01" },
+                    { 3, "Tp. Hồ Chí Minh", null, 1, new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(208), null, "Nhân viên 2", false, "123456", null, null, null, null, "nv02" }
                 });
 
             migrationBuilder.InsertData(
@@ -353,9 +355,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedDate", "IsDeleted", "RoleId", "UpdatedById", "UpdatedDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4223), false, 1, null, null, 1 },
-                    { 2, null, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4225), false, 2, null, null, 2 },
-                    { 3, null, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4226), false, 3, null, null, 3 }
+                    { 1, null, new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(421), false, 1, null, null, 1 },
+                    { 2, null, new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(423), false, 2, null, null, 2 },
+                    { 3, null, new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(424), false, 3, null, null, 3 }
                 });
 
             migrationBuilder.CreateIndex(

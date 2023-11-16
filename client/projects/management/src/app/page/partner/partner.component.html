@@ -36,7 +36,7 @@
                 </form>
 
                 <button style="width: 150px;" title="Thêm mới đối tác" class="btn btn-primary btn-md ml-3"
-                  (click)="onAddEdit('add')">
+                  (click)="onAddViewEdit('add')">
                   <i class="fas fa-plus"></i> Thêm mới
                 </button>
               </div>
@@ -51,7 +51,7 @@
                     <th class="text-center">Địa chỉ</th>
                     <th class="text-center">Số điện thoại</th>
                     <th class="text-center">Email</th>
-                    <th class="text-center">Thao tác</th>
+                    <th class="text-center" style="width: 250px;">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -63,8 +63,10 @@
                     <td>{{item.email}}</td>
                     <td>
                       <div class="d-flex">
-                        <button class="btn btn-primary mr-3" (click)="onAddEdit('edit',item)">Chỉnh sửa</button>
-                        <button class="btn btn-danger" (click)="onDelete(item)">Xoá</button>
+                        <button title="Xem chi tiết sự kiện" class="btn btn-info mr-3"
+                          (click)="onAddViewEdit('view',item)">Chi tiết</button>
+                        <button class="btn btn-primary mr-3" (click)="onAddViewEdit('edit',item)">Chỉnh sửa</button>
+                        <!-- <button class="btn btn-danger" (click)="onDelete(item)">Xoá</button> -->
                       </div>
                     </td>
                   </tr>

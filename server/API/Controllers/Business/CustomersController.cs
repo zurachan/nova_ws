@@ -117,20 +117,67 @@ namespace API.Controllers.Business
                 return new Response<CustomerModel> { Success = false, Message = "Empty" };
             }
 
-            Customer domain = new()
-            {
-                FullName = model.FullName,
-                Telephone = model.Telephone,
-                Email = model.Email,
-                Address = model.Address,
+            var domain = await _context.Customers.FirstOrDefaultAsync(x => !x.IsDeleted && x.Email == model.Email && x.Telephone == model.Telephone);
 
-                CreatedById = UserId,
-                CreatedDate = DateTime.Now,
-            };
-            _context.Customers.Add(domain);
+            if (domain == null)
+            {
+                domain = new Customer()
+                {
+                    FullName = model.FullName,
+                    Telephone = model.Telephone,
+                    Email = model.Email,
+                    Address = model.Address,
+                    SubcribeType = model.ProjectId.HasValue ? (int)SubcribeType.Update : (int)SubcribeType.Create,
+
+                    CreatedById = UserId,
+                    CreatedDate = DateTime.Now,
+                };
+                _context.Customers.Add(domain);
+
+                if (model.ProjectId.HasValue)
+                {
+                    var existedProject = await _context.Projects.FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == model.ProjectId);
+                    if (existedProject != null)
+                    {
+                        ProjectCustomer projectCustomer = new()
+                        {
+                            Project = existedProject,
+                            Customer = domain,
+                            CreatedById = UserId,
+                            CreatedDate = DateTime.Now,
+                        };
+                        _context.ProjectCustomers.Add(projectCustomer);
+                    }
+                }
+            }
+            else
+            {
+                if (model.ProjectId.HasValue)
+                {
+                    if (domain.SubcribeType == (int)SubcribeType.Create)
+                        domain.SubcribeType = (int)SubcribeType.All;
+
+                    var existedProject = await _context.Projects.FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == model.ProjectId);
+                    if (existedProject != null)
+                    {
+                        ProjectCustomer projectCustomer = new()
+                        {
+                            Project = existedProject,
+                            Customer = domain,
+                            CreatedById = UserId,
+                            CreatedDate = DateTime.Now,
+                        };
+                        _context.ProjectCustomers.Add(projectCustomer);
+                    }
+                }
+                else
+                {
+                    if (domain.SubcribeType == (int)SubcribeType.Update)
+                        domain.SubcribeType = (int)SubcribeType.All;
+                }
+            }
 
             await _context.SaveChangesAsync();
-            model.Id = domain.Id;
 
             return new Response<CustomerModel>(model);
         }

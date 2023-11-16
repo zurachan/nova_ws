@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import _ from "lodash";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ProjectPhase, ProjectType } from 'projects/management/src/app/shared/core/Enum';
 import { User } from 'projects/management/src/app/shared/core/user';
+import { CustomerService } from 'projects/management/src/app/shared/services/customer.service';
 import { PartnerService } from 'projects/management/src/app/shared/services/partner.service';
 import { ProjectService } from 'projects/management/src/app/shared/services/project.service';
 import { UserService } from 'projects/management/src/app/shared/services/user.service';
-import _ from "lodash";
 
 
 @Component({
@@ -21,7 +23,9 @@ export class ProjectDetailComponent implements OnInit {
     private projectService: ProjectService,
     private spinnerService: NgxSpinnerService,
     private userService: UserService,
-    private partnerService: PartnerService) { }
+    private partnerService: PartnerService,
+    private customerService: CustomerService,
+    private notifier: NotifierService) { }
 
   project = {
     id: null,
@@ -35,7 +39,7 @@ export class ProjectDetailComponent implements OnInit {
   };
 
   partners = [];
-  user: User;
+  user = new User();
   form: FormGroup;
 
   ngOnInit() {
@@ -102,9 +106,9 @@ export class ProjectDetailComponent implements OnInit {
   onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) return
-    debugger
     let formData = _.cloneDeep(this.form.getRawValue());
-    console.log(formData)
+    this.customerService.Insert(formData).subscribe((res: any) => {
+      this.notifier.notify('success', "Đăng ký nhận thông tin thành công");
+    })
   }
-
 }

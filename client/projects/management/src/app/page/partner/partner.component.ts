@@ -66,10 +66,10 @@ export class PartnerComponent implements OnInit {
     });
   }
 
-  onAddEdit(type: 'add' | 'edit', item: any = null) {
+  onAddViewEdit(type: 'add' | 'edit' | 'view', item: any = null) {
     const dialogRef = this.dialog.open(PartnerDetailComponent, {
       data: {
-        title: type == 'edit' ? 'Cập nhật đối tác' : 'Thêm mới đối tác',
+        title: type == 'edit' ? 'Cập nhật đối tác' : type == 'add' ? 'Thêm mới đối tác' : 'Chi tiết đối tác',
         type,
         item
       }

@@ -9,6 +9,8 @@
         public DateTime End { get; set; }
         public int Status { get; set; }
         public int Type { get; set; }
+        public int? CreatedById { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public byte[]? PathImage { get; set; }
         public List<int>? ProjectIds { get; set; }
     }

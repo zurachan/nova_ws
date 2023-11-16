@@ -83,4 +83,15 @@ namespace API.Common
         [Description("Đã kết thúc")]
         KetThuc
     }
+
+    public enum SubcribeType
+    {
+        None,
+        [Description("Nhận mail cập nhật tiến độ")]
+        Update,
+        [Description("Nhận mail khi có dự án mới")]
+        Create,
+        [Description("Nhận mail khi có dự án mới lẫn cập nhật tiến độ")]
+        All
+    }
 }

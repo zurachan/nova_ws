@@ -7,6 +7,8 @@
         public string MainContent { get; set; }
         public int Type { get; set; }
         public byte[]? PathImage { get; set; }
+        public int? CreatedById { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public List<int> ProjectIds { get; set; }
     }
 }

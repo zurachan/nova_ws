@@ -84,6 +84,7 @@ namespace API.Controllers.Business
             domain.Address = model.Address;
             domain.Telephone = model.Telephone;
             domain.Email = model.Email;
+            domain.PathImage = model.PathImage;
 
             domain.UpdatedDate = DateTime.Now;
             domain.UpdatedById = UserId;

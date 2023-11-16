@@ -90,4 +90,14 @@ export class ProjectGridComponent implements OnInit {
       this.form.controls.pageSize.setValue(value.size)
     this.getData();
   }
+
+  onBlurSearch() {
+    this.getData();
+  }
+
+  onChangePhase() {
+    this.getData();
+  }
+
+
 }

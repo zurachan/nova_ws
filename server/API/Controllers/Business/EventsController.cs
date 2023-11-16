@@ -76,6 +76,8 @@ namespace API.Controllers.Business
                 End = domain.End,
                 Status = domain.Status,
                 Type = domain.Type,
+                CreatedById = domain.CreatedById,
+                CreatedDate = domain.CreatedDate,
                 PathImage = domain.PathImage,
                 ProjectIds = projects.Select(x => x.ProjectId).ToList()
             };

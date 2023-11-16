@@ -15,9 +15,12 @@ namespace API.Domains.Business
         public string Email { get; set; }
 
         [Column("address")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [Column("pathImage")]
         public string? PathImage { get; set; }
+
+        [Column("subcribeType")]
+        public int SubcribeType { get; set; }
     }
 }

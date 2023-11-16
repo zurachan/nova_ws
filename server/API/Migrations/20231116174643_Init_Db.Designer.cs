@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231116092544_Init_Db")]
+    [Migration("20231116174643_Init_Db")]
     partial class Init_Db
     {
         /// <inheritdoc />
@@ -80,7 +80,6 @@ namespace API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("address");
 
@@ -106,6 +105,10 @@ namespace API.Migrations
                     b.Property<string>("PathImage")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("pathImage");
+
+                    b.Property<int>("SubcribeType")
+                        .HasColumnType("int")
+                        .HasColumnName("subcribeType");
 
                     b.Property<string>("Telephone")
                         .IsRequired()
@@ -213,8 +216,8 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
-                    b.Property<string>("PathImage")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<byte[]>("PathImage")
+                        .HasColumnType("varbinary(max)")
                         .HasColumnName("pathImage");
 
                     b.Property<string>("Telephone")
@@ -477,7 +480,7 @@ namespace API.Migrations
                         {
                             Id = 1,
                             CreatedById = 1,
-                            CreatedDate = new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4207),
+                            CreatedDate = new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(402),
                             IsDeleted = false,
                             Name = "ADMIN"
                         },
@@ -485,7 +488,7 @@ namespace API.Migrations
                         {
                             Id = 2,
                             CreatedById = 1,
-                            CreatedDate = new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4209),
+                            CreatedDate = new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(404),
                             IsDeleted = false,
                             Name = "CONTENT CREATOR"
                         },
@@ -493,7 +496,7 @@ namespace API.Migrations
                         {
                             Id = 3,
                             CreatedById = 1,
-                            CreatedDate = new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4211),
+                            CreatedDate = new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(405),
                             IsDeleted = false,
                             Name = "SALE"
                         });
@@ -566,7 +569,7 @@ namespace API.Migrations
                         {
                             Id = 1,
                             Address = "Hà Nội",
-                            CreatedDate = new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4049),
+                            CreatedDate = new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(192),
                             FullName = "Admin",
                             IsDeleted = false,
                             Password = "123456",
@@ -577,7 +580,7 @@ namespace API.Migrations
                             Id = 2,
                             Address = "Đà Nẵng",
                             CreatedById = 1,
-                            CreatedDate = new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4064),
+                            CreatedDate = new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(206),
                             FullName = "Nhân viên 1",
                             IsDeleted = false,
                             Password = "123456",
@@ -588,7 +591,7 @@ namespace API.Migrations
                             Id = 3,
                             Address = "Tp. Hồ Chí Minh",
                             CreatedById = 1,
-                            CreatedDate = new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4066),
+                            CreatedDate = new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(208),
                             FullName = "Nhân viên 2",
                             IsDeleted = false,
                             Password = "123456",
@@ -637,7 +640,7 @@ namespace API.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4223),
+                            CreatedDate = new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(421),
                             IsDeleted = false,
                             RoleId = 1,
                             UserId = 1
@@ -645,7 +648,7 @@ namespace API.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4225),
+                            CreatedDate = new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(423),
                             IsDeleted = false,
                             RoleId = 2,
                             UserId = 2
@@ -653,7 +656,7 @@ namespace API.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4226),
+                            CreatedDate = new DateTime(2023, 11, 17, 0, 46, 43, 39, DateTimeKind.Local).AddTicks(424),
                             IsDeleted = false,
                             RoleId = 3,
                             UserId = 3

@@ -15,6 +15,10 @@ namespace API.Domains.Management
         public string? Email { get; set; }
         [Column("telephone")]
         public string? Telephone { get; set; }
+
+        [Column("biography")]
+        public string? Biography { get; set; }
+
         [Required]
         [Column("username")]
         public string Username { get; set; }

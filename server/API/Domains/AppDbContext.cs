@@ -46,6 +46,5 @@ namespace API.Domains
         public DbSet<ProjectPartner> ProjectPartners { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<ProjectCustomer> ProjectCustomers { get; set; }
-        public DbSet<File> Files { get; set; }
     }
 }

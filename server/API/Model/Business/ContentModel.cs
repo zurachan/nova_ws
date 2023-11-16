@@ -6,7 +6,7 @@
         public string Title { get; set; }
         public string MainContent { get; set; }
         public int Type { get; set; }
-        public string? PathImage { get; set; }
+        public byte[]? PathImage { get; set; }
         public List<int> ProjectIds { get; set; }
     }
 }

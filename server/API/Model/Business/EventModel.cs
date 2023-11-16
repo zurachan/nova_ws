@@ -9,7 +9,7 @@
         public DateTime End { get; set; }
         public int Status { get; set; }
         public int Type { get; set; }
-        public string? PathImage { get; set; }
-        public List<int> ProjectIds { get; set; }
+        public byte[]? PathImage { get; set; }
+        public List<int>? ProjectIds { get; set; }
     }
 }

@@ -53,38 +53,16 @@
                 <div class="summary-list">
                   <ul class="list">
                     <li class="d-flex justify-content-between">
-                      <strong>Property ID:</strong>
-                      <span>1134</span>
+                      <strong>Loại dự án</strong>
+                      <span>{{getProjectTypeStr(project.type)}}</span>
                     </li>
                     <li class="d-flex justify-content-between">
-                      <strong>Location:</strong>
-                      <span>Chicago, IL 606543</span>
+                      <strong>Giai đoạn</strong>
+                      <span>{{getProjectPhaseStr(project.phase)}}</span>
                     </li>
                     <li class="d-flex justify-content-between">
-                      <strong>Property Type:</strong>
-                      <span>House</span>
-                    </li>
-                    <li class="d-flex justify-content-between">
-                      <strong>Status:</strong>
-                      <span>Sale</span>
-                    </li>
-                    <li class="d-flex justify-content-between">
-                      <strong>Area:</strong>
-                      <span>340m
-                        <sup>2</sup>
-                      </span>
-                    </li>
-                    <li class="d-flex justify-content-between">
-                      <strong>Beds:</strong>
-                      <span>4</span>
-                    </li>
-                    <li class="d-flex justify-content-between">
-                      <strong>Baths:</strong>
-                      <span>2</span>
-                    </li>
-                    <li class="d-flex justify-content-between">
-                      <strong>Garage:</strong>
-                      <span>1</span>
+                      <strong>Đơn vị thi công</strong>
+                      <span>{{getPartnerName(project.partnerIds)}}</span>
                     </li>
                   </ul>
                 </div>
@@ -119,80 +97,67 @@
             </div>
             <div class="col-md-6 col-lg-4">
               <div class="property-agent">
-                <h4 class="title-agent">Anabella Geller</h4>
-                <p class="color-text-a">
-                  Nulla porttitor accumsan tincidunt. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet
-                  dui. Quisque velit nisi,
-                  pretium ut lacinia in, elementum id enim.
-                </p>
+                <h4 class="title-agent">{{user.fullName}}</h4>
+                <p class="color-text-a">{{user.biography}}</p>
                 <ul class="list-unstyled">
                   <li class="d-flex justify-content-between">
-                    <strong>Phone:</strong>
-                    <span class="color-text-a">(222) 4568932</span>
-                  </li>
-                  <li class="d-flex justify-content-between">
-                    <strong>Mobile:</strong>
-                    <span class="color-text-a">777 287 378 737</span>
+                    <strong>Số điện thoại:</strong>
+                    <span class="color-text-a">{{user.telephone}}</span>
                   </li>
                   <li class="d-flex justify-content-between">
                     <strong>Email:</strong>
-                    <span class="color-text-a">annabella@example.com</span>
+                    <span class="color-text-a">{{user.email}}</span>
                   </li>
                   <li class="d-flex justify-content-between">
-                    <strong>Skype:</strong>
-                    <span class="color-text-a">Annabela.ge</span>
+                    <strong>Địa chỉ:</strong>
+                    <span class="color-text-a">{{user.address}}</span>
                   </li>
                 </ul>
-                <div class="socials-a">
-                  <ul class="list-inline">
-                    <li class="list-inline-item">
-                      <a href="#">
-                        <i class="bi bi-facebook" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#">
-                        <i class="bi bi-twitter" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#">
-                        <i class="bi bi-instagram" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="#">
-                        <i class="bi bi-linkedin" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
+
             <div class="col-md-12 col-lg-4">
               <div class="property-contact">
-                <form class="form-a">
+                <form class="form-a" [formGroup]="form">
                   <div class="row">
                     <div class="col-md-12 mb-1">
                       <div class="form-group">
-                        <input type="text" class="form-control form-control-lg form-control-a" id="inputName"
-                          placeholder="Name *" required>
+                        <input type="text" formControlName="fullName" id="fullName" placeholder="Họ và tên *"
+                          class="form-control form-control-lg form-control-a" required>
+                        <mat-error class="textError"
+                          *ngIf="form.controls.fullName.touched && form.controls.fullName.hasError('required')">
+                          Họ và tên là trường bắt buộc
+                        </mat-error>
                       </div>
                     </div>
                     <div class="col-md-12 mb-1">
                       <div class="form-group">
-                        <input type="email" class="form-control form-control-lg form-control-a" id="inputEmail1"
-                          placeholder="Email *" required>
+                        <input type="text" formControlName="email" id="email" placeholder="Email *"
+                          class="form-control form-control-lg form-control-a" required>
+                        <mat-error class="textError"
+                          *ngIf="form.controls.email.touched && form.controls.email.hasError('required')">
+                          Email là trường bắt buộc
+                        </mat-error>
                       </div>
                     </div>
                     <div class="col-md-12 mb-1">
                       <div class="form-group">
-                        <textarea id="textMessage" class="form-control" placeholder="Comment *" name="message" cols="45"
-                          rows="8" required></textarea>
+                        <input type="text" formControlName="telephone" id="telephone" placeholder="Số điện thoại *"
+                          class="form-control form-control-lg form-control-a" required>
+                        <mat-error class="textError"
+                          *ngIf="form.controls.telephone.touched && form.controls.telephone.hasError('required')">
+                          Số điện thoại là trường bắt buộc
+                        </mat-error>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-1">
+                      <div class="form-group">
+                        <textarea formControlName="address" id="address" placeholder="Địa chỉ"
+                          class="form-control form-control-lg form-control-a" name="address" rows="3"></textarea>
                       </div>
                     </div>
                     <div class="col-md-12 mt-3">
-                      <button type="submit" class="btn btn-a">Send Message</button>
+                      <button type="button" class="btn btn-a" (click)="onSubmit()">Đăng ký nhận thông tin</button>
                     </div>
                   </div>
                 </form>

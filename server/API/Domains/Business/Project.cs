@@ -23,7 +23,7 @@ namespace API.Domains.Business
         public int Phase { get; set; } = 1;
 
         [Column("pathImage")]
-        public string? PathImage { get; set; }
+        public byte[]? PathImage { get; set; }
 
         [ForeignKey("user")]
         public int UserId { get; set; }

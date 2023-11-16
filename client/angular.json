@@ -29,7 +29,7 @@
             ],
             "styles": [
               "projects/business/src/styles.css",
-              "node_modules/ngx-spinner/animations/ball-pulse.css"
+              "node_modules/ngx-spinner/animations/ball-clip-rotate.css"
             ],
             "scripts": [],
             "allowedCommonJsDependencies": ["lodash"]
@@ -121,7 +121,7 @@
             "styles": [
               "projects/management/src/styles.css",
               "node_modules/summernote/dist/summernote-lite.min.css",
-              "node_modules/ngx-spinner/animations/ball-pulse.css"
+              "node_modules/ngx-spinner/animations//ball-clip-rotate.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

@@ -102,7 +102,7 @@ namespace API.Controllers.Business
             domain.End = model.End;
             domain.Status = model.Status;
             domain.Type = model.Type;
-
+            domain.PathImage = model.PathImage;
             domain.UpdatedDate = DateTime.Now;
             domain.UpdatedById = UserId;
 
@@ -161,21 +161,25 @@ namespace API.Controllers.Business
                 Status = model.Status,
                 Type = model.Type,
                 CreatedById = UserId,
+                PathImage = model.PathImage,
                 CreatedDate = DateTime.Now,
             };
             _context.Events.Add(domain);
 
-            model.ProjectIds.ForEach(x =>
+            if (model.ProjectIds != null)
             {
-                var domainEventPartner = new ProjectEvent
+                model.ProjectIds.ForEach(x =>
                 {
-                    Event = domain,
-                    ProjectId = x,
-                    CreatedById = UserId,
-                    CreatedDate = DateTime.Now,
-                };
-                _context.ProjectEvents.Add(domainEventPartner);
-            });
+                    var domainEventPartner = new ProjectEvent
+                    {
+                        Event = domain,
+                        ProjectId = x,
+                        CreatedById = UserId,
+                        CreatedDate = DateTime.Now,
+                    };
+                    _context.ProjectEvents.Add(domainEventPartner);
+                });
+            }
 
             await _context.SaveChangesAsync();
             model.Id = domain.Id;

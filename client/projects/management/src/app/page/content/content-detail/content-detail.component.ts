@@ -6,6 +6,9 @@ import _ from "lodash";
 import { ContentService } from '../../../shared/services/content.service';
 import { ProjectService } from '../../../shared/services/project.service';
 import { ContentType } from './../../../shared/core/Enum';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { FileService } from '../../../shared/services/file.service';
+import { CommonService } from '../../../shared/services/common.service';
 
 interface data {
   title: string,
@@ -25,7 +28,9 @@ export class ContentDetailComponent implements OnInit {
     private fb: FormBuilder,
     private notifier: NotifierService,
     private projectService: ProjectService,
-    private contentService: ContentService) {
+    private contentService: ContentService,
+    private spinnerService: NgxSpinnerService, private commonService: CommonService,
+    private fileService: FileService) {
     this.modal = data;
   }
 
@@ -36,7 +41,7 @@ export class ContentDetailComponent implements OnInit {
   listProject = [];
 
   coverImageUrl: any
-
+  coverFormFile = new FormData();
   //Summernote
   config: any = {
     airMode: false,
@@ -78,15 +83,22 @@ export class ContentDetailComponent implements OnInit {
       type: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       projectIds: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       coverImage: [{ value: null, disabled: this.modal.type == 'view' }],
+      pathImage: [null],
     })
   }
 
   getDetail() {
     if (this.modal.type !== 'add') {
+      this.spinnerService.show();
       this.contentService.GetById(this.modal.item.id).subscribe((detail: any) => {
         if (detail.success) {
           this.form.patchValue(detail.data)
-          this.coverImageUrl = detail.data.pathImage;
+          if (detail.data.pathImage) {
+            this.coverImageUrl = "data:image/png;base64," + detail.data.pathImage;
+            let file = this.commonService.dataURItoBlob(this.coverImageUrl)
+            this.coverFormFile.append('FormFile', file);
+          }
+          this.spinnerService.hide();
         }
       })
     }
@@ -106,23 +118,30 @@ export class ContentDetailComponent implements OnInit {
     this.form.markAllAsTouched();
     if (this.form.invalid) return
 
-    let model = _.cloneDeep(this.form.getRawValue());
-    model.pathImage = this.coverImageUrl
-    let request = this.modal.type == 'add' ? this.contentService.Insert(model) : this.contentService.Update(model);
+    this.fileService.uploadFile(this.coverFormFile).subscribe((fileRes: any) => {
+      if (fileRes.success) {
+        let model = _.cloneDeep(this.form.getRawValue());
+        model.pathImage = fileRes.data
+        let request = this.modal.type == 'add' ? this.contentService.Insert(model) : this.contentService.Update(model);
 
-    request.subscribe((res: any) => {
-      if (res.success) {
-        this.dialogRef.close(true)
-        let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
-        this.notifier.notify('success', message);
+        request.subscribe((res: any) => {
+          if (res.success) {
+            this.dialogRef.close(true)
+            let message = this.modal.type == 'add' ? "Thêm mới thành công" : "Cập nhật thành công";
+            this.notifier.notify('success', message);
+          } else {
+            this.notifier.notify('error', res.message);
+          }
+        })
       } else {
-        this.notifier.notify('error', res.message);
+        this.notifier.notify('error', "Upload ảnh cover sự kiện không thành công");
       }
     })
   }
 
   onUploadCoverImage(fileList: FileList) {
     let reader = new FileReader();
+    this.coverFormFile.append('FormFile', fileList[0]);
     reader.onload = (event: any) => {
       this.coverImageUrl = event.target.result;
     }

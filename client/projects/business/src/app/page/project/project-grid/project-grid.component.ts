@@ -73,6 +73,10 @@ export class ProjectGridComponent implements OnInit {
     this.projectService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
+        res.data.map(x => {
+          x.pathImage = "data:image/png;base64," + x.pathImage;
+          return x;
+        })
         this.datasource = res.data
         this.spinnerService.hide()
       }

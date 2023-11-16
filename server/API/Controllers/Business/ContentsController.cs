@@ -96,7 +96,7 @@ namespace API.Controllers.Business
             domain.Title = model.Title;
             domain.MainContent = model.MainContent;
             domain.Type = model.Type;
-
+            domain.PathImage = model.PathImage;
             domain.UpdatedDate = DateTime.Now;
             domain.UpdatedById = UserId;
 
@@ -151,6 +151,7 @@ namespace API.Controllers.Business
                 Title = model.Title,
                 MainContent = model.MainContent,
                 Type = model.Type,
+                PathImage = model.PathImage,
                 CreatedById = UserId,
                 CreatedDate = DateTime.Now,
             };

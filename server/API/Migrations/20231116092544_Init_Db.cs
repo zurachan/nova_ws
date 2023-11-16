@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -22,6 +21,7 @@ namespace API.Migrations
                     title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     maincontent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     type = table.Column<int>(type: "int", nullable: false),
+                    pathImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedById = table.Column<int>(type: "int", nullable: true),
@@ -43,6 +43,7 @@ namespace API.Migrations
                     telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    pathImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedById = table.Column<int>(type: "int", nullable: true),
@@ -66,6 +67,7 @@ namespace API.Migrations
                     end = table.Column<DateTime>(type: "datetime2", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
                     type = table.Column<int>(type: "int", nullable: false),
+                    pathImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedById = table.Column<int>(type: "int", nullable: true),
@@ -78,27 +80,6 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "file_upload",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    itemid = table.Column<int>(type: "int", nullable: false),
-                    itemtype = table.Column<int>(type: "int", nullable: false),
-                    filename = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    filedata = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    CreatedById = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedById = table.Column<int>(type: "int", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_file_upload", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "partner",
                 columns: table => new
                 {
@@ -108,6 +89,7 @@ namespace API.Migrations
                     address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    pathImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedById = table.Column<int>(type: "int", nullable: true),
@@ -147,8 +129,10 @@ namespace API.Migrations
                     address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    pathImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedById = table.Column<int>(type: "int", nullable: true),
@@ -170,6 +154,7 @@ namespace API.Migrations
                     content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     type = table.Column<int>(type: "int", nullable: false),
                     phase = table.Column<int>(type: "int", nullable: false),
+                    pathImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -348,19 +333,19 @@ namespace API.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedDate", "IsDeleted", "name", "UpdatedById", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3150), false, "ADMIN", null, null },
-                    { 2, 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3151), false, "CONTENT CREATOR", null, null },
-                    { 3, 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3153), false, "SALE", null, null }
+                    { 1, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4207), false, "ADMIN", null, null },
+                    { 2, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4209), false, "CONTENT CREATOR", null, null },
+                    { 3, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4211), false, "SALE", null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "user",
-                columns: new[] { "Id", "address", "CreatedById", "CreatedDate", "email", "fullname", "IsDeleted", "password", "telephone", "UpdatedById", "UpdatedDate", "username" },
+                columns: new[] { "Id", "address", "biography", "CreatedById", "CreatedDate", "email", "fullname", "IsDeleted", "password", "pathImage", "telephone", "UpdatedById", "UpdatedDate", "username" },
                 values: new object[,]
                 {
-                    { 1, "Hà Nội", null, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(2986), null, "Admin", false, "123456", null, null, null, "admin" },
-                    { 2, "Đà Nẵng", 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3000), null, "Nhân viên 1", false, "123456", null, null, null, "nv01" },
-                    { 3, "Tp. Hồ Chí Minh", 1, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3002), null, "Nhân viên 2", false, "123456", null, null, null, "nv02" }
+                    { 1, "Hà Nội", null, null, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4049), null, "Admin", false, "123456", null, null, null, null, "admin" },
+                    { 2, "Đà Nẵng", null, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4064), null, "Nhân viên 1", false, "123456", null, null, null, null, "nv01" },
+                    { 3, "Tp. Hồ Chí Minh", null, 1, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4066), null, "Nhân viên 2", false, "123456", null, null, null, null, "nv02" }
                 });
 
             migrationBuilder.InsertData(
@@ -368,9 +353,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "CreatedById", "CreatedDate", "IsDeleted", "RoleId", "UpdatedById", "UpdatedDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3166), false, 1, null, null, 1 },
-                    { 2, null, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3168), false, 2, null, null, 2 },
-                    { 3, null, new DateTime(2023, 11, 9, 14, 0, 31, 315, DateTimeKind.Local).AddTicks(3169), false, 3, null, null, 3 }
+                    { 1, null, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4223), false, 1, null, null, 1 },
+                    { 2, null, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4225), false, 2, null, null, 2 },
+                    { 3, null, new DateTime(2023, 11, 16, 16, 25, 44, 515, DateTimeKind.Local).AddTicks(4226), false, 3, null, null, 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -432,9 +417,6 @@ namespace API.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "file_upload");
-
             migrationBuilder.DropTable(
                 name: "project_content");
 

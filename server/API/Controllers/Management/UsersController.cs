@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace API.Controllers.Management
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -70,6 +70,7 @@ namespace API.Controllers.Management
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<Response<User>> PutUser(int id, User model)
         {
@@ -87,6 +88,7 @@ namespace API.Controllers.Management
             domain.Email = model.Email;
             domain.Telephone = model.Telephone;
             domain.Address = model.Address;
+            domain.Biography = model.Biography;
 
             domain.UpdatedDate = DateTime.Now;
             domain.UpdatedById = UserId;
@@ -105,6 +107,7 @@ namespace API.Controllers.Management
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<Response<User>> PostUser(User model)
         {
@@ -121,7 +124,7 @@ namespace API.Controllers.Management
             return new Response<User>(model);
         }
 
-        // DELETE: api/Users/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<Response<User>> DeleteUser(int id)
         {

@@ -25,6 +25,6 @@ namespace API.Domains.Business
         public int Type { get; set; }
 
         [Column("pathImage")]
-        public string? PathImage { get; set; }
+        public byte[]? PathImage { get; set; }
     }
 }

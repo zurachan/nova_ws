@@ -39,7 +39,8 @@ export class ProfileComponent implements OnInit {
       address: [null],
       email: [null, Validators.required],
       telephone: [null],
-      username: [{ value: null, disabled: true }, Validators.required]
+      username: [{ value: null, disabled: true }, Validators.required],
+      biography: [null]
     })
   }
 

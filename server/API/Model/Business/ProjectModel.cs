@@ -8,7 +8,7 @@
         public int Type { get; set; }
         public int Phase { get; set; }
         public int UserId { get; set; }
-        public string? PathImage { get; set; }
+        public byte[]? PathImage { get; set; }
         public List<int> PartnerIds { get; set; }
     }
 }

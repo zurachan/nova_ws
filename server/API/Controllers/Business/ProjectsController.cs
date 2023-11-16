@@ -53,7 +53,7 @@ namespace API.Controllers.Business
                 query = query.Where(x => x.Phase == param.Phase);
             }
 
-            query.OrderByDescending(x => x.Id);
+            query = query.OrderByDescending(x => x.Id);
 
             var pagedData = await query
                 .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)

@@ -98,8 +98,8 @@ export class ContentDetailComponent implements OnInit {
             let file = this.commonService.dataURItoBlob(this.coverImageUrl)
             this.coverFormFile.append('FormFile', file);
           }
-          this.spinnerService.hide();
         }
+        this.spinnerService.hide();
       })
     }
   }

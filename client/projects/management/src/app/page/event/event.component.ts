@@ -15,7 +15,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class EventComponent implements OnInit {
 
-  constructor(private eventService: EventService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder, private spinnerService: NgxSpinnerService) { }
+  constructor(private eventService: EventService,
+    private dialog: MatDialog,
+    private notifier: NotifierService,
+    private fb: FormBuilder,
+    private spinnerService: NgxSpinnerService) { }
 
   datasource = [];
   form: FormGroup
@@ -65,8 +69,8 @@ export class EventComponent implements OnInit {
           return x;
         });
         this.datasource = res.data
-        this.spinnerService.hide();
       }
+      this.spinnerService.hide();
     });
   }
 

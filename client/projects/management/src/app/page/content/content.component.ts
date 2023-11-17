@@ -64,8 +64,8 @@ export class ContentComponent implements OnInit {
           return x;
         });
         this.datasource = res.data
-        this.spinnerService.hide();
       }
+      this.spinnerService.hide();
     });
   }
 

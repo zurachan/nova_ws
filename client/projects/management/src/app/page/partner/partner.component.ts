@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { PartnerService } from '../../shared/services/partner.service';
 import { PartnerDetailComponent } from './partner-detail/partner-detail.component';
 import _ from "lodash";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-partner',
@@ -14,7 +15,11 @@ import _ from "lodash";
 })
 export class PartnerComponent implements OnInit {
 
-  constructor(private partnerService: PartnerService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
+  constructor(private partnerService: PartnerService,
+    private dialog: MatDialog,
+    private notifier: NotifierService,
+    private fb: FormBuilder,
+    private spinnerService: NgxSpinnerService) { }
 
   datasource = [];
   form: FormGroup
@@ -48,7 +53,7 @@ export class PartnerComponent implements OnInit {
   getData(isSearch?: boolean) {
     let param = _.cloneDeep(this.form.value);
     if (isSearch) param.pageNumber = 0
-
+    this.spinnerService.show();
     this.partnerService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
@@ -63,6 +68,7 @@ export class PartnerComponent implements OnInit {
         });
         this.datasource = res.data
       }
+      this.spinnerService.hide();
     });
   }
 

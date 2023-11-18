@@ -13,6 +13,7 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 import { AboutComponent } from './page/about/about.component';
 import { ContactComponent } from './page/contact/contact.component';
 import { DashboardComponent } from './page/dashboard/dashboard.component';
+import { NewsComponent } from './page/news/news.component';
 
 /**
  * Custom angular notifier options
@@ -66,6 +67,7 @@ const customNotifierOptions: NotifierOptions = {
     ContactComponent,
     AboutComponent,
     DashboardComponent,
+    NewsComponent,
   ],
   imports: [
     BrowserModule,

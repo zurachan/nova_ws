@@ -19,7 +19,8 @@ import { UserService } from 'projects/management/src/app/shared/services/user.se
 })
 export class ProjectDetailComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private fb: FormBuilder,
+  constructor(private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder,
     private projectService: ProjectService,
     private spinnerService: NgxSpinnerService,
     private userService: UserService,
@@ -107,8 +108,13 @@ export class ProjectDetailComponent implements OnInit {
     this.form.markAllAsTouched();
     if (this.form.invalid) return
     let formData = _.cloneDeep(this.form.getRawValue());
+    this.spinnerService.show()
     this.customerService.Insert(formData).subscribe((res: any) => {
-      this.notifier.notify('success', "Đăng ký nhận thông tin thành công");
+      if (res.success) {
+        this.notifier.notify('success', "Đăng ký nhận thông tin thành công");
+        this.form.reset()
+      }
+      this.spinnerService.hide();
     })
   }
 }

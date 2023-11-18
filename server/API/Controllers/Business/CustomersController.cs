@@ -3,6 +3,7 @@ using API.Domains;
 using API.Domains.Business;
 using API.Model.Business;
 using API.Model.SearchFilter;
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -16,10 +17,12 @@ namespace API.Controllers.Business
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
         int UserId;
+        private IMailService _mailService;
 
-        public CustomersController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public CustomersController(AppDbContext context, IHttpContextAccessor httpContextAccessor, IMailService mailService)
         {
             _context = context;
+            _mailService = mailService;
             _httpContextAccessor = httpContextAccessor;
             var value = _httpContextAccessor.HttpContext.User.FindFirstValue("UserId");
             UserId = value != null ? int.Parse(value) : 0;
@@ -178,6 +181,8 @@ namespace API.Controllers.Business
             }
 
             await _context.SaveChangesAsync();
+
+            //_mailService.SendMailConfirmSubcribe(null);
 
             return new Response<CustomerModel>(model);
         }

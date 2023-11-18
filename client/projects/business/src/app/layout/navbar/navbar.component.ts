@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
       ]
     },
     {
-      name: "Tin tức", class: "nav-item dropdown", link: "", children: [
+      name: "Tin tức", class: "nav-item dropdown", link: "news", children: [
         { name: "Bài viết", link: "content" },
         { name: "Sự kiện", link: "event" }
       ]

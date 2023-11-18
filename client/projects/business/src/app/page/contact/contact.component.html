@@ -37,42 +37,47 @@
       <div class="col-sm-12 section-t8">
         <div class="row">
           <div class="col-md-7">
-            <form class="php-email-form">
+            <form class="php-email-form" [formGroup]="form">
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <input type="text" name="name" class="form-control form-control-lg form-control-a"
-                      placeholder="Your Name" required>
+                    <input type="text" name="fullName" formControlName="fullName"
+                      class="form-control form-control-lg form-control-a" placeholder="Họ và tên" required>
+                    <mat-error class="textError"
+                      *ngIf="form.controls.fullName.touched && form.controls.fullName.hasError('required')">
+                      Họ và tên là trường bắt buộc
+                    </mat-error>
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <input name="email" type="email" class="form-control form-control-lg form-control-a"
-                      placeholder="Your Email" required>
+                    <input type="email" name="email" formControlName="email"
+                      class="form-control form-control-lg form-control-a" placeholder="Email">
+                    <mat-error class="textError"
+                      *ngIf="form.controls.email.touched && form.controls.email.hasError('required')">
+                      Email là trường bắt buộc
+                    </mat-error>
                   </div>
                 </div>
                 <div class="col-md-12 mb-3">
                   <div class="form-group">
-                    <input type="text" name="subject" class="form-control form-control-lg form-control-a"
-                      placeholder="Subject" required>
+                    <input type="text" name="telephone" formControlName="telephone"
+                      class="form-control form-control-lg form-control-a" placeholder="Số điện thoại">
+                    <mat-error class="textError"
+                      *ngIf="form.controls.telephone.touched && form.controls.telephone.hasError('required')">
+                      Số điện thoại là trường bắt buộc
+                    </mat-error>
                   </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 mb-3">
                   <div class="form-group">
-                    <textarea name="message" class="form-control" name="message" cols="45" rows="8"
-                      placeholder="Message" required></textarea>
-                  </div>
-                </div>
-                <div class="col-md-12 my-3">
-                  <div class="mb-3">
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Your message has been sent. Thank you!</div>
+                    <input type="text" name="address" formControlName="address"
+                      class="form-control form-control-lg form-control-a" placeholder="Địa chỉ">
                   </div>
                 </div>
 
                 <div class="col-md-12 text-center">
-                  <button type="submit" class="btn btn-a">Đăng ký nhận thông tin</button>
+                  <button type="button" class="btn btn-a" (click)="onSubmit()">Đăng ký nhận thông tin</button>
                 </div>
               </div>
             </form>

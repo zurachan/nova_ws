@@ -59,9 +59,8 @@ export class ContentGridComponent implements OnInit {
           return x;
         })
         this.datasource = res.data
-        console.log(this.datasource)
-        this.spinnerService.hide()
       }
+      this.spinnerService.hide()
     });
   }
 

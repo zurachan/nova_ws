@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { format } from 'date-fns';
 import _ from "lodash";
 import { NgxSpinnerService } from 'ngx-spinner';
-import { EventType } from 'projects/management/src/app/shared/core/Enum';
-import { EventService } from 'projects/management/src/app/shared/services/event.service';
+import { PartnerService } from 'projects/management/src/app/shared/services/partner.service';
+
 @Component({
-  selector: 'app-event-grid',
-  templateUrl: './event-grid.component.html',
-  styleUrls: ['./event-grid.component.css']
+  selector: 'app-partner-grid',
+  templateUrl: './partner-grid.component.html',
+  styleUrls: ['./partner-grid.component.css']
 })
-export class EventGridComponent implements OnInit {
+export class PartnerGridComponent implements OnInit {
 
-  constructor(private eventService: EventService, private fb: FormBuilder, private spinnerService: NgxSpinnerService) { }
-
+  constructor(private fb: FormBuilder, private projectService: PartnerService, private spinnerService: NgxSpinnerService) { }
+  form: FormGroup
+  datasource = [];
   paging = {
     pageNumber: null,
     pageSize: null,
@@ -27,17 +27,16 @@ export class EventGridComponent implements OnInit {
     recordStart: null,
     recordEnd: null,
   };
-  datasource = [];
-  form: FormGroup
+
 
   ngOnInit() {
-    this.initForm();
+    this.initForm()
     this.getData();
-  }
 
+  }
   initForm() {
     this.form = this.fb.group({
-      event: [null],
+      partner: [null],
       pageNumber: 1,
       pageSize: 6
     })
@@ -47,18 +46,21 @@ export class EventGridComponent implements OnInit {
     let param = _.cloneDeep(this.form.value);
     if (isSearch) param.pageNumber = 0
     this.spinnerService.show()
-    this.eventService.GetPagingData(param).subscribe((res: any) => {
+    this.projectService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
         res.data.map(x => {
           x.pathImage = "data:image/png;base64," + x.pathImage;
-          x.createdDate = x.createdDate ? format(new Date(Date.parse(x.createdDate)), 'dd/MM/yyyy HH:mm') : x.createdDate;
           return x;
         })
         this.datasource = res.data
       }
       this.spinnerService.hide()
     });
+  }
+
+  onBlurSearch() {
+    this.getData();
   }
 
   pageChange(value) {
@@ -68,10 +70,4 @@ export class EventGridComponent implements OnInit {
       this.form.controls.pageSize.setValue(value.size)
     this.getData();
   }
-
-  getEventTypeStr(typeId) {
-    let type = EventType.find(x => x.id == typeId);
-    return type ? type.name : null;
-  }
-
 }

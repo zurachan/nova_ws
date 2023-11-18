@@ -141,6 +141,7 @@ export class ContentDetailComponent implements OnInit {
 
   onUploadCoverImage(fileList: FileList) {
     let reader = new FileReader();
+    this.coverFormFile = new FormData();
     this.coverFormFile.append('FormFile', fileList[0]);
     reader.onload = (event: any) => {
       this.coverImageUrl = event.target.result;

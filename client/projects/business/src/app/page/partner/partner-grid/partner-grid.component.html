@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12 col-lg-8">
         <div class="title-single-box">
-          <h1 class="title-single text-uppercase">{{page.title}}</h1>
+          <h1 class="title-single text-uppercase">Đối tác</h1>
         </div>
       </div>
       <div class="col-md-12 col-lg-4">
@@ -12,11 +12,8 @@
             <li class="breadcrumb-item">
               <a [routerLink]="['']" routerLinkActive="router-link-active">Trang chủ</a>
             </li>
-            <li class="breadcrumb-item">
-              <a [routerLink]="['/project']" routerLinkActive="router-link-active">Dự án</a>
-            </li>
             <li class="breadcrumb-item active" aria-current="page">
-              {{page.title}}
+              Đối tác
             </li>
           </ol>
         </nav>
@@ -33,15 +30,9 @@
         <div class="grid-option">
           <form [formGroup]="form">
             <div class="row">
-              <div class="col-sm-8 d-flex align-items-center">
-                <input type="text" placeholder="Nhập tìm kiếm theo tên dự án..." class="form-control mr-4"
-                  (blur)="onBlurSearch()" formControlName="project">
-              </div>
-              <div class="col-sm-4">
-                <select class="form-control" formControlName="phase" (change)="onChangePhase()">
-                  <option selected value="0">--Tất cả--</option>
-                  <option *ngFor="let item of projectPhase" [value]="item.id">{{item.name}}</option>
-                </select>
+              <div class="col-sm-12 d-flex align-items-center">
+                <input type="text" placeholder="Nhập tìm kiếm theo tên đối tác..." class="form-control mr-4"
+                  (blur)="onBlurSearch()" formControlName="partner">
               </div>
             </div>
           </form>
@@ -59,11 +50,11 @@
             <div class="card-overlay-a-content">
               <div class="card-header-a">
                 <h2 class="card-title-a">
-                  <a href="/project/{{item.id}}">{{item.name}}</a>
+                  <a href="/partner/{{item.id}}">{{item.name}}</a>
                 </h2>
               </div>
               <div class="card-body-a">
-                <a href="/project/{{item.id}}" class="link-a">Xem chi tiết
+                <a href="/partner/{{item.id}}" class="link-a">Xem chi tiết
                   <span class="bi bi-chevron-right"></span>
                 </a>
               </div>

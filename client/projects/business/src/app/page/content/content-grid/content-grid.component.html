@@ -24,27 +24,6 @@
 <!-- =======  Blog Grid ======= -->
 <section class="news-grid grid">
   <div class="container">
-    <!-- <div class="row">
-      <div class="col-sm-12">
-        <div class="grid-option">
-          <form [formGroup]="form">
-            <div class="row">
-              <div class="col-sm-8 d-flex align-items-center">
-                <input type="text" placeholder="Nhập tìm kiếm theo tiêu đề..." class="form-control mr-4"
-                  (blur)="onBlurSearch()" formControlName="project">
-              </div>
-              <div class="col-sm-4">
-                <select class="form-control" formControlName="phase" (change)="onChangePhase()">
-                  <option selected value="0">--Tất cả--</option>
-                  <option *ngFor="let item of contentType" [value]="item.id">{{item.name}}</option>
-                </select>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div> -->
-
     <div class="row">
       <div class="col-md-4" *ngFor="let item of datasource">
         <div class="card-box-b card-shadow news-box">

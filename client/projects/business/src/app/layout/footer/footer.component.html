@@ -2,84 +2,23 @@
 <section class="section-footer">
   <div class="container">
     <div class="row">
-      <div class="col-sm-12 col-md-4">
+      <div class="col-sm-12 col-md-12">
         <div class="widget-a">
           <div class="w-header-a">
-            <h3 class="w-title-a text-brand">EstateAgency</h3>
+            <h3 class="w-title-a text-brand">{{Info.companyName}}</h3>
           </div>
           <div class="w-body-a">
             <p class="w-text-a color-text-a">
-              Enim minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exea commodo consequat duis
-              sed aute irure.
+              {{Info.companyDescription}}
             </p>
           </div>
           <div class="w-footer-a">
             <ul class="list-unstyled">
               <li class="color-a">
-                <span class="color-text-a">Phone .</span> contact@example.com
+                <span class="color-text-a">Điện thoại .</span> {{Info.phone}}
               </li>
               <li class="color-a">
-                <span class="color-text-a">Email .</span> +54 356 945234
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-4 section-md-t3">
-        <div class="widget-a">
-          <div class="w-header-a">
-            <h3 class="w-title-a text-brand">The Company</h3>
-          </div>
-          <div class="w-body-a">
-            <div class="w-body-a">
-              <ul class="list-unstyled">
-                <li class="item-list-a">
-                  <i class="bi bi-chevron-right"></i> <a href="#">Site Map</a>
-                </li>
-                <li class="item-list-a">
-                  <i class="bi bi-chevron-right"></i> <a href="#">Legal</a>
-                </li>
-                <li class="item-list-a">
-                  <i class="bi bi-chevron-right"></i> <a href="#">Agent Admin</a>
-                </li>
-                <li class="item-list-a">
-                  <i class="bi bi-chevron-right"></i> <a href="#">Careers</a>
-                </li>
-                <li class="item-list-a">
-                  <i class="bi bi-chevron-right"></i> <a href="#">Affiliate</a>
-                </li>
-                <li class="item-list-a">
-                  <i class="bi bi-chevron-right"></i> <a href="#">Privacy Policy</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-4 section-md-t3">
-        <div class="widget-a">
-          <div class="w-header-a">
-            <h3 class="w-title-a text-brand">International sites</h3>
-          </div>
-          <div class="w-body-a">
-            <ul class="list-unstyled">
-              <li class="item-list-a">
-                <i class="bi bi-chevron-right"></i> <a href="#">Venezuela</a>
-              </li>
-              <li class="item-list-a">
-                <i class="bi bi-chevron-right"></i> <a href="#">China</a>
-              </li>
-              <li class="item-list-a">
-                <i class="bi bi-chevron-right"></i> <a href="#">Hong Kong</a>
-              </li>
-              <li class="item-list-a">
-                <i class="bi bi-chevron-right"></i> <a href="#">Argentina</a>
-              </li>
-              <li class="item-list-a">
-                <i class="bi bi-chevron-right"></i> <a href="#">Singapore</a>
-              </li>
-              <li class="item-list-a">
-                <i class="bi bi-chevron-right"></i> <a href="#">Philippines</a>
+                <span class="color-text-a">Email .</span> {{Info.email}}
               </li>
             </ul>
           </div>
@@ -96,42 +35,27 @@
         <nav class="nav-footer">
           <ul class="list-inline">
             <li class="list-inline-item">
-              <a href="#">Home</a>
+              <a [routerLink]="['']" routerLinkActive="router-link-active">Trang chủ</a>
             </li>
             <li class="list-inline-item">
-              <a href="#">About</a>
+              <a [routerLink]="['about']" routerLinkActive="router-link-active">Giới thiệu</a>
             </li>
             <li class="list-inline-item">
-              <a href="#">Property</a>
+              <a [routerLink]="['project']" routerLinkActive="router-link-active">Dự án</a>
             </li>
             <li class="list-inline-item">
-              <a href="#">Blog</a>
+              <a [routerLink]="['news']" routerLinkActive="router-link-active">Tin tức</a>
             </li>
             <li class="list-inline-item">
-              <a href="#">Contact</a>
+              <a [routerLink]="['contact']" routerLinkActive="router-link-active">Liên hệ</a>
             </li>
           </ul>
         </nav>
         <div class="socials-a">
           <ul class="list-inline">
             <li class="list-inline-item">
-              <a href="#">
+              <a href="https://{{Info.facebook}}" class="link-one" target="_blank">
                 <i class="bi bi-facebook" aria-hidden="true"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="bi bi-twitter" aria-hidden="true"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="bi bi-instagram" aria-hidden="true"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="bi bi-linkedin" aria-hidden="true"></i>
               </a>
             </li>
           </ul>
@@ -139,7 +63,7 @@
         <div class="copyright-footer">
           <p class="copyright color-text-a">
             &copy; Copyright
-            <span class="color-a">EstateAgency</span> All Rights Reserved.
+            <span class="color-a">{{Info.companyName}}</span> All Rights Reserved.
           </p>
         </div>
         <div class="credits">
@@ -149,7 +73,7 @@
            Licensing information: https://bootstrapmade.com/license/
            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=EstateAgency
          -->
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          Designed by <a href="https://github.com/zurachan" target="_blank">zurachan</a>
         </div>
       </div>
     </div>

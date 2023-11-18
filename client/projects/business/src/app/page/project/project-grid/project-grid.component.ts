@@ -78,8 +78,8 @@ export class ProjectGridComponent implements OnInit {
           return x;
         })
         this.datasource = res.data
-        this.spinnerService.hide()
       }
+      this.spinnerService.hide()
     });
   }
 
@@ -98,6 +98,4 @@ export class ProjectGridComponent implements OnInit {
   onChangePhase() {
     this.getData();
   }
-
-
 }

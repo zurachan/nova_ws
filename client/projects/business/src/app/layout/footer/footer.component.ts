@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { AppSettingsService } from 'projects/management/src/app/shared/services/app-settings.service';
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +9,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private spinner: NgxSpinnerService,
+    private appSettingsService: AppSettingsService) { }
 
-  ngOnInit() {
+  Info = {
+    companyName: null,
+    companyDescription: null,
+    email: null,
+    phone: null,
+    address: null,
+    facebook: null,
+    map: null
   }
 
+  ngOnInit() {
+    this.getCommonInfo();
+  }
+  getCommonInfo() {
+    let url = '/assets/config/common-info.json';
+    this.spinner.show();
+    this.appSettingsService.getJSON(url).subscribe((res) => {
+      this.Info = res
+      this.spinner.hide();
+    });
+  }
 }

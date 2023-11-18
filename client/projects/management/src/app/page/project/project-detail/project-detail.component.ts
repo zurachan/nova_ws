@@ -89,7 +89,7 @@ export class ProjectDetailComponent implements OnInit {
       partnerIds: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       userId: [{ value: null, disabled: this.modal.type == 'view' }, Validators.required],
       coverImage: [{ value: null, disabled: this.modal.type == 'view' }],
-      pathImage: [null],
+      // pathImage: [null],
     })
   }
 
@@ -99,7 +99,6 @@ export class ProjectDetailComponent implements OnInit {
       this.projectService.GetById(this.modal.item.id).subscribe((detail: any) => {
         if (detail.success) {
           this.form.patchValue(detail.data)
-
           if (detail.data.pathImage) {
             this.coverImageUrl = "data:image/png;base64," + detail.data.pathImage;
             let file = this.commonService.dataURItoBlob(this.coverImageUrl)
@@ -157,11 +156,11 @@ export class ProjectDetailComponent implements OnInit {
 
   onUploadCoverImage(fileList: FileList) {
     let reader = new FileReader();
+    this.coverFormFile = new FormData();
     this.coverFormFile.append('FormFile', fileList[0]);
     reader.onload = (event: any) => {
       this.coverImageUrl = event.target.result;
     }
     reader.readAsDataURL(fileList[0]);
   }
-
 }

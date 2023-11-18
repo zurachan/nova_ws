@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PartnerService } from 'projects/management/src/app/shared/services/partner.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { AppSettingsService } from 'projects/management/src/app/shared/services/app-settings.service';
 
 @Component({
   selector: 'app-about',
@@ -8,19 +9,31 @@ import { PartnerService } from 'projects/management/src/app/shared/services/part
 })
 export class AboutComponent implements OnInit {
 
-  constructor(private partnerService: PartnerService) { }
+  constructor(private spinner: NgxSpinnerService,
+    private appSettingsService: AppSettingsService) { }
 
-  partners = [];
+  Info = {
+    companyName: null,
+    companyDescription: null,
+    email: null,
+    phone: null,
+    address: null,
+    facebook: null,
+    map: null,
+    establish: null,
+    major: null
+  }
 
   ngOnInit() {
-    this.partnerService.GetPagingData({ partner: "", pageNumber: 1, pageSize: 5 }).subscribe((res: any) => {
-      if (res.success) {
-        res.data.map(x => {
-          x.pathImage = "data:image/png;base64," + x.pathImage;
-          return x;
-        })
-        this.partners = res.data;
-      }
-    })
+    this.getCommonInfo();
   }
+  getCommonInfo() {
+    let url = '/assets/config/common-info.json';
+    this.spinner.show();
+    this.appSettingsService.getJSON(url).subscribe((res) => {
+      this.Info = res
+      this.spinner.hide();
+    });
+  }
+
 }

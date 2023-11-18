@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-12 col-lg-8">
         <div class="title-single-box">
-          <h1 class="title-single">{{content.title}}</h1>
+          <h1 class="title-single">{{partner.name}}</h1>
         </div>
       </div>
       <div class="col-md-12 col-lg-4">
@@ -14,7 +14,7 @@
               <a [routerLink]="['']" routerLinkActive="router-link-active">Trang chủ</a>
             </li>
             <li class="breadcrumb-item">
-              <a [routerLink]="['/content']" routerLinkActive="router-link-active">Bài viết</a>
+              <a [routerLink]="['/partner']" routerLinkActive="router-link-active">Đối tác</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
               Chi tiết
@@ -32,28 +32,28 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="news-img-box">
-          <img [src]="content.pathImage" alt="" class="img-fluid">
+          <img [src]="partner.pathImage" alt="" class="img-fluid">
         </div>
       </div>
       <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
         <div class="post-information">
           <ul class="list-inline text-center color-a">
             <li class="list-inline-item mr-2">
-              <strong>Người tạo: </strong>
-              <span class="color-text-a">{{user.fullName}}</span>
+              <strong>Số điện thoại: </strong>
+              <span class="color-text-a">{{partner.telephone}}</span>
             </li>
             <li class="list-inline-item mr-2">
-              <strong>Phân loại: </strong>
-              <span class="color-text-a">{{getContentTypeStr(content.type)}}</span>
+
             </li>
             <li class="list-inline-item">
-              <strong>Ngày tạo: </strong>
-              <span class="color-text-a">{{content.createdDate}}</span>
+              <strong>Email: </strong>
+              <span class="color-text-a">{{partner.email}}</span>
             </li>
           </ul>
-        </div>
-        <div class="post-content color-text-a">
-          <div [ngxSummernoteView]=content.mainContent></div>
+          <div class="text-center">
+            <strong>Địa chỉ: </strong>
+            <span class="color-text-a">{{partner.address}}</span>
+          </div>
         </div>
       </div>
     </div>

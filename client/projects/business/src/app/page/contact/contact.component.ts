@@ -5,6 +5,7 @@ import _ from "lodash";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomerService } from 'projects/management/src/app/shared/services/customer.service';
 import { AppSettingsService } from './../../../../../management/src/app/shared/services/app-settings.service';
+import { EmailPattern } from '../../common/common';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
@@ -18,7 +19,7 @@ export class ContactComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private appSettingsService: AppSettingsService) { }
   form: FormGroup;
-  emailPattern = /^\w+([-+.']\w+)*@gmail.com*$/;
+
   Info = {
     companyName: null,
     companyDescription: null,
@@ -37,7 +38,7 @@ export class ContactComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       fullName: [null, Validators.required],
-      email: [null, [Validators.required, Validators.pattern(this.emailPattern)]],
+      email: [null, [Validators.required, Validators.pattern(EmailPattern)]],
       telephone: [null, Validators.required],
       address: [null],
       projectId: [null]

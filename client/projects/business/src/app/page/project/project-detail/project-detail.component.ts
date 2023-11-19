@@ -10,6 +10,7 @@ import { CustomerService } from 'projects/management/src/app/shared/services/cus
 import { PartnerService } from 'projects/management/src/app/shared/services/partner.service';
 import { ProjectService } from 'projects/management/src/app/shared/services/project.service';
 import { UserService } from 'projects/management/src/app/shared/services/user.service';
+import { EmailPattern } from '../../../common/common';
 
 
 @Component({
@@ -42,7 +43,6 @@ export class ProjectDetailComponent implements OnInit {
   partners = [];
   user = new User();
   form: FormGroup;
-  emailPattern = /^\w+([-+.']\w+)*@gmail.com*$/;
 
   ngOnInit() {
     this.getDetail();
@@ -53,7 +53,7 @@ export class ProjectDetailComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       fullName: [null, Validators.required],
-      email: [null, [Validators.required, Validators.pattern(this.emailPattern)]],
+      email: [null, [Validators.required, Validators.pattern(EmailPattern)]],
       telephone: [null, Validators.required],
       address: [null],
       projectId: [null]

@@ -18,7 +18,7 @@ export class ContactComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private appSettingsService: AppSettingsService) { }
   form: FormGroup;
-
+  emailPattern = /^\w+([-+.']\w+)*@gmail.com*$/;
   Info = {
     companyName: null,
     companyDescription: null,
@@ -37,7 +37,7 @@ export class ContactComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       fullName: [null, Validators.required],
-      email: [null, Validators.required],
+      email: [null, [Validators.required, Validators.pattern(this.emailPattern)]],
       telephone: [null, Validators.required],
       address: [null],
       projectId: [null]

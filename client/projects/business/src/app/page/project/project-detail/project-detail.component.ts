@@ -42,6 +42,7 @@ export class ProjectDetailComponent implements OnInit {
   partners = [];
   user = new User();
   form: FormGroup;
+  emailPattern = /^\w+([-+.']\w+)*@gmail.com*$/;
 
   ngOnInit() {
     this.getDetail();
@@ -52,7 +53,7 @@ export class ProjectDetailComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       fullName: [null, Validators.required],
-      email: [null, Validators.required],
+      email: [null, [Validators.required, Validators.pattern(this.emailPattern)]],
       telephone: [null, Validators.required],
       address: [null],
       projectId: [null]
@@ -105,16 +106,22 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onSubmit() {
+    debugger
+
     this.form.markAllAsTouched();
     if (this.form.invalid) return
-    let formData = _.cloneDeep(this.form.getRawValue());
-    this.spinnerService.show()
-    this.customerService.Insert(formData).subscribe((res: any) => {
-      if (res.success) {
-        this.notifier.notify('success', "Đăng ký nhận thông tin thành công");
-        this.form.reset()
-      }
-      this.spinnerService.hide();
-    })
+
+    debugger
+
+    // return
+    // let formData = _.cloneDeep(this.form.getRawValue());
+    // this.spinnerService.show()
+    // this.customerService.Insert(formData).subscribe((res: any) => {
+    //   if (res.success) {
+    //     this.notifier.notify('success', "Đăng ký nhận thông tin thành công");
+    //     this.form.reset()
+    //   }
+    //   this.spinnerService.hide();
+    // })
   }
 }

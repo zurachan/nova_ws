@@ -138,6 +138,10 @@
                           *ngIf="form.controls.email.touched && form.controls.email.hasError('required')">
                           Email là trường bắt buộc
                         </mat-error>
+                        <mat-error class="textError"
+                          *ngIf="form.controls.email.touched && form.controls.email.hasError('pattern')">
+                          Email không đúng định dạng
+                        </mat-error>
                       </div>
                     </div>
                     <div class="col-md-12 mb-1">

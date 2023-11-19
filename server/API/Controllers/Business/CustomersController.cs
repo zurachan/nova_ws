@@ -5,6 +5,7 @@ using API.Model.Business;
 using API.Model.SearchFilter;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -120,71 +121,93 @@ namespace API.Controllers.Business
                 return new Response<CustomerModel> { Success = false, Message = "Empty" };
             }
 
-            var domain = await _context.Customers.FirstOrDefaultAsync(x => !x.IsDeleted && x.Email == model.Email && x.Telephone == model.Telephone);
+            var transaction = await _context.Database.BeginTransactionAsync();
 
-            if (domain == null)
+            try
             {
-                domain = new Customer()
-                {
-                    FullName = model.FullName,
-                    Telephone = model.Telephone,
-                    Email = model.Email,
-                    Address = model.Address,
-                    SubcribeType = model.ProjectId.HasValue ? (int)SubcribeType.Update : (int)SubcribeType.Create,
+                var domain = await _context.Customers.FirstOrDefaultAsync(x => !x.IsDeleted && x.Email == model.Email && x.Telephone == model.Telephone);
 
-                    CreatedById = UserId,
-                    CreatedDate = DateTime.Now,
-                };
-                _context.Customers.Add(domain);
-
+                Project? existedProject = new();
                 if (model.ProjectId.HasValue)
                 {
-                    var existedProject = await _context.Projects.FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == model.ProjectId);
-                    if (existedProject != null)
-                    {
-                        ProjectCustomer projectCustomer = new()
-                        {
-                            Project = existedProject,
-                            Customer = domain,
-                            CreatedById = UserId,
-                            CreatedDate = DateTime.Now,
-                        };
-                        _context.ProjectCustomers.Add(projectCustomer);
-                    }
+                    existedProject = await _context.Projects.FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == model.ProjectId);
                 }
-            }
-            else
-            {
-                if (model.ProjectId.HasValue)
-                {
-                    if (domain.SubcribeType == (int)SubcribeType.Create)
-                        domain.SubcribeType = (int)SubcribeType.All;
 
-                    var existedProject = await _context.Projects.FirstOrDefaultAsync(x => !x.IsDeleted && x.Id == model.ProjectId);
-                    if (existedProject != null)
+                if (domain == null)
+                {
+                    domain = new Customer()
                     {
-                        ProjectCustomer projectCustomer = new()
+                        FullName = model.FullName,
+                        Telephone = model.Telephone,
+                        Email = model.Email,
+                        Address = model.Address,
+                        SubcribeType = model.ProjectId.HasValue ? (int)SubcribeType.Update : (int)SubcribeType.Create,
+
+                        CreatedById = UserId,
+                        CreatedDate = DateTime.Now,
+                    };
+                    _context.Customers.Add(domain);
+
+                    if (model.ProjectId.HasValue)
+                    {
+                        if (existedProject != null)
                         {
-                            Project = existedProject,
-                            Customer = domain,
-                            CreatedById = UserId,
-                            CreatedDate = DateTime.Now,
-                        };
-                        _context.ProjectCustomers.Add(projectCustomer);
+                            ProjectCustomer projectCustomer = new()
+                            {
+                                Project = existedProject,
+                                Customer = domain,
+                                CreatedById = UserId,
+                                CreatedDate = DateTime.Now,
+                            };
+                            _context.ProjectCustomers.Add(projectCustomer);
+                        }
                     }
                 }
                 else
                 {
-                    if (domain.SubcribeType == (int)SubcribeType.Update)
-                        domain.SubcribeType = (int)SubcribeType.All;
+                    if (model.ProjectId.HasValue)
+                    {
+                        if (domain.SubcribeType == (int)SubcribeType.Create)
+                            domain.SubcribeType = (int)SubcribeType.All;
+
+                        if (existedProject != null)
+                        {
+                            ProjectCustomer projectCustomer = new()
+                            {
+                                Project = existedProject,
+                                Customer = domain,
+                                CreatedById = UserId,
+                                CreatedDate = DateTime.Now,
+                            };
+                            _context.ProjectCustomers.Add(projectCustomer);
+                        }
+                    }
+                    else
+                    {
+                        if (domain.SubcribeType == (int)SubcribeType.Update)
+                            domain.SubcribeType = (int)SubcribeType.All;
+                    }
                 }
+
+                await _context.SaveChangesAsync();
+
+                var mailResult = await _mailService.SendMailConfirmSubcribe(domain, existedProject);
+
+                if (!mailResult)
+                {
+                    await transaction.RollbackAsync();
+                    return new Response<CustomerModel> { Success = false, Message = "Send mail fail" };
+                }
+
+                await transaction.CommitAsync();
+                return new Response<CustomerModel>(model);
+
             }
-
-            await _context.SaveChangesAsync();
-
-            //_mailService.SendMailConfirmSubcribe(null);
-
-            return new Response<CustomerModel>(model);
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return new Response<CustomerModel> { Success = false, Message = ex.Message };
+            }
         }
 
         // DELETE: api/Customers/5

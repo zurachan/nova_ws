@@ -3,6 +3,7 @@ using API.Domains;
 using API.Domains.Business;
 using API.Model.Business;
 using API.Model.SearchFilter;
+using API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +18,15 @@ namespace API.Controllers.Business
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
         int UserId;
+        private readonly IMailService _mailService;
 
-        public ProjectsController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public ProjectsController(AppDbContext context, IHttpContextAccessor httpContextAccessor, IMailService mailService)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             var value = _httpContextAccessor.HttpContext.User.FindFirstValue("UserId");
             UserId = value != null ? int.Parse(value) : 0;
+            _mailService = mailService;
         }
 
         // GET: api/Projects
@@ -145,6 +148,11 @@ namespace API.Controllers.Business
             try
             {
                 await _context.SaveChangesAsync();
+
+                var customerIds = await _context.ProjectCustomers.Where(x => !x.IsDeleted && x.ProjectId == domain.Id).Select(x => x.CustomerId).ToListAsync();
+                var customers = await _context.Customers.Where(x => customerIds.Contains(x.Id)).ToListAsync();
+
+                await _mailService.SendMailUpdateProgress(customers, domain);
             }
             catch (Exception ex)
             {
@@ -192,6 +200,10 @@ namespace API.Controllers.Business
 
             await _context.SaveChangesAsync();
             model.Id = domain.Id;
+
+            var customers = await _context.Customers.Where(x => !x.IsDeleted && x.SubcribeType == (int)SubcribeType.Create || x.SubcribeType == (int)SubcribeType.All).ToListAsync();
+
+            await _mailService.SendMailNewProject(customers);
 
             return new Response<ProjectModel>(model);
         }

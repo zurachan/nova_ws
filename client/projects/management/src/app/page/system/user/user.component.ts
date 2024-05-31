@@ -5,19 +5,25 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 import { DeleteConfirmComponent } from '../../../shared/component/delete-confirm/delete-confirm.component';
 import { NotifierService } from 'angular-notifier';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import _ from "lodash";
+import _ from 'lodash';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrls: ['./user.component.css'],
 })
 export class UserComponent implements OnInit {
-
-  constructor(private userService: UserService, private dialog: MatDialog, private notifier: NotifierService, private fb: FormBuilder) { }
+  constructor(
+    private userService: UserService,
+    private dialog: MatDialog,
+    private notifier: NotifierService,
+    private fb: FormBuilder,
+    private route: Router
+  ) {}
 
   datasource = [];
-  form: FormGroup
+  form: FormGroup;
   paging = {
     pageNumber: null,
     pageSize: null,
@@ -41,27 +47,33 @@ export class UserComponent implements OnInit {
     this.form = this.fb.group({
       user: [null],
       pageNumber: 1,
-      pageSize: 5
-    })
+      pageSize: 5,
+    });
   }
 
   getData(isSearch?: boolean) {
     let param = _.cloneDeep(this.form.value);
-    if (isSearch) param.pageNumber = 0
+    if (isSearch) param.pageNumber = 0;
 
     this.userService.GetPagingData(param).subscribe((res: any) => {
       if (res.success) {
         this.paging = res.paging;
 
-        this.paging.recordStart = this.paging.currentRecords < 1 ? 0 : (this.paging.pageNumber - 1) * this.paging.pageSize + 1
-        this.paging.recordEnd = this.paging.currentRecords < 1 ? 0 : this.paging.recordStart + this.paging.currentRecords - 1
+        this.paging.recordStart =
+          this.paging.currentRecords < 1
+            ? 0
+            : (this.paging.pageNumber - 1) * this.paging.pageSize + 1;
+        this.paging.recordEnd =
+          this.paging.currentRecords < 1
+            ? 0
+            : this.paging.recordStart + this.paging.currentRecords - 1;
 
         let start = this.paging.recordStart;
         res.data.map((x: any) => {
           x.stt = start++;
           return x;
         });
-        this.datasource = res.data
+        this.datasource = res.data;
       }
     });
   }
@@ -71,13 +83,13 @@ export class UserComponent implements OnInit {
       data: {
         title: type == 'edit' ? 'Cập nhật nhân viên' : 'Thêm mới nhân viên',
         type,
-        item
-      }
+        item,
+      },
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.getData()
+        this.getData();
       }
     });
   }
@@ -87,28 +99,32 @@ export class UserComponent implements OnInit {
       data: {
         title: 'Nhân viên',
         item: item.fullName,
-      }
+      },
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.userService.Delete(item.id).subscribe(res => {
+        this.userService.Delete(item.id).subscribe((res) => {
           if (res.success) {
-            this.getData()
-            this.notifier.notify('success', "Xoá nhân viên " + item.fullName + " thành công");
+            this.getData();
+            this.notifier.notify(
+              'success',
+              'Xoá nhân viên ' + item.fullName + ' thành công'
+            );
           } else {
-            this.notifier.notify('error', "Xoá nhân viên " + item.fullName + " không thành công");
+            this.notifier.notify(
+              'error',
+              'Xoá nhân viên ' + item.fullName + ' không thành công'
+            );
           }
-        })
+        });
       }
     });
   }
 
   pageChange(value) {
-    if (value.number)
-      this.form.controls.pageNumber.setValue(value.number)
-    if (value.size)
-      this.form.controls.pageSize.setValue(value.size)
+    if (value.number) this.form.controls.pageNumber.setValue(value.number);
+    if (value.size) this.form.controls.pageSize.setValue(value.size);
     this.getData();
   }
 }

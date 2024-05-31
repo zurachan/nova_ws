@@ -114,6 +114,7 @@ const customNotifierOptions: NotifierOptions = {
     MatDatepickerModule,
     MatNativeDateModule,
     NotifierModule.withConfig(customNotifierOptions),
+
     JwtModule.forRoot({
       config: {
         tokenGetter: function tokenGetter() {
@@ -127,6 +128,7 @@ const customNotifierOptions: NotifierOptions = {
         },
       },
     }),
+    
     PaginationModule,
     DeleteConfirmModule,
     NgxSummernoteModule,

@@ -70,7 +70,6 @@ namespace API.Controllers.Management
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize]
         [HttpPut("{id}")]
         public async Task<Response<User>> PutUser(int id, User model)
         {
@@ -107,7 +106,6 @@ namespace API.Controllers.Management
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize]
         [HttpPost]
         public async Task<Response<User>> PostUser(User model)
         {
@@ -124,7 +122,6 @@ namespace API.Controllers.Management
             return new Response<User>(model);
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<Response<User>> DeleteUser(int id)
         {

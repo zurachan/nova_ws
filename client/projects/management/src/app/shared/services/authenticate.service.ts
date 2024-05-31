@@ -10,12 +10,13 @@ const urlApi = 'https://localhost:44322/api/';
 const currentData = 'Authentication';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class AuthenticateService {
   constructor(private http: HttpClient, private router: Router) {
-    this.credentialSubject = new BehaviorSubject<Credential>(JSON.parse(localStorage.getItem('credential')));
+    this.credentialSubject = new BehaviorSubject<Credential>(
+      JSON.parse(localStorage.getItem('credential'))
+    );
     this.credential = this.credentialSubject.asObservable();
   }
 
@@ -44,7 +45,7 @@ export class AuthenticateService {
   Logout() {
     localStorage.removeItem('credential');
     this.credentialSubject.next(null);
-    this.router.navigate(['/login']);
+    this.router.navigateByUrl('/login');
   }
 
   async Login(model: any) {
@@ -83,25 +84,28 @@ export class AuthenticateService {
   }
 
   onLogin(model: any) {
-    return this.http.post(`${urlApi}` + `${currentData}` + "/Login", model);
+    return this.http.post(`${urlApi}` + `${currentData}` + '/Login', model);
   }
 }
 
 const jwtHelperService = new JwtHelperService();
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class AuthenticateGuard {
-  constructor(private authService: AuthenticateService) { }
+  constructor(private authService: AuthenticateService) {}
 
   canActivate(): boolean {
     let isLoggedIn = this.authService.LoggedIn;
     let currentUser = this.authService.GetCredential;
 
     //Check if the token is expired or not and if token is expired then redirect to login page and return false
-    if (isLoggedIn && currentUser && !jwtHelperService.isTokenExpired(currentUser.token)) {
+    if (
+      isLoggedIn &&
+      currentUser &&
+      !jwtHelperService.isTokenExpired(currentUser.token)
+    ) {
       return true;
     }
     this.authService.Logout();

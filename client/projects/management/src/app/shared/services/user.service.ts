@@ -24,18 +24,18 @@ export class UserService {
 
   /** GET ONE: find exactly by id */
   GetById(id: number): Observable<any> {
-    return this.http.get<any>(`${urlApi + endPoint}` + `/${id}`).pipe();
+    return this.http.get<any>(`${urlApi + endPoint}` + `/${id}`);
   }
   /** CREATE: add  new  */
   Insert(model: any): Observable<any> {
-    return this.http.post<any>(`${urlApi + endPoint}`, model).pipe();
+    return this.http.post<any>(`${urlApi + endPoint}`, model);
   }
   /** UPDATE: edit by id */
   Update(model: any): Observable<any> {
-    return this.http.put<any>(`${urlApi + endPoint}` + `/${model.id}`, model).pipe();
+    return this.http.put<any>(`${urlApi + endPoint}` + `/${model.id}`, model);
   }
   /** DELETE: delete from the server by id */
   Delete(id: number): Observable<any> {
-    return this.http.delete<any>(`${urlApi + endPoint}` + `/${id}`).pipe();
+    return this.http.delete<any>(`${urlApi + endPoint}` + `/${id}`);
   }
 }

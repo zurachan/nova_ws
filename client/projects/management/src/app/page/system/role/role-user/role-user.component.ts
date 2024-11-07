@@ -55,11 +55,11 @@ export class RoleUserComponent implements OnInit {
   }
 
   getUser() {
-    return this.userService.GetPagingData({ pageNumber: 1, pageSize: 10000, user: null }).pipe();
+    return this.userService.GetPagingData({ pageNumber: 1, pageSize: 10000, user: null });
   }
 
   getUserRole() {
-    return this.userRoleService.getUsersByRole(this.modal.item.id).pipe();
+    return this.userRoleService.getUsersByRole(this.modal.item.id);
   }
 
   onSave() {

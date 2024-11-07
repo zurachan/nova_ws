@@ -67,6 +67,6 @@ export class EventDetailComponent implements OnInit {
   }
 
   getUserById(userId) {
-    return this.userService.GetById(userId).pipe();
+    return this.userService.GetById(userId);
   }
 }

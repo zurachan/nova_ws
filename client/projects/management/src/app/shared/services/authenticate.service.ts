@@ -94,7 +94,7 @@ const jwtHelperService = new JwtHelperService();
   providedIn: 'root',
 })
 export class AuthenticateGuard {
-  constructor(private authService: AuthenticateService) {}
+  constructor(private authService: AuthenticateService) { }
 
   canActivate(): boolean {
     let isLoggedIn = this.authService.LoggedIn;

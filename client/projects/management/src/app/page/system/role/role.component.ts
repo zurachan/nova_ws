@@ -81,15 +81,15 @@ export class RoleComponent implements OnInit {
   }
 
   getUser() {
-    return this.userService.GetPagingData({ pageNumber: 1, pageSize: 10000, user: null }).pipe();
+    return this.userService.GetPagingData({ pageNumber: 1, pageSize: 10000, user: null });
   }
 
   getRole(param: any) {
-    return this.roleService.GetPagingData(param).pipe();
+    return this.roleService.GetPagingData(param);
   }
 
   getUserRole() {
-    return this.userRoleService.GetAllUserRoles().pipe();
+    return this.userRoleService.GetAllUserRoles();
   }
 
   onEditRole(item: any) {

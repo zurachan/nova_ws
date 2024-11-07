@@ -18,7 +18,7 @@ export class ProjectService {
   }
   /** GET ONE: find exactly by id */
   GetById(id: number): Observable<any> {
-    return this.http.get<any>(`${urlApi}` + `/${id}`).pipe();
+    return this.http.get<any>(`${urlApi}` + `/${id}`);
   }
   // GetById(id: number): Observable<any> {
   //   return this.http.get<any>(`${urlApi}` + `/${id}`).pipe(catchError((error) => {
@@ -29,14 +29,14 @@ export class ProjectService {
   // }
   /** CREATE: add  new  */
   Insert(model: any): Observable<any> {
-    return this.http.post<any>(`${urlApi}`, model).pipe();
+    return this.http.post<any>(`${urlApi}`, model);
   }
   /** UPDATE: edit by id */
   Update(model: any): Observable<any> {
-    return this.http.put<any>(`${urlApi}` + `/${model.id}`, model).pipe();
+    return this.http.put<any>(`${urlApi}` + `/${model.id}`, model);
   }
   /** DELETE: delete from the server by id */
   Delete(id: number): Observable<any> {
-    return this.http.delete<any>(`${urlApi}` + `/${id}`).pipe();
+    return this.http.delete<any>(`${urlApi}` + `/${id}`);
   }
 }

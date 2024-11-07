@@ -122,11 +122,11 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   getUser() {
-    return this.userService.GetPagingData({ pageNumber: 1, pageSize: 10000, user: null }).pipe();
+    return this.userService.GetPagingData({ pageNumber: 1, pageSize: 10000, user: null });
   }
 
   getPartner() {
-    return this.partnerService.GetPagingData({ pageNumber: 1, pageSize: 10000, partner: null }).pipe();
+    return this.partnerService.GetPagingData({ pageNumber: 1, pageSize: 10000, partner: null });
   }
 
   onSave() {

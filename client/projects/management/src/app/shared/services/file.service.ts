@@ -28,7 +28,7 @@ export class FileService {
   // }
 
   // getImage(param: any): Observable<any> {
-  //   return this.http.get<any>(`${urlApi}/DownloadItemFile?itemId=${param.itemId}&itemType=${param.itemType}`).pipe();
+  //   return this.http.get<any>(`${urlApi}/DownloadItemFile?itemId=${param.itemId}&itemType=${param.itemType}`);
   // }
 
 }

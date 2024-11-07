@@ -26,6 +26,6 @@ export class UserRoleService {
   }
 
   SaveUserRoles(model: any): Observable<any> {
-    return this.http.post<any>(`${urlApi}`, model).pipe();
+    return this.http.post<any>(`${urlApi}`, model);
   }
 }

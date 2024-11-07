@@ -74,6 +74,7 @@
               "browserTarget": "business:build:production"
             },
             "development": {
+              "port": 5100,
               "browserTarget": "business:build:development"
             }
           },
@@ -175,6 +176,7 @@
               "browserTarget": "management:build:production"
             },
             "development": {
+              "port": 5000,
               "browserTarget": "management:build:development"
             }
           },
@@ -197,6 +199,39 @@
             ],
             "styles": ["projects/management/src/styles.css"],
             "scripts": []
+          }
+        }
+      }
+    },
+    "libs": {
+      "projectType": "library",
+      "root": "projects/libs",
+      "sourceRoot": "projects/libs/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/libs/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/libs/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/libs/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/libs/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }

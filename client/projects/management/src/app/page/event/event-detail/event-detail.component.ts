@@ -116,7 +116,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   getProject() {
-    return this.projectService.GetPagingData({ pageNumber: 1, pageSize: 10000, project: null }).pipe();
+    return this.projectService.GetPagingData({ pageNumber: 1, pageSize: 10000, project: null });
   }
 
   onSave() {
